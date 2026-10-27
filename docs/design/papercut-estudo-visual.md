@@ -40,5 +40,9 @@ Imagens geradas são referências achatadas, não arquivos em camadas. Sombras s
 
 - Base: `a56aad11ecd62cb5466fa15c383bc5ad540cb8af` (`main`).
 - Branch: `design/papercut-visual-study`.
-- Status: plano salvo; geração dos três estudos em andamento.
+- Status: ciclo inicial concluído — três estudos, duas rodadas de refinamento e dois estados estáticos gerados, inspecionados e documentados.
 - Aprovação artística do usuário: pendente.
+- Recomendação: estudo C refinado, `05-refinamento-recortes-planos.png`.
+- Achado principal: a geração com referência mantém a direção geral, mas redesenha detalhes entre estados. Não usar imagens fechado/aberto como frames interpoláveis.
+- Próxima ação: avaliação estética do usuário a partir da galeria no repositório. Não ampliar geração sem nova hipótese e retorno do usuário.
+- Relatório completo: `assets/concepts/papercut/README.md`. Prompts e manifesto de integridade no mesmo diretório.

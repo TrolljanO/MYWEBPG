@@ -1,0 +1,62 @@
+{
+  "tipo": "estudos estaticos gerados com IA",
+  "aprovacao_usuario": "pendente",
+  "imagens": [
+    {
+      "arquivo": "01-recorte-fino.png",
+      "largura": 1374,
+      "altura": 1145,
+      "modo": "RGB",
+      "bytes": 2808897,
+      "sha256": "951dfaa3daf133715a6410efe318c19e5096ede13d876e536c996ec7aa808d83"
+    },
+    {
+      "arquivo": "02-recorte-profundo.png",
+      "largura": 1374,
+      "altura": 1145,
+      "modo": "RGB",
+      "bytes": 2539316,
+      "sha256": "8e4278c8d3d30768c547d38d13e65d8c4cf7875dde770f7886b4b97cbafcb7c1"
+    },
+    {
+      "arquivo": "03-contorno-detalhado.png",
+      "largura": 1374,
+      "altura": 1145,
+      "modo": "RGB",
+      "bytes": 2390704,
+      "sha256": "c3a1abe013b277735a16596c1b5e1d948d55f355b2cbd82c673011380ae00ca5"
+    },
+    {
+      "arquivo": "04-refinamento-organico.png",
+      "largura": 1374,
+      "altura": 1145,
+      "modo": "RGB",
+      "bytes": 2565115,
+      "sha256": "ab7fe6ef3fd948234583de2b49d7d4a753dc1e97a17f332d4bf0d8e42997b3c8"
+    },
+    {
+      "arquivo": "05-refinamento-recortes-planos.png",
+      "largura": 1374,
+      "altura": 1145,
+      "modo": "RGB",
+      "bytes": 2494324,
+      "sha256": "38c0145d688e653d790829935da2d81f34a449e89922962620109bbea0635814"
+    },
+    {
+      "arquivo": "06-estado-fechado.png",
+      "largura": 1374,
+      "altura": 1145,
+      "modo": "RGB",
+      "bytes": 2389877,
+      "sha256": "3572899479a9d506169bb31d719c83c1ae08c02e52b9616116c5fcb0b4d4d775"
+    },
+    {
+      "arquivo": "07-estado-aberto.png",
+      "largura": 1374,
+      "altura": 1145,
+      "modo": "RGB",
+      "bytes": 2463071,
+      "sha256": "373a7892b4c3651444808bd01a728384cf19056f4e7238d9ae5482796874d411"
+    }
+  ]
+}
