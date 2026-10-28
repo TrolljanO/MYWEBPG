@@ -454,9 +454,10 @@ def build(root: Path, output: Path, site_url: str | None = None, production: boo
         woff = f"assets/fonts/{font}.woff2"
         ttf = f"assets/fonts/{font}.ttf"
         assets.append(woff if (root / woff).is_file() else ttf)
+    assets.append("assets/fonts/cormorant-ext.woff2")
     sheets = root / "assets/gravura"
     if sheets.is_dir():
-        assets.extend(str(path.relative_to(root)) for path in sorted(sheets.rglob("*.png")))
+        assets.extend(str(path.relative_to(root)) for path in sorted(sheets.rglob("*.webp")))
     for vendor in ("gsap.min.js", "ScrollTrigger.min.js", "lenis.min.js"):
         assets.append(f"assets/vendor/{vendor}")
     for name in assets:

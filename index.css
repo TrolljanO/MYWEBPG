@@ -2,7 +2,14 @@
   font-family:Cormorant;
   src:url('assets/fonts/cormorant.woff2') format('woff2');
   font-weight:400 700;
-  font-display:swap}
+  font-display:swap;
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face {
+  font-family:Cormorant;
+  src:url('assets/fonts/cormorant-ext.woff2') format('woff2');
+  font-weight:400 700;
+  font-display:swap;
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
 
 @font-face {
   font-family:Manrope;
@@ -61,7 +68,6 @@ html {
 html.lenis,html.lenis body {height:auto}
 .lenis.lenis-smooth {scroll-behavior:auto!important}
 .lenis.lenis-stopped {overflow:hidden}
-html:not(.js) .theme-toggle,html:not(.js) .work-filters,html:not(.js) #motion-toggle {display:none}
 @media (prefers-reduced-motion: reduce) {
   .theme-toggle {transition:none}
 }
@@ -279,13 +285,13 @@ button {
   margin-left:24px}
 
 .section-space {
-  margin-top:150px}
+  margin-top:112px}
 .section-heading {
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
-  gap:32px;
+  display:block;
   margin-bottom:44px}
+.section-heading>p {
+  margin-top:16px;
+  max-width:48ch}
 .section-kicker {
   font-size:12px;
   margin-bottom:16px;
@@ -305,18 +311,6 @@ h2 {
   gap:10px;
   margin-bottom:32px;
   flex-wrap:wrap}
-.filter {
-  font-size:12px;
-  background:none;
-  border:1px solid transparent;
-  padding:10px 15px;
-  min-height:44px;
-  transition:background .2s}
-.filter.active {
-  background:var(--ink);
-  color:var(--paper)}
-.filter:hover {
-  border-color:var(--line)}
 #filter-count {
   font-size:12px;
   color:var(--muted);
@@ -486,8 +480,6 @@ h2 {
   object-position:50% 60%;
   transform:scale(1.06);
   transition:transform .8s var(--ease)}
-[data-theme=dark] .print-picture img {
-  filter:invert(1)}
 .print-picture:hover img {
   transform:scale(1.13)}
 .print-picture .picture-mark {
@@ -499,8 +491,6 @@ h2 {
   margin-top:32px}
 
 .about-section {
-  background:var(--ink);
-  color:var(--paper);
   padding-block:95px}
 .about-section .section-kicker {
   color:inherit;
@@ -718,8 +708,6 @@ h2 {
   gap:45px}
 .project h3 {
   font-size:41px}
-.section-space {
-  margin-top:110px}
 }
 
 @media(max-width:700px) {
@@ -785,8 +773,6 @@ h2 {
   padding-top:16px}
 .art-caption button {
   font-size:10px}
-.section-space {
-  margin-top:90px}
 .section-heading {
   display:block;
   margin-bottom:26px}
@@ -802,9 +788,6 @@ h2 {
 .work-filters {
   gap:2px;
   margin-bottom:24px}
-.filter {
-  font-size:10px;
-  padding:9px 10px}
 #filter-count {
   font-size:10px}
 .project-list {
@@ -939,10 +922,6 @@ h2 {
 
 html[data-motion=paused] {
   scroll-behavior:auto}
-html[data-motion=paused] .art-layer {
-  transition:none;
-  transform:none!important}
-
 @media print {
   .header,.footer,.skip-link,.back-link,.print-button {
   display:none!important}
@@ -979,9 +958,6 @@ a {
 .intro-line {
   font-size:14px}
 
-.hero-note,.hero-foot,.art-caption,.art-caption button,.project-kind,.project-bottom>span,.work-footnote,.footer-bottom,.footer-bottom button,.filter,#filter-count,.inline-links {
-  font-size:13px}
-
 .project-info>p:not(.project-kind),.about-copy>p:not(.large-copy),.principles p,.archive-empty p,.contact-copy>p,.section-heading>p {
   font-size:16px}
 
@@ -998,8 +974,6 @@ a {
   fill:var(--paper)}
 .engraving .sp {
   fill:var(--paper)}
-.engraving .sheet-edge.ink,.engraving .sheet-lines.ink {
-  stroke:var(--art-ink)}
 .engraving .s2 {
   fill:var(--art-2)}
 .engraving .s3 {
@@ -1038,10 +1012,6 @@ a {
   fill:var(--art-5);
   stroke:var(--art-line);
   stroke-width:.8}
-.engraving .art-layer {
-  animation:paper-arrive 1.3s var(--ease) both;
-  animation-delay:calc(var(--i) * 80ms)}
-
 @keyframes paper-arrive {
   from {
   translate:0 26px;
@@ -1074,8 +1044,6 @@ to {
   font-size:16px}
 .intro-line {
   font-size:13px}
-.art-caption,.art-caption button,.hero-foot,.hero-foot a,.filter,#filter-count,.project-kind,.project-bottom>span,.work-footnote,.footer-bottom,.footer-bottom button,.inline-links {
-  font-size:13px}
 .hero-foot {
   align-items:start}
 .hero-foot>span {
@@ -1083,8 +1051,6 @@ to {
 .work-filters {
   column-gap:8px;
   row-gap:8px}
-.filter {
-  padding:8px}
 #filter-count {
   flex-basis:100%;
   margin:0}
@@ -1105,8 +1071,6 @@ to {
 }
 
 @media(prefers-reduced-motion:reduce) {
-  .engraving .art-layer {
-  animation:none!important}
 }
 
 [data-theme=dark] .art-ink {
@@ -1187,13 +1151,11 @@ to {
 @media (max-width: 700px) {
   .header nav a { min-height: 44px; display: inline-flex; align-items: center; }
   .reading { width: 100%; }
-  .art-caption { flex-wrap: wrap; }
   .archive-links a { min-height: 44px; display: inline-flex; align-items: center; }
 }
 
 /* Thin paper: vector ink remains sharp when the curved cuts separate. */
 .art-layer { will-change: auto; }
-.print-frame:hover .art-layer, .print-frame.is-open .art-layer { will-change: transform; }
 .print-thumbnail { width: 100%; height: 100%; padding: 1.5rem; }
 .archive-preview article { padding-block: 1.5rem; border-top: 1px solid var(--line); }
 .archive-preview h3 { font-family: var(--serif); font-size: var(--type-subhead); line-height: 1.2; margin-bottom: 1rem; }
@@ -1209,7 +1171,6 @@ to {
 @media (max-width: 700px) {
   .hero-description { font-size: var(--type-lead); }
   .picture-mark { font-size: var(--type-small) !important; }
-  .art-caption > span { max-width: 160px; }
   .rag-answer { left: 43%; padding: 16px; width: 53%; }
   .rag-answer > span { line-height: 1.3; display: block; }
 }
@@ -1247,18 +1208,6 @@ body.home .header {
   z-index:0;
   pointer-events:none;
 }
-.cloud-hero .hero-papercut-desktop,
-.cloud-hero .hero-papercut-mobile {
-  width:100%;
-  height:100%;
-}
-.cloud-hero .hero-papercut-mobile {display:none}
-.cloud-hero .hero-papercut-desktop svg,
-.cloud-hero .hero-papercut-mobile svg {
-  width:100%;
-  height:100%;
-  display:block;
-}
 .hero-papercut .sp {fill:var(--paper)}
 .hero-papercut .s2 {fill:var(--art-2)}
 .hero-papercut .s3 {fill:var(--art-3)}
@@ -1269,7 +1218,6 @@ body.home .header {
 .hero-papercut .s8 {fill:var(--art-8)}
 .hero-papercut .sheet-edge {fill:none;stroke:none}
 .hero-papercut .sheet-lines {fill:none;stroke:var(--art-3);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
-.hero-papercut .sheet-edge.ink,.hero-papercut .sheet-lines.ink {stroke:var(--art-ink)}
 .hero-papercut feDropShadow {flood-color:var(--art-shadow);flood-opacity:1}
 .cloud-hero .hero-copy {
   position:relative;
@@ -1306,16 +1254,8 @@ body.home .header {
   min-height:44px;
   white-space:nowrap;
 }
-.cloud-hero .hero-note {
-  display:block;
-  font-size:14px;
-  line-height:1.6;
-  color:var(--muted);
-  margin-top:22px;
-}
 .cloud-hero :focus-visible {outline:3px solid var(--ink);outline-offset:5px}
 .gravura-anchor {scroll-margin-top:72px}
-.gravura-anchor .print-frame {max-width:900px;margin-inline:auto}
 .hero-foot {font-family:var(--sans);font-size:14px}
 @media(max-width:1100px) {
   .header nav {gap:18px}
@@ -1329,8 +1269,6 @@ body.home .header {
     min-height:auto;
     padding:150px 16px 190px;
   }
-  .cloud-hero .hero-papercut-desktop {display:none}
-  .cloud-hero .hero-papercut-mobile {display:block}
   .cloud-hero .hero-copy {
     width:min(100%,340px);
     padding-inline:24px;
@@ -1340,8 +1278,6 @@ body.home .header {
   .cloud-hero .hero-description {font-size:18px;line-height:1.6;margin-top:24px}
   .cloud-hero .hero-description br {display:none}
   .cloud-hero .button {gap:18px;padding-inline:16px;max-width:100%;white-space:nowrap}
-  .cloud-hero .hero-note {font-size:14px;margin-top:22px}
-  .hero-foot {gap:16px;flex-wrap:wrap;line-height:1.6}
 }
 @media print {
   .header {display:none}
@@ -1360,45 +1296,49 @@ body.home .header {
 .header {flex-wrap:wrap}
 .cut-stage {position:relative;perspective:1200px}
 .cut-stage .cuts,.hero-sky.cut-stage {pointer-events:none}
-.cut {position:absolute;height:auto;filter:drop-shadow(6px 10px 0 var(--cut-shadow));} /* taste-skill-ignore: sombra de papel recortado */
-/* Hero: maquete em 7 camadas, do fundo para a frente; a cópia é uma folha de cota +1. */
-.cloud-hero {display:grid;grid-template-columns:1fr;align-items:center;justify-items:start;min-height:max(720px,100svh);padding:120px 48px 72px}
-.cloud-hero .hero-copy.hero-sheet {width:min(560px,100%);padding:44px 48px 40px;text-align:left;background:var(--paper);box-shadow:8px 12px 0 var(--cut-shadow);z-index:2} /* taste-skill-ignore: folha recortada sobre a cena */
-body.home .header a,body.home .header .theme-toggle {background:var(--paper);padding-inline:10px}
+/* Física do papel: uma folha fina projeta sombra curta e macia; peças com sombra embutida ficam sem filtro. */
+.cut {position:absolute;height:auto;filter:drop-shadow(1px 2px 0 rgb(21 21 21 / .10)) drop-shadow(3px 6px 8px rgb(21 21 21 / .12))} /* taste-skill-ignore: sombra de papel recortado */
+.cut.flat {filter:none}
+/* Pranchas: cada cena é uma gravura montada sobre a mesa, com papel e tinta próprios nos dois temas. */
+.prancha {--paper:#FAF9F6;--ink:#1F1F1F;--muted:#5A5A5A;--field:#F1EEE7;--line:#E7E4DD;--reverse:#FAF9F6;margin-inline:clamp(12px,2vw,32px);border-radius:2px;overflow:hidden;color:#1F1F1F}
+.prancha h1,.prancha h2,.prancha h3,.prancha p,.prancha a:not(.button) {color:#1F1F1F}
+.prancha .intro-line,.prancha .hero-description,.prancha .section-heading>p,.prancha .archive-empty p {color:#1F1F1F}
+/* Hero: 9 camadas do fundo para a frente; a cópia é uma folha de cota +1, pilha dura + sombra macia. */
+.cloud-hero {display:grid;grid-template-columns:1fr;align-items:center;justify-items:start;min-height:max(720px,calc(100svh - 24px));margin-top:12px;padding:120px 48px 72px;background:#F3F1EC}
+body.home .header a,body.home .header .theme-toggle {background:#FAF9F6;color:#1F1F1F;padding-inline:10px}
 body.home .header .signature {padding-inline:8px}
+.cloud-hero .hero-copy.hero-sheet {width:min(560px,100%);padding:44px 48px 40px;text-align:left;background:#FAF9F6;box-shadow:6px 6px 0 #E7E4DD,7px 7px 0 #CFCBC2,0 18px 32px rgb(21 21 21 / .10);z-index:2} /* taste-skill-ignore: folha recortada sobre a cena */
 .cloud-hero .hero-sheet .intro-line,.cloud-hero .hero-sheet .hero-description {margin-inline:0;max-width:100%}
-.cloud-hero .hero-sheet h1 {font-size:clamp(64px,7vw,108px)}
+.cloud-hero .hero-sheet h1 {font-size:clamp(64px,7vw,104px)}
+.cloud-hero .button.primary {background:#1F1F1F;color:#FAF9F6;border-color:#1F1F1F}
+.cloud-hero .button.primary:hover {background:#FAF9F6;color:#1F1F1F}
 .hero-sky .cloud-bank {left:-4%;top:-8%;width:108%}
 .hero-sky .dragon {left:36%;top:11%;width:58%}
 .hero-sky .ridges {left:-8%;bottom:-10%;width:62%}
 .hero-sky .cliffs {right:-10%;bottom:-16%;width:64%}
-.hero-sky .pagoda {left:47%;bottom:21%;width:16%}
+.hero-sky .peak {left:42%;bottom:4%;width:26%}
+.hero-sky .pagoda {left:47%;bottom:33%;width:14%}
+.hero-sky .cloud-front {left:-6%;bottom:-36%;width:112%}
 .hero-sky .cloud-l {left:4%;top:42%;width:12%}
 .hero-sky .cloud-r {right:2%;top:40%;width:20%}
-/* Koi: papel creme do próprio recorte; a tinta é fixa porque o PNG não muda com o tema. */
-.gravura-anchor.cut-stage {min-height:780px;overflow:hidden;background:#F1E5CC;color:#1F1F1F}
-.gravura-anchor h2,.gravura-anchor p {color:#1F1F1F}
+/* Koi: papel creme em CSS; massa de ondas em diagonal à direita, cardume fechado à esquerda. */
+.gravura-anchor.cut-stage {min-height:780px;background:#F1E5CC;padding-top:72px}
 .gravura-anchor .cuts {position:absolute;inset:0}
-.gravura-anchor .koi-paper {left:0;top:0;width:100%;height:100%;object-fit:cover;filter:none}
-.gravura-anchor .ripple-a {left:-6%;top:30%;width:30%}
-.gravura-anchor .ripple-b {right:-6%;bottom:-12%;width:26%}
-.gravura-anchor .ripple-c {left:60%;top:8%;width:15%}
-.gravura-anchor .ripple-d {left:68%;top:40%;width:12%}
-.gravura-anchor .ripple-e {left:12%;bottom:4%;width:14%}
-.gravura-anchor .ripple-f {right:30%;bottom:8%;width:12%}
-.gravura-anchor .ripple-g {left:20%;top:16%;width:10%}
-.gravura-anchor .fish-white {left:28%;top:24%;width:17%}
-.gravura-anchor .fish-orange {left:42%;top:34%;width:12%}
-.gravura-anchor .fish-white-2 {left:31%;top:52%;width:12%}
-.gravura-anchor .fish-orange-2 {left:47%;top:54%;width:15%}
-.gravura-anchor .fish-black {left:38%;top:70%;width:11%}
+.gravura-anchor .ripple-a {right:-8%;top:-10%;width:34%}
+.gravura-anchor .ripple-b {right:-10%;bottom:-14%;width:36%}
+.gravura-anchor .ripple-c {right:18%;top:22%;width:18%}
+.gravura-anchor .ripple-d {right:4%;top:44%;width:22%}
+.gravura-anchor .ripple-f {right:26%;bottom:2%;width:16%}
+.gravura-anchor .ripple-g {left:52%;top:6%;width:8%}
+.gravura-anchor .fish-white {left:20%;top:30%;width:15%}
+.gravura-anchor .fish-orange {left:33%;top:36%;width:11%}
+.gravura-anchor .fish-white-2 {left:24%;top:58%;width:11%}
+.gravura-anchor .fish-orange-2 {left:37%;top:58%;width:13%}
+.gravura-anchor .fish-black {left:29%;top:76%;width:10%}
 .gravura-anchor .wrap {position:relative;z-index:1}
-.gravura-anchor .section-heading p {max-width:300px}
-/* Sakura: céu rosa do recorte, chão, árvore grande, pedras e pétalas na frente. */
-.archive-section.cut-stage {overflow:hidden;min-height:820px;padding-bottom:140px;background:#F7EAE8;color:#1F1F1F}
-.archive-section h2,.archive-section h3,.archive-section p,.archive-section a {color:#1F1F1F}
+/* Sakura: papel rosa em CSS, chão, árvore grande, pedras e pétalas na frente. */
+.archive-section.cut-stage {min-height:820px;padding:72px 0 140px;background:#F7EAE8}
 .archive-section .cuts {position:absolute;inset:0}
-.archive-section .pink-sky {left:0;top:0;width:100%;height:100%;object-fit:cover;filter:none}
 .archive-section .ground {left:28%;bottom:-3%;width:76%}
 .archive-section .sakura-tree {left:42%;bottom:8%;width:50%}
 .archive-section .rock {width:7%}
@@ -1413,40 +1353,43 @@ body.home .header .signature {padding-inline:8px}
 .archive-section .p5 {right:12%;top:10%}
 .archive-section .p6 {left:30%;bottom:28%}
 .archive-section .wrap {position:relative;z-index:1;margin-inline:0 auto;max-width:620px;padding-left:48px}
-.archive-section .section-heading {display:block}
-.archive-section .section-heading p {max-width:380px;margin-top:16px}
+.archive-section .archive-empty {background:#FAF9F6}
 .footer.cut-stage {overflow:hidden;padding-bottom:160px}
-.footer .cuts {position:absolute;inset:auto 0 0 0;height:120px}
-.footer .root-band {left:0;bottom:0;width:min(420px,46%)}
-.footer .moss-band {right:0;bottom:0;width:min(520px,58%)}
+.footer .cuts {position:absolute;inset:auto 0 0 0;height:160px}
+.footer .ground-l {left:-2%;bottom:-4%;width:54%}
+.footer .ground-r {right:-2%;bottom:-4%;width:54%}
+.footer .root-band {left:36%;bottom:2%;width:28%}
 .footer .footer-bar {position:relative;z-index:1}
-@media (prefers-reduced-motion: reduce) {
-  .cut {filter:drop-shadow(4px 6px 0 var(--cut-shadow))}
-}
+/* Escala tipográfica: nome, h2, h3, abertura, corpo. */
+h2,.contact-grid h2,.about-title h2 {font-size:clamp(48px,4.6vw,64px);line-height:.95}
+h3,.project h3,.large-copy,.archive-empty h3 {font-size:clamp(28px,2.6vw,40px);line-height:1.1}
+.intro-line,.hero-description,.section-heading>p {font-size:20px;line-height:1.5}
+.project-kind,.picture-mark,.inline-links,.footer-bottom,.footer-bottom button,.contact-grid .inline-links,.hero-foot {font-size:14px}
+.footer-name {font-size:clamp(32px,3vw,44px);line-height:1.2}
 /* Mobile placement of the cuts; must follow the desktop rules above. */
 @media(max-width:700px) {
+  .prancha {margin-inline:8px}
   .cloud-hero {padding:140px 16px 48px;min-height:max(680px,100svh);justify-items:center}
   .cloud-hero .hero-copy.hero-sheet {padding:28px 24px 24px;width:min(100%,360px)}
   .hero-sky .cloud-bank {left:-50%;top:13%;width:190%}
   .hero-sky .dragon {left:-6%;top:14%;width:110%}
   .hero-sky .ridges {left:-34%;bottom:-6%;width:130%}
   .hero-sky .cliffs {right:-44%;bottom:-10%;width:120%}
-  .hero-sky .pagoda {left:34%;bottom:22%;width:34%}
+  .hero-sky .peak {left:26%;bottom:0;width:52%}
+  .hero-sky .pagoda {left:36%;bottom:19%;width:30%}
+  .hero-sky .cloud-front {left:-40%;bottom:-24%;width:180%}
   .hero-sky .cloud-l,.hero-sky .cloud-r {display:none}
-  .gravura-anchor.cut-stage {min-height:640px}
-  .gravura-anchor .ripple-a {left:-20%;top:44%;width:60%}
-  .gravura-anchor .ripple-b {right:-20%;bottom:-6%;width:58%}
-  .gravura-anchor .ripple-c {left:62%;top:30%;width:28%}
-  .gravura-anchor .ripple-d,.gravura-anchor .ripple-f {display:none}
-  .gravura-anchor .ripple-e {left:4%;bottom:2%;width:26%}
-  .gravura-anchor .ripple-g {left:70%;top:60%;width:20%}
-  .gravura-anchor .fish-white {left:14%;top:40%;width:36%}
-  .gravura-anchor .fish-orange {left:46%;top:46%;width:26%}
-  .gravura-anchor .fish-white-2 {left:20%;top:66%;width:26%}
-  .gravura-anchor .fish-orange-2 {left:50%;top:70%;width:30%}
-  .gravura-anchor .fish-black {left:38%;top:84%;width:22%}
-  .gravura-anchor .section-heading p {max-width:100%}
-  .archive-section.cut-stage {min-height:auto;padding-bottom:420px}
+  .gravura-anchor.cut-stage {min-height:640px;padding-top:48px}
+  .gravura-anchor .ripple-a {right:-24%;top:30%;width:70%}
+  .gravura-anchor .ripple-b {right:-26%;bottom:-10%;width:70%}
+  .gravura-anchor .ripple-c {right:2%;top:58%;width:30%}
+  .gravura-anchor .ripple-d,.gravura-anchor .ripple-f,.gravura-anchor .ripple-g {display:none}
+  .gravura-anchor .fish-white {left:4%;top:44%;width:34%}
+  .gravura-anchor .fish-orange {left:34%;top:50%;width:24%}
+  .gravura-anchor .fish-white-2 {left:10%;top:68%;width:24%}
+  .gravura-anchor .fish-orange-2 {left:36%;top:72%;width:28%}
+  .gravura-anchor .fish-black {left:22%;top:86%;width:20%}
+  .archive-section.cut-stage {min-height:auto;padding:48px 0 420px}
   .archive-section .wrap {max-width:100%;padding-left:16px}
   .archive-section .ground {left:-10%;bottom:-2%;width:130%}
   .archive-section .sakura-tree {left:8%;bottom:6%;width:92%}
@@ -1454,8 +1397,6 @@ body.home .header .signature {padding-inline:8px}
   .archive-section .r2 {right:10%;bottom:6%;width:12%}
   .archive-section .plant {left:30%;bottom:3%;width:16%}
   .archive-section .petal {width:28px}
-}
-@media (prefers-reduced-motion: reduce) {
-  .cut {filter:drop-shadow(4px 6px 0 var(--cut-shadow))}
+  .inline-links,.footer-bottom,.footer-bottom button {font-size:14px}
 }
 .header nav {flex-wrap:wrap}

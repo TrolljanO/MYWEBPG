@@ -41,11 +41,7 @@ try{
   assert(cuts.count===34 && cuts.broken.length===0,'Home loads 34 PNG cuts',cuts);
   assert(await p.eval(()=>document.documentElement.classList.contains('lenis')),'Motion load starts Lenis');
 
-  await p.eval(()=>document.querySelector('[data-filter="design"]').click());
-  assert(await p.eval(()=>document.querySelectorAll('.project:not([hidden])').length===1 && document.querySelector('.project:not([hidden])').dataset.category==='design'),'Project visual filter');
-  await p.eval(()=>document.querySelector('[data-filter="ai"]').click());
-  assert(await p.eval(()=>document.querySelectorAll('.project:not([hidden])').length===2),'Project AI filter');
-  await p.eval(()=>document.querySelector('[data-filter="all"]').click());
+  assert(await p.eval(()=>document.querySelectorAll('.project').length===2 && !document.querySelector('[data-filter]')),'Two real projects, no filter theater');
   await p.eval(()=>document.querySelector('.theme-toggle').click());
   assert(await p.eval(()=>document.documentElement.dataset.theme==='dark'),'Dark theme toggle');
   await p.goto(base);
@@ -80,7 +76,7 @@ try{
   const plain=await b.newPage({width:390,height:844});
   await plain.send('Emulation.setScriptExecutionDisabled',{value:true});
   await plain.goto(base);
-  assert(await plain.eval(()=>document.querySelectorAll('.project').length===3 && document.querySelector('h1').getBoundingClientRect().height>0),'Content available without JS');
+  assert(await plain.eval(()=>document.querySelectorAll('.project').length===2 && document.querySelector('h1').getBoundingClientRect().height>0),'Content available without JS');
 
   const blocked=await b.newPage();
   await blocked.send('Page.addScriptToEvaluateOnNewDocument',{source:'Object.defineProperty(window,"localStorage",{get(){throw new Error("blocked")}})'});

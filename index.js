@@ -15,14 +15,6 @@
     storage.set('gt-theme', root.dataset.theme);
     syncTheme();
   });
-  const filters = [...document.querySelectorAll('[data-filter]')];
-  const projects = [...document.querySelectorAll('[data-category]')];
-  filters.forEach(button => button.addEventListener('click', () => {
-    filters.forEach(other => { const active = other === button; other.classList.toggle('active', active); other.setAttribute('aria-pressed', String(active)); });
-    let count = 0;
-    projects.forEach(project => { project.hidden = button.dataset.filter !== 'all' && button.dataset.filter !== project.dataset.category; if (!project.hidden) count++; });
-    document.getElementById('filter-count').textContent = `${count} ${count === 1 ? 'projeto' : 'projetos'}`;
-  }));
   document.getElementById('print-cv')?.addEventListener('click', () => window.print());
 
   // Motion: Lenis is the only smooth scroll; GSAP scrubs each .cut by data-depth.
