@@ -265,7 +265,7 @@ def _page_shell(*, config: dict, title: str, description: str, body: str,
             '<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n'
             f'<title>{_safe_meta(title)} — {_safe_meta(config["name"])}</title>\n'
             f'<meta name="description" content="{_safe_meta(description)}">{robots}{canonical_link}{og}\n'
-            '<meta name="color-scheme" content="light dark"><meta name="theme-color" content="#ffffff">\n'
+            '<meta name="color-scheme" content="light dark"><meta name="theme-color" content="#FAF9F6">\n'
             f'<link rel="icon" href="{prefix}assets/favicon.svg" type="image/svg+xml">'
             f'<link rel="alternate" type="application/rss+xml" title="RSS" href="{prefix}rss.xml">\n'
             f'<link rel="preload" href="{prefix}assets/fonts/{font_file}" as="font" type="font/{"woff2" if font_file.endswith("woff2") else "ttf"}" crossorigin>\n'
@@ -449,8 +449,6 @@ def build(root: Path, output: Path, site_url: str | None = None, production: boo
     assets = ["assets/favicon.svg", "assets/engraving.svg", "assets/hero-desktop.svg",
               "assets/hero-mobile.svg", "assets/social-card.png",
               "assets/case-sdd.svg", "assets/case-rag.svg",
-              "assets/fonts/montserrat.ttf",
-              "assets/fonts/montserrat-OFL.txt",
               "assets/fonts/cormorantgaramond-OFL.txt", "assets/fonts/manrope-OFL.txt"]
     for font in ("cormorant", "manrope"):
         woff = f"assets/fonts/{font}.woff2"

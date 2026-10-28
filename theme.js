@@ -1,3 +1,4 @@
+document.documentElement.classList.add('js');
 (() => {
   try {
     const saved = localStorage.getItem('gt-theme');

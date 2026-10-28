@@ -11,12 +11,13 @@
   font-display:swap}
 
 :root {
-  --paper:#fff;
-  --ink:#151515;
-  --muted:#575754;
-  --field:#f2f2ef;
-  --line:#cececa;
-  --reverse:#fff;
+  --paper:#FAF9F6;
+  --ink:#1F1F1F;
+  --muted:#5A5A5A;
+  --field:#F1EEE7;
+  --line:#E7E4DD;
+  --reverse:#FAF9F6;
+  --cut-shadow:rgb(21 21 21 / .16);
   --serif:Cormorant,Georgia,serif;
   --sans:Manrope,Arial,sans-serif;
   --ease:cubic-bezier(.22,1,.36,1);
@@ -33,12 +34,13 @@
   --art-shadow:rgb(21 21 21 / .28)}
 
 :root[data-theme=dark] {
-  --paper:#111;
-  --ink:#f6f6f2;
-  --muted:#bababa;
-  --field:#1d1d1b;
-  --line:#494946;
-  --reverse:#111;
+  --paper:#1C1B19;
+  --ink:#E8E6E3;
+  --muted:#A8A5A0;
+  --field:#26241F;
+  --line:#34322E;
+  --reverse:#1C1B19;
+  --cut-shadow:rgb(0 0 0 / .5);
   --art-2:#1b1c1b;
   --art-3:#262826;
   --art-4:#343734;
@@ -55,11 +57,13 @@
 * {
   box-sizing:border-box}
 html {
-  scroll-behavior:smooth;
   scroll-padding-top:32px}
+html.lenis,html.lenis body {height:auto}
+.lenis.lenis-smooth {scroll-behavior:auto!important}
+.lenis.lenis-stopped {overflow:hidden}
+html:not(.js) .theme-toggle,html:not(.js) .work-filters,html:not(.js) #motion-toggle {display:none}
 @media (prefers-reduced-motion: reduce) {
-  html {scroll-behavior:auto}
-  .art-layer,.theme-toggle {transition:none}
+  .theme-toggle {transition:none}
 }
 body {
   margin:0;
@@ -567,8 +571,8 @@ h2 {
   text-decoration:underline}
 .contact-grid {
   display:grid;
-  grid-template-columns:1.2fr 1fr;
-  gap:8vw;
+  grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
+  gap:clamp(24px,8vw,96px);
   align-items:center}
 .contact-grid h2 {
   font-size:clamp(54px,6.2vw,96px);
@@ -1211,14 +1215,8 @@ to {
 }
 
 /* First-fold study: the approved cloud print stays a single static image. */
-@font-face {
-  font-family:Montserrat;
-  src:url('assets/fonts/montserrat.ttf') format('truetype');
-  font-weight:100 900;
-  font-display:swap;
-}
 .header {
-  font-family:Montserrat,Arial,sans-serif;
+  font-family:var(--sans);
   min-height:96px;
 }
 .header nav,.header-actions,.signature {font-size:14px}
@@ -1235,10 +1233,11 @@ body.home .header {
   position:relative;
   isolation:isolate;
   display:grid;
+  grid-template-columns:1fr;
   place-items:center;
   min-height:min(900px,100vh);
   padding:132px 24px 72px;
-  font-family:Montserrat,Arial,sans-serif;
+  font-family:var(--sans);
   color:var(--ink);
   overflow:hidden;
 }
@@ -1317,7 +1316,7 @@ body.home .header {
 .cloud-hero :focus-visible {outline:3px solid var(--ink);outline-offset:5px}
 .gravura-anchor {scroll-margin-top:72px}
 .gravura-anchor .print-frame {max-width:900px;margin-inline:auto}
-.hero-foot {font-family:Montserrat,Arial,sans-serif;font-size:14px}
+.hero-foot {font-family:var(--sans);font-size:14px}
 @media(max-width:1100px) {
   .header nav {gap:18px}
   .cloud-hero .hero-copy {width:min(28rem,calc(100% - 64px))}
@@ -1327,8 +1326,8 @@ body.home .header {
   .header nav {gap:8px;padding-bottom:8px;font-size:14px}
   .header .signature>span:last-child {font-size:14px}
   .cloud-hero {
-    min-height:850px;
-    padding:148px 16px 48px;
+    min-height:auto;
+    padding:150px 16px 190px;
   }
   .cloud-hero .hero-papercut-desktop {display:none}
   .cloud-hero .hero-papercut-mobile {display:block}
@@ -1361,35 +1360,51 @@ body.home .header {
 .header {flex-wrap:wrap}
 .cut-stage {position:relative}
 .cut-stage .cuts,.hero-sky.cut-stage {pointer-events:none}
-.cut {position:absolute;height:auto;filter:drop-shadow(6px 10px 0 rgb(21 21 21 / .16));}
-.hero-sky .mtn-back {left:-8%;bottom:-28%;width:min(680px,64%)}
+.cut {position:absolute;height:auto;filter:drop-shadow(6px 10px 0 var(--cut-shadow));} /* taste-skill-ignore: sombra de papel recortado */
+.hero-sky .mtn-back {left:-6%;bottom:-34%;width:min(620px,52%)}
 .hero-sky .mtn-side {right:-6%;bottom:6%;width:min(280px,30%)}
-.hero-sky .pagoda {right:4%;bottom:0;width:min(240px,26%)}
+.hero-sky .pagoda {right:5%;bottom:-2%;width:min(230px,24%)}
 .hero-sky .cloud-a {left:-4%;top:10%;width:min(340px,36%)}
 .hero-sky .cloud-b {right:0;top:6%;width:min(280px,30%)}
-.koi-stage,.gravura-anchor.cut-stage {min-height:640px;overflow:hidden}
+.koi-stage,.gravura-anchor.cut-stage {min-height:640px;overflow:hidden;background:var(--field)}
 .gravura-anchor .cuts {position:absolute;inset:0}
-.gravura-anchor .koi-paper {left:0;top:0;width:100%;height:100%;object-fit:cover}
-.gravura-anchor .ripple-a {left:-4%;top:8%;width:min(280px,32%)}
-.gravura-anchor .ripple-b {right:-2%;bottom:6%;width:min(260px,30%)}
-.gravura-anchor .fish-white {left:4%;bottom:8%;width:min(180px,24%)}
-.gravura-anchor .fish-orange {right:8%;top:18%;width:min(160px,22%)}
-.gravura-anchor .fish-black {right:18%;bottom:12%;width:min(140px,18%)}
+.gravura-anchor .ripple-a {left:-5%;top:34%;width:min(340px,34%)}
+.gravura-anchor .ripple-b {right:-3%;bottom:-6%;width:min(330px,32%)}
+.gravura-anchor .fish-white {left:24%;bottom:-4%;width:min(250px,25%)}
+.gravura-anchor .fish-orange {right:38%;top:20%;width:min(190px,21%)}
+.gravura-anchor .fish-black {right:16%;top:50%;width:min(170px,18%)}
 .gravura-anchor .wrap {position:relative;z-index:1}
 .archive-section.cut-stage {overflow:hidden}
 .archive-section .cuts {position:absolute;inset:0}
-.archive-section .sakura-tree {right:-4%;bottom:-8%;width:min(460px,48%)}
+.archive-section .sakura-tree {right:0;bottom:0;width:min(380px,40%)}
+.archive-section.cut-stage {min-height:520px;padding-bottom:160px}
+.archive-section .section-heading p {max-width:380px}
 .archive-section .petal {width:42px}
 .archive-section .p1 {left:12%;top:18%}
 .archive-section .p2 {left:28%;top:46%}
 .archive-section .p3 {right:42%;top:22%}
 .archive-section .wrap {position:relative;z-index:1}
-.footer.cut-stage {overflow:hidden}
+.footer.cut-stage {overflow:hidden;padding-bottom:160px}
 .footer .cuts {position:absolute;inset:auto 0 0 0;height:120px}
 .footer .root-band {left:0;bottom:0;width:min(420px,46%)}
 .footer .moss-band {right:0;bottom:0;width:min(520px,58%)}
 .footer .footer-bar {position:relative;z-index:1}
+/* Mobile placement of the cuts; must follow the desktop rules above. */
+@media(max-width:700px) {
+  .hero-sky .cloud-a,.hero-sky .cloud-b {display:none}
+  .hero-sky .mtn-back {left:-18%;bottom:-4%;width:90%}
+  .hero-sky .mtn-side {right:-10%;bottom:10%;width:44%}
+  .hero-sky .pagoda {right:3%;bottom:0;width:38%}
+  .gravura-anchor.cut-stage {min-height:560px}
+  .gravura-anchor .ripple-a {top:40%;width:52%;left:-14%}
+  .gravura-anchor .ripple-b {width:50%;right:-12%;bottom:-4%}
+  .gravura-anchor .fish-white {left:8%;bottom:4%;width:40%}
+  .gravura-anchor .fish-orange {right:4%;top:46%;width:30%}
+  .gravura-anchor .fish-black {left:50%;top:26%;width:26%}
+  .archive-section .sakura-tree {width:60%;right:-10%}
+  .archive-section .section-heading p {max-width:100%;padding-right:20%}
+}
 @media (prefers-reduced-motion: reduce) {
-  .cut {filter:drop-shadow(4px 6px 0 rgb(21 21 21 / .16))}
+  .cut {filter:drop-shadow(4px 6px 0 var(--cut-shadow))}
 }
 .header nav {flex-wrap:wrap}

@@ -7,7 +7,7 @@
     const dark = root.dataset.theme === 'dark';
     themeButton?.setAttribute('aria-pressed', String(dark));
     themeButton?.setAttribute('aria-label', dark ? 'Ativar tema claro' : 'Ativar tema escuro');
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#111111' : '#ffffff');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#1C1B19' : '#FAF9F6');
   }
   syncTheme();
   themeButton?.addEventListener('click', () => {
@@ -24,81 +24,53 @@
     document.getElementById('filter-count').textContent = `${count} ${count === 1 ? 'projeto' : 'projetos'}`;
   }));
   document.getElementById('print-cv')?.addEventListener('click', () => window.print());
-  const frame = document.getElementById('print-frame');
-  if (!frame) {
-    document.getElementById('motion-toggle')?.setAttribute('hidden', '');
-    return;
-  }
-  const layers = [...frame.querySelectorAll('.art-layer')];
-  const unfold = document.getElementById('unfold');
+
+  // Motion: Lenis is the only smooth scroll; GSAP scrubs each .cut by data-depth.
+  // Paused or reduced motion tears everything down and leaves native scroll.
   const motionButton = document.getElementById('motion-toggle');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  let paused = storage.get('gt-motion') === 'paused';
-  let open = false;
-  let x = 0, y = 0, raf = 0;
-  const canMove = () => !paused && !reduced.matches;
-  function render() {
-    raf = 0;
-    layers.forEach(layer => {
-      const depth = Number(layer.dataset.depth);
-      const dx = open ? Number(layer.dataset.openX || 0) : 0;
-      const dy = open ? Number(layer.dataset.openY || 0) : 0;
-      const angle = open ? Number(layer.dataset.openRotate || 0) : 0;
-      layer.style.transform = canMove() ? `translate(${x * depth * 1.5 + dx}px, ${y * depth + dy}px) rotate(${angle}deg)` : '';
-      frame.classList.toggle('is-open', open && canMove());
-    });
-  }
-  function requestRender() { if (!raf) raf = requestAnimationFrame(render); }
-  function syncMotion() {
-    root.dataset.motion = canMove() ? 'active' : 'paused';
-    motionButton.setAttribute('aria-pressed', String(!canMove()));
-    motionButton.textContent = reduced.matches ? 'Movimento reduzido' : paused ? 'Ativar movimento' : 'Pausar movimento';
-    motionButton.disabled = reduced.matches;
-    unfold.disabled = !canMove();
-    if (!canMove()) {
-      open = false;
-      unfold.setAttribute('aria-pressed', 'false');
-      unfold.innerHTML = 'Desdobrar gravura <span aria-hidden="true">+</span>';
-    }
-    render();
-  }
-  unfold.addEventListener('click', () => {
-    open = !open;
-    unfold.setAttribute('aria-pressed', String(open));
-    unfold.innerHTML = `${open ? 'Reunir recortes' : 'Desdobrar gravura'} <span aria-hidden="true">+</span>`;
-    render();
-  });
-  frame.addEventListener('pointermove', event => {
-    if (!canMove() || event.pointerType === 'touch') return;
-    const box = frame.getBoundingClientRect();
-    x = ((event.clientX - box.left) / box.width - .5) * 2;
-    y = ((event.clientY - box.top) / box.height - .5) * 2;
-    requestRender();
-  });
-  frame.addEventListener('pointerleave', () => { x = y = 0; requestRender(); });
-  motionButton.addEventListener('click', () => { paused = !paused; storage.set('gt-motion', paused ? 'paused' : 'active'); syncMotion(); });
-  reduced.addEventListener('change', syncMotion);
-  syncMotion();
-
   const cuts = [...document.querySelectorAll('.cut')];
-  if (cuts.length && !reduced.matches && window.gsap && window.ScrollTrigger && window.Lenis) {
+  const hasEngine = !!(window.gsap && window.ScrollTrigger && window.Lenis);
+  let paused = storage.get('gt-motion') === 'paused';
+  let lenis = null, tick = null;
+  const canMove = () => hasEngine && !paused && !reduced.matches;
+  function mount() {
+    if (lenis) return;
     gsap.registerPlugin(ScrollTrigger);
-    const lenis = new Lenis({ lerp: 0.09 });
+    lenis = new Lenis({ lerp: 0.09, anchors: true });
     lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add(time => lenis.raf(time * 1000));
+    tick = time => lenis.raf(time * 1000);
+    gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
     cuts.forEach(el => {
       const depth = Number(el.dataset.depth) || 0.15;
       const stage = el.closest('.cut-stage') || el.parentElement;
-      gsap.fromTo(el, { y: -40 * depth }, {
-        y: 70 * depth,
-        ease: 'none',
-        scrollTrigger: { trigger: stage, start: 'top bottom', end: 'bottom top', scrub: true }
-      });
+      gsap.fromTo(el, { y: -40 * depth }, { y: 70 * depth, ease: 'none',
+        scrollTrigger: { trigger: stage, start: 'top bottom', end: 'bottom top', scrub: true } });
     });
-    document.querySelector('#motion-toggle')?.addEventListener('click', () => {
-      if (document.documentElement.dataset.motion === 'paused') lenis.stop();
-      else lenis.start();
-    });
+    document.fonts?.ready.then(() => ScrollTrigger.refresh());
   }
+  function unmount() {
+    if (!lenis) return;
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    gsap.set(cuts, { clearProps: 'transform' });
+    gsap.ticker.remove(tick);
+    lenis.destroy();
+    lenis = null;
+  }
+  function syncMotion() {
+    root.dataset.motion = canMove() ? 'active' : 'paused';
+    if (motionButton) {
+      motionButton.hidden = !hasEngine;
+      motionButton.setAttribute('aria-pressed', String(!canMove()));
+      motionButton.textContent = reduced.matches ? 'Movimento reduzido' : paused ? 'Ativar movimento' : 'Pausar movimento';
+      motionButton.disabled = reduced.matches;
+    }
+    if (canMove()) mount(); else unmount();
+  }
+  motionButton?.addEventListener('click', () => { paused = !paused; storage.set('gt-motion', paused ? 'paused' : 'active'); syncMotion(); });
+  reduced.addEventListener('change', syncMotion);
+  window.addEventListener('load', () => { if (lenis) ScrollTrigger.refresh(); });
+  window.addEventListener('pagehide', unmount);
+  syncMotion();
 })();

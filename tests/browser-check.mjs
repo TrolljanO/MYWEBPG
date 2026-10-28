@@ -38,7 +38,7 @@ try{
   await p.goto(base);
   assert(await p.eval(()=>document.querySelector('h1').innerText.includes('Guilherme')),'Home renders');
   const cuts=await p.eval(()=>({count:document.querySelectorAll('img.cut').length,broken:[...document.querySelectorAll('img.cut')].filter(image=>image.naturalWidth<=0).map(image=>image.src)}));
-  assert(cuts.count===17 && cuts.broken.length===0,'Home loads 17 PNG cuts',cuts);
+  assert(cuts.count===16 && cuts.broken.length===0,'Home loads 16 PNG cuts',cuts);
   assert(await p.eval(()=>document.documentElement.classList.contains('lenis')),'Motion load starts Lenis');
 
   await p.eval(()=>document.querySelector('[data-filter="design"]').click());
@@ -99,7 +99,7 @@ try{
 
   await p.goto(base+'/arquivo/index.html');
   assert(await p.eval(()=>document.querySelector('h1').innerText==='Arquivo' && !document.querySelector('.reading article')),'Archive honest empty state');
-  assert(await p.eval(()=>document.getElementById('motion-toggle').hidden),'Reading pages do not expose inactive motion control');
+  assert(await p.eval(()=>!document.getElementById('motion-toggle').hidden && document.documentElement.classList.contains('lenis')),'Reading pages run Lenis and expose the motion control');
   const requests=await p.eval(()=>performance.getEntriesByType('resource').filter(resource=>!resource.name.startsWith(location.origin)).map(resource=>resource.name));
   assert(requests.length===0,'No third-party runtime resources',requests);
 
@@ -109,8 +109,8 @@ try{
   const pausedBefore=await paused.eval(()=>[...document.querySelectorAll('.cut')].map(element=>getComputedStyle(element).transform));
   await paused.eval(()=>window.scrollTo(0,Math.min(1800,document.documentElement.scrollHeight-innerHeight)));
   await sleep(700);
-  const pausedState=await paused.eval(()=>({stopped:document.documentElement.classList.contains('lenis-stopped'),transforms:[...document.querySelectorAll('.cut')].map(element=>getComputedStyle(element).transform)}));
-  assert(pausedState.stopped && JSON.stringify(pausedState.transforms)===JSON.stringify(pausedBefore),'focus-1 paused storage stops Lenis and cut scrub',pausedState);
+  const pausedState=await paused.eval(()=>({stopped:!document.documentElement.classList.contains('lenis'),transforms:[...document.querySelectorAll('.cut')].map(element=>getComputedStyle(element).transform)}));
+  assert(pausedState.stopped && JSON.stringify(pausedState.transforms)===JSON.stringify(pausedBefore),'focus-1 paused storage tears down Lenis and cut scrub',pausedState);
 
   const changedReduced=await b.newPage({width:1440,height:900});
   await changedReduced.goto(base);

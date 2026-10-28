@@ -23,7 +23,7 @@ try{
     await sleep(250);
     check(await p.eval(()=>document.documentElement.scrollWidth===innerWidth),`No overflow at ${width}`);
     check(await p.eval(()=>{const element=document.querySelector('.hero .button');const rect=element.getBoundingClientRect();return rect.left>=0 && rect.right<=innerWidth && rect.height>=44}),`CTA reachable at ${width}`);
-    check(await p.eval(()=>getComputedStyle(document.querySelector('.hero-note')).display!=='none'),`Copy visible at ${width}`);
+    check(await p.eval(()=>getComputedStyle(document.querySelector('.hero-description')).display!=='none'),`Copy visible at ${width}`);
     await p.screenshot({path:`${out}/hero-${width}.png`,format:'png'});
   }
   await p.eval(()=>document.documentElement.dataset.theme='dark');
@@ -35,10 +35,10 @@ try{
 
   await p.goto(base+'/#hero');
   await sleep(300);
-  check(await p.eval(()=>{const hero=document.getElementById('hero');const rect=hero.getBoundingClientRect();return rect.top<120 && document.querySelectorAll('img.cut').length===17}),'Project anchor scrolls to PNG cut hero');
+  check(await p.eval(()=>{const hero=document.getElementById('hero');const rect=hero.getBoundingClientRect();return rect.top<120 && document.querySelectorAll('img.cut').length===16}),'Project anchor scrolls to PNG cut hero');
   await p.goto(base);
   const loadedCuts=await p.eval(()=>({count:document.querySelectorAll('img.cut').length,broken:[...document.querySelectorAll('img.cut')].filter(image=>image.naturalWidth<=0).length}));
-  check(loadedCuts.count===17 && loadedCuts.broken===0,'PNG cut composition loads',loadedCuts);
+  check(loadedCuts.count===16 && loadedCuts.broken===0,'PNG cut composition loads',loadedCuts);
   await p.eval(()=>{document.documentElement.style.zoom='2'});
   const overflow=await p.eval(()=>[...document.querySelectorAll('body *')].filter(element=>{const rect=element.getBoundingClientRect();return rect.width>0 && rect.right>innerWidth+1}).map(element=>element.className).filter(name=>typeof name==='string'));
   results.push({zoomOverflow:overflow});
