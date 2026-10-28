@@ -1,0 +1,7 @@
+# Achados — build, testes e higiene
+
+| ID | Sev | Achado | Evidência | Regra | Onda |
+|---|---|---|---|---|---|
+| BUILD-1 | P1 | Em zoom CSS de 200% no viewport 1440 × 1400, a página mede 1447 px para 1440 px disponíveis: há 7 px de overflow horizontal. A amostragem não encontrou recorte cobrindo texto; o limite excedido vem de `.contact-copy` e seus filhos. | `kittiwake-build-zoom-200.png`; `tests/browser-check.mjs:141-146`; `templates/home.html:23` | WCAG 1.4.10 Reflow; gate de zoom 200% | composição |
+| BUILD-2 | P2 | O builder não falha quando um PNG referenciado está ausente: em cópia temporária sem `pagoda-temple.png`, informou build concluído com 62 arquivos; somente o checker posterior acusou o `src` inexistente. A allowlist ignora silenciosamente qualquer item sem arquivo. | `scripts/site_builder.py:367-368`; `scripts/site_builder.py:459-467`; `templates/home.html:3` | Validação honesta dos insumos do build | build |
+| BUILD-3 | P2 | A documentação operacional descreve a arte pública anterior como SVG/motor Maquete (`engraving.svg`, oito máscaras e vetores), enquanto a home atual é composta por recortes PNG em `assets/gravura/`. A seção intitulada “Implementação consolidada” também afirma que PNGs não entram no pacote público. | `README.md:3`; `README.md:27`; `README.md:79-81`; `docs/design/direcao-e-fontes.md:35-43`; `templates/home.html:3-8`; `templates/footer.html:1` | Documentação alinhada à implementação vigente | build |
