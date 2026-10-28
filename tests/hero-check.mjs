@@ -35,10 +35,10 @@ try{
 
   await p.goto(base+'/#hero');
   await sleep(300);
-  check(await p.eval(()=>{const hero=document.getElementById('hero');const rect=hero.getBoundingClientRect();return rect.top<120 && document.querySelectorAll('img.cut').length===16}),'Project anchor scrolls to PNG cut hero');
+  check(await p.eval(()=>{const hero=document.getElementById('hero');const rect=hero.getBoundingClientRect();return rect.top<120 && document.querySelectorAll('img.cut').length===34}),'Project anchor scrolls to PNG cut hero');
   await p.goto(base);
-  const loadedCuts=await p.eval(()=>({count:document.querySelectorAll('img.cut').length,broken:[...document.querySelectorAll('img.cut')].filter(image=>image.naturalWidth<=0).length}));
-  check(loadedCuts.count===16 && loadedCuts.broken===0,'PNG cut composition loads',loadedCuts);
+  const loadedCuts=await p.eval(()=>({count:document.querySelectorAll('img.cut').length,broken:[...document.querySelectorAll('img.cut')].filter(image=>image.loading!=='lazy' && image.naturalWidth<=0).length}));
+  check(loadedCuts.count===34 && loadedCuts.broken===0,'PNG cut composition loads',loadedCuts);
   await p.eval(()=>{document.documentElement.style.zoom='2'});
   const overflow=await p.eval(()=>[...document.querySelectorAll('body *')].filter(element=>{const rect=element.getBoundingClientRect();return rect.width>0 && rect.right>innerWidth+1}).map(element=>element.className).filter(name=>typeof name==='string'));
   results.push({zoomOverflow:overflow});

@@ -48,6 +48,13 @@
       gsap.fromTo(el, { y: -40 * depth }, { y: 70 * depth, ease: 'none',
         scrollTrigger: { trigger: stage, start: 'top bottom', end: 'bottom top', scrub: true } });
     });
+    // Dobradura: cada camada se levanta da mesa, do fundo para a frente, uma vez.
+    document.querySelectorAll('.cut-stage').forEach(stage => {
+      const layers = stage.querySelectorAll('.cut');
+      if (!layers.length) return;
+      gsap.from(layers, { rotateX: -86, opacity: 0, transformOrigin: '50% 100%', duration: 0.64, ease: 'back.out(1.3)', stagger: 0.07,
+        scrollTrigger: { trigger: stage, start: 'top 85%', once: true } });
+    });
     document.fonts?.ready.then(() => ScrollTrigger.refresh());
   }
   function unmount() {

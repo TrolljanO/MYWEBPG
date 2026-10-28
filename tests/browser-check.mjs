@@ -37,8 +37,8 @@ try{
   const p=await b.newPage();
   await p.goto(base);
   assert(await p.eval(()=>document.querySelector('h1').innerText.includes('Guilherme')),'Home renders');
-  const cuts=await p.eval(()=>({count:document.querySelectorAll('img.cut').length,broken:[...document.querySelectorAll('img.cut')].filter(image=>image.naturalWidth<=0).map(image=>image.src)}));
-  assert(cuts.count===16 && cuts.broken.length===0,'Home loads 16 PNG cuts',cuts);
+  const cuts=await p.eval(()=>({count:document.querySelectorAll('img.cut').length,broken:[...document.querySelectorAll('img.cut')].filter(image=>image.loading!=='lazy' && image.naturalWidth<=0).map(image=>image.src)}));
+  assert(cuts.count===34 && cuts.broken.length===0,'Home loads 34 PNG cuts',cuts);
   assert(await p.eval(()=>document.documentElement.classList.contains('lenis')),'Motion load starts Lenis');
 
   await p.eval(()=>document.querySelector('[data-filter="design"]').click());
