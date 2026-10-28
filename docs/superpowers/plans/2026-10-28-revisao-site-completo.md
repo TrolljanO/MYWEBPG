@@ -51,6 +51,7 @@
 | `inspect.mjs` 1440/768/390 | 2 FAIL (eyebrow ×4, empty-screens 2/7) / 5 WARN (3 fontes, 15 tamanhos, no-footage, empty-middle 803px em `#gravura`, hero-void 33%) |
 | Console (home, 1440 e 375) | 0 erros; `html.lenis` presente; gsap/ScrollTrigger/Lenis carregados |
 | `dist` | ≈6,0 MB; 37 PNG copiados, 18 usados na home |
+| Clone limpo de `ac9d11b` (checkpoint) | build 63 arquivos OK (SVGs do motor fora); checker 0 erros; unittest **28 rodados, 5 pulados, 1 erro** (`test_hero_nuvens` depende de `docs/design/hero-preview/` e `assets/engraving.svg`, não rastreados) — corrigido na Task 1 |
 
 ## Ambiente e comandos de reprodução
 
@@ -139,7 +140,7 @@ Todas decididas pelo usuário em 2026-10-28. Não reabrir.
 **Files:**
 - Create: `docs/review/2026-10-28/baseline.md`
 
-- [ ] **Step 0:** A árvore carrega toda a implementação dos recortes **sem commit** (`index.css`, `index.js`, `templates/`, HTML antigo da raiz apagado). Fazer um checkpoint antes de qualquer onda, no padrão do repo: `rtk git add -A -- index.css index.js templates scripts tests content assets/gravura assets/vendor .gitignore README.md docs/design/direcao-e-fontes.md && rtk git commit -m "chore: checkpoint recortes PNG + GSAP/Lenis"`. Sem isso, o commit da Task 4 engole o trabalho da sessão anterior. Não incluir zips, PNGs soltos da raiz, `error.log` nem `pacote-codex*` (C6).
+- [x] **Step 0 (feito em `ac9d11b`, 2026-10-28):** A árvore carregava toda a implementação dos recortes **sem commit** (`index.css`, `index.js`, `templates/`, HTML antigo da raiz apagado). Fazer um checkpoint antes de qualquer onda, no padrão do repo: `rtk git add -A -- index.css index.js templates scripts tests content assets/gravura assets/vendor .gitignore README.md docs/design/direcao-e-fontes.md && rtk git commit -m "chore: checkpoint recortes PNG + GSAP/Lenis"`. Sem isso, o commit da Task 4 engole o trabalho da sessão anterior. Não incluir zips, PNGs soltos da raiz, `error.log` nem `pacote-codex*` (C6).
 - [ ] **Step 1:** Rodar o bloco "Ambiente e comandos" acima; build e checker com 0 erros; servidor em 4174.
 - [ ] **Step 2:** Rodar `lint.mjs` e `inspect.mjs` de um diretório temporário. Esperado: números iguais à tabela de baseline (6/11 e 2/5). Divergência = anotar, não corrigir.
 - [ ] **Step 3:** Escrever `baseline.md` com a tabela acima preenchida pelos valores obtidos e os caminhos das capturas.
@@ -157,7 +158,7 @@ Todas decididas pelo usuário em 2026-10-28. Não reabrir.
 - [ ] **Step 1:** Rodar os dois scripts contra o build. Esperado: FAIL nas asserções do motor antigo (prova de que estão obsoletos).
 - [ ] **Step 2:** Substituir por asserções do estado atual: 17 `.cut` com `naturalWidth>0`; `html.lenis` presente com motion e ausente sob reduced-motion; toggle oculto em `/arquivo/index.html` até a decisão 7; sem erros de console; 200% zoom sem overflow e sem `.cut` sobre `.wrap`.
 - [ ] **Step 3:** Acrescentar os testes do Review Focus 1, 2, 3 e 5 (um `assert` cada; os de 1 e 2 **devem falhar agora** e documentar B6).
-- [ ] **Step 4:** `test_hero_nuvens.py`: gerar em `tempfile.TemporaryDirectory()`. Rodar `python3 -m unittest discover -s tests`; esperado OK e `rtk git status` sem alteração em `assets/`.
+- [ ] **Step 4:** `test_hero_nuvens.py`: gerar em `tempfile.TemporaryDirectory()`. Atenção: `scripts/render-engraving.mjs:128` grava `docs/design/hero-preview/nuvem-isolada.svg` com caminho fixo e falha se a pasta não existir (erro em clone limpo); o script precisa aceitar um diretório de saída (argumento ou `OUT_DIR`) que o teste aponta para o tmp. `test_engraving.py` pula 5 testes sem `assets/engraving.svg`: decidir com a decisão 5 se viram `skip` definitivo ou são removidos. Rodar `python3 -m unittest discover -s tests` **de um clone limpo** (`git archive HEAD | tar -x -C <tmp>`); esperado OK sem erro nem escrita fora do tmp, e `rtk git status` sem alteração em `assets/` nem `docs/`.
 - [ ] **Step 5:** Commit `test: alinhar browser-checks ao site de recortes`.
 
 ### Task 2: Onda de auditoria (6 sub-agentes em paralelo, orquestrador revisa)
