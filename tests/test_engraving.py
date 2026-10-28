@@ -1,15 +1,22 @@
+import os
+import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ENGRAVING = ROOT / "assets/engraving.svg"
+RENDER = ["node", str(ROOT / "scripts/render-engraving.mjs")]
 
 
 class EngravingAsset(unittest.TestCase):
-    def setUp(self):
-        if not ENGRAVING.is_file():
-            self.skipTest("assets/engraving.svg missing; run node scripts/render-engraving.mjs gravura 2718")
-        self.svg = ENGRAVING.read_text(encoding="utf-8")
+    @classmethod
+    def setUpClass(cls):
+        cls.output_dir = tempfile.TemporaryDirectory()
+        cls.addClassCleanup(cls.output_dir.cleanup)
+        cls.engraving = Path(cls.output_dir.name) / "engraving.svg"
+        env = {**os.environ, "OUT_DIR": cls.output_dir.name}
+        subprocess.run(RENDER + ["gravura", "2718"], check=True, cwd=ROOT, env=env)
+        cls.svg = cls.engraving.read_text(encoding="utf-8")
 
     def test_wave_print_id_present(self):
         self.assertIn('id="wave-print"', self.svg)
@@ -22,12 +29,13 @@ class EngravingAsset(unittest.TestCase):
         self.assertNotIn('fill="#', self.svg)
 
     def test_koi_cutouts_are_local_layers(self):
-        self.assertGreaterEqual(self.svg.count("<image"), 9)
+        self.assertIn('data-tipo="onda"', self.svg)
+        self.assertGreaterEqual(self.svg.count("<use"), 8)
         self.assertNotIn('href="http', self.svg)
-        self.assertIn("assets/gravura/koi/", self.svg)
+        self.assertNotIn('href="/assets/', self.svg)
 
     def test_size_under_limit(self):
-        self.assertLess(ENGRAVING.stat().st_size, 100_000)
+        self.assertLess(self.engraving.stat().st_size, 100_000)
 
 
 if __name__ == "__main__":

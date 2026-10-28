@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /** Build SVG art from the Maquete motor (gravura, hero nuvens, etc.). */
 import { createRequire } from 'node:module';
-import { readFileSync, writeFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -29,7 +29,12 @@ function defaultOut(name) {
   return 'assets/engraving.svg';
 }
 
-const relOut = process.argv[4] || defaultOut(preset);
+const explicitOut = process.argv[4];
+const out = explicitOut
+  ? resolve(root, explicitOut)
+  : process.env.OUT_DIR
+    ? join(resolve(process.env.OUT_DIR), basename(defaultOut(preset)))
+    : join(root, defaultOut(preset));
 const w = Number(process.argv[5]) || presetCfg.largura || 900;
 const h = Number(process.argv[6]) || presetCfg.altura || 760;
 const hero = preset.startsWith('hero-nuvens');
@@ -124,6 +129,6 @@ ${paperRect}
 ${layers}</svg>
 `;
 
-const out = join(root, relOut);
+mkdirSync(dirname(out), { recursive: true });
 writeFileSync(out, svg);
 console.log(`Wrote ${out} · preset=${preset} · semente=${semente} · ${n} camadas`);
