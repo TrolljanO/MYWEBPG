@@ -30,3 +30,16 @@ Prompts de geração (resumo fiel): onda ukiyo-e em traços finos pretos, superf
 Exceções justificadas ao inspector genérico: linhas e caixas representam folhas recortadas solicitadas; imagens vetoriais/conceituais substituem fotografias pessoais inexistentes; pequenos textos dentro das ilustrações são legendas de composição; animação concentrada nas folhas, com opção de pausa, em vez de mínimo arbitrário de elementos em movimento. Rótulos dos projetos indicam seu tipo. Não há vídeo-fonte adequado nem motivo para adicioná-lo como decoração.
 
 Revisão independente: corrigidos foco invisível na seção invertida, contraste de impressão no tema escuro e caminhos da página 404 (base raiz, adequada a domínio dedicado; GitHub Pages em subdiretório exige ajustar base antes do deploy).
+
+
+## Implementação consolidada — 2026-10-26
+
+A identidade foi ampliada por decisão do usuário: software, dados, IA e experiência de negócio; AEC é uma das aplicações. Site completo primeiro, depois profundidade da arte. WiseForge não determina a marca e o domínio segue sem configuração.
+
+Conteúdo separado em Markdown com frontmatter YAML. Templates compartilhados geram home, dois casos, currículo, privacidade, arquivo e 404 em dist/. As antigas páginas geradas na raiz foram removidas para evitar duas versões divergentes. Curadoria manual de publicações; nenhum texto do Second Brain foi acessado ou publicado. Datas profissionais não comprovadas continuam omitidas.
+
+A hero usa o motor Maquete (papercut procedural): presets `ukiyo` e `porcelana` em `assets/motor/maquete-kittiwake.js`, render em `scripts/render-engraving.mjs` → `assets/engraving.svg`. Substitui o pipeline imagegen/vetorização/`compose-engraving.py` para a abertura. Detalhes em `docs/design/maquete-kittiwake.md`. O pacote Grok em `pacote-codex/` permanece referência de conteúdo e DS técnico laranja, não da arte da home.
+
+Fontes WOFF2 com caracteres latinos/portugueses e setas: Cormorant 89.768 bytes e Manrope 29.596 bytes. Os originais e licenças são preservados. Sem dependências externas no navegador. Arte inline e thumbnail compartilham definições SVG; PNGs de estudo não entram no pacote público.
+
+A aprovação estética final continua sendo uma avaliação do usuário, distinta de checks funcionais. A ausência de vídeo é intencional; não há fonte de vídeo necessária ao conteúdo.

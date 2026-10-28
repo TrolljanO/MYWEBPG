@@ -1,15 +1,27 @@
-"""Package only public website files. Supplied references are never copied."""
+"""Build the static portfolio into a selected output directory."""
+import argparse
 from pathlib import Path
-import shutil,subprocess,sys
-root=Path(__file__).resolve().parent.parent
-subprocess.run([sys.executable,str(root/'scripts/build-pages.py')],cwd=root,check=True)
-subprocess.run([sys.executable,str(root/'scripts/check-site.py')],cwd=root,check=True)
-dest=root/'dist';dest.mkdir(exist_ok=True)
-files=['index.html','index.css','index.js','theme.js','curriculo.html','privacidade.html','404.html','projetos/sdd-buddy.html','projetos/micro-rag.html','assets/favicon.svg','assets/onda-gravura.png','assets/montanha-gravura.png','assets/fonts/cormorant.ttf','assets/fonts/manrope.ttf','assets/fonts/cormorantgaramond-OFL.txt','assets/fonts/manrope-OFL.txt']
-# Fail if a stale file would be silently published; a clean directory is expected.
-expected=set(files)
-extra=[str(p.relative_to(dest)) for p in dest.rglob('*') if p.is_file() and str(p.relative_to(dest)) not in expected]
-if extra:raise SystemExit('Unexpected files in dist; inspect before packaging: '+', '.join(extra))
-for name in files:
- (dest/name).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(root/name,dest/name)
-print(f'Packaged {len(files)} public files in dist/. No deployment performed.')
+import sys
+
+from site_builder import build
+
+
+def main() -> int:
+    root = Path(__file__).resolve().parent.parent
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output", type=Path, default=root / "dist", help="diretório de saída (padrão: dist)")
+    parser.add_argument("--site-url", help="URL pública base, incluindo eventual subpath")
+    parser.add_argument("--production", action="store_true", help="exige URL HTTPS e emite metadados públicos")
+    args = parser.parse_args()
+    output = args.output if args.output.is_absolute() else root / args.output
+    try:
+        emitted = build(root, output, site_url=args.site_url, production=args.production)
+    except (ValueError, OSError) as exc:
+        print(f"Build abortado: {exc}", file=sys.stderr)
+        return 1
+    print(f"Build concluído: {len(emitted)} arquivos em {output}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

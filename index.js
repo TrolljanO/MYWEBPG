@@ -25,7 +25,10 @@
   }));
   document.getElementById('print-cv')?.addEventListener('click', () => window.print());
   const frame = document.getElementById('print-frame');
-  if (!frame) return;
+  if (!frame) {
+    document.getElementById('motion-toggle')?.setAttribute('hidden', '');
+    return;
+  }
   const layers = [...frame.querySelectorAll('.art-layer')];
   const unfold = document.getElementById('unfold');
   const motionButton = document.getElementById('motion-toggle');
@@ -36,10 +39,13 @@
   const canMove = () => !paused && !reduced.matches;
   function render() {
     raf = 0;
-    layers.forEach((layer, i) => {
+    layers.forEach(layer => {
       const depth = Number(layer.dataset.depth);
-      const spread = open ? (i - 2.5) * 11 : 0;
-      layer.style.transform = canMove() ? `translate(${x * depth * 1.5 + spread}px, ${y * depth + (open ? (i - 2.5) * 7 : 0)}px) rotate(${open ? (i - 2.5) * .65 : 0}deg)` : '';
+      const dx = open ? Number(layer.dataset.openX || 0) : 0;
+      const dy = open ? Number(layer.dataset.openY || 0) : 0;
+      const angle = open ? Number(layer.dataset.openRotate || 0) : 0;
+      layer.style.transform = canMove() ? `translate(${x * depth * 1.5 + dx}px, ${y * depth + dy}px) rotate(${angle}deg)` : '';
+      frame.classList.toggle('is-open', open && canMove());
     });
   }
   function requestRender() { if (!raf) raf = requestAnimationFrame(render); }
@@ -49,10 +55,19 @@
     motionButton.textContent = reduced.matches ? 'Movimento reduzido' : paused ? 'Ativar movimento' : 'Pausar movimento';
     motionButton.disabled = reduced.matches;
     unfold.disabled = !canMove();
-    if (!canMove()) { open = false; unfold.setAttribute('aria-pressed', 'false'); }
+    if (!canMove()) {
+      open = false;
+      unfold.setAttribute('aria-pressed', 'false');
+      unfold.innerHTML = 'Desdobrar gravura <span aria-hidden="true">+</span>';
+    }
     render();
   }
-  unfold.addEventListener('click', () => { open = !open; unfold.setAttribute('aria-pressed', String(open)); render(); });
+  unfold.addEventListener('click', () => {
+    open = !open;
+    unfold.setAttribute('aria-pressed', String(open));
+    unfold.innerHTML = `${open ? 'Reunir recortes' : 'Desdobrar gravura'} <span aria-hidden="true">+</span>`;
+    render();
+  });
   frame.addEventListener('pointermove', event => {
     if (!canMove() || event.pointerType === 'touch') return;
     const box = frame.getBoundingClientRect();
@@ -64,4 +79,26 @@
   motionButton.addEventListener('click', () => { paused = !paused; storage.set('gt-motion', paused ? 'paused' : 'active'); syncMotion(); });
   reduced.addEventListener('change', syncMotion);
   syncMotion();
+
+  const cuts = [...document.querySelectorAll('.cut')];
+  if (cuts.length && !reduced.matches && window.gsap && window.ScrollTrigger && window.Lenis) {
+    gsap.registerPlugin(ScrollTrigger);
+    const lenis = new Lenis({ lerp: 0.09 });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+    cuts.forEach(el => {
+      const depth = Number(el.dataset.depth) || 0.15;
+      const stage = el.closest('.cut-stage') || el.parentElement;
+      gsap.fromTo(el, { y: -40 * depth }, {
+        y: 70 * depth,
+        ease: 'none',
+        scrollTrigger: { trigger: stage, start: 'top bottom', end: 'bottom top', scrub: true }
+      });
+    });
+    document.querySelector('#motion-toggle')?.addEventListener('click', () => {
+      if (document.documentElement.dataset.motion === 'paused') lenis.stop();
+      else lenis.start();
+    });
+  }
 })();

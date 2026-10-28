@@ -1,3 +1,7 @@
 .taste-skill/
 dist/
 __pycache__/
+
+.venv/
+*.pyc
+.serena/
