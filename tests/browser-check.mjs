@@ -38,10 +38,13 @@ try{
   await p.goto(base);
   assert(await p.eval(()=>document.querySelector('h1').innerText.includes('Guilherme')),'Home renders');
   const cuts=await p.eval(()=>({count:document.querySelectorAll('img.cut').length,broken:[...document.querySelectorAll('img.cut')].filter(image=>image.loading!=='lazy' && image.naturalWidth<=0).map(image=>image.src)}));
-  assert(cuts.count===34 && cuts.broken.length===0,'Home loads 34 PNG cuts',cuts);
+  assert(cuts.count===26 && cuts.broken.length===0,'Home loads 26 PNG cuts',cuts);
   assert(await p.eval(()=>document.documentElement.classList.contains('lenis')),'Motion load starts Lenis');
+  await p.eval(()=>window.dispatchEvent(new PointerEvent('pointermove',{clientX:0,clientY:300})));
+  await sleep(450);
+  assert(await p.eval(()=>{const m=new DOMMatrix(getComputedStyle(document.querySelector('.dragon')).transform);return Math.abs(m.m41)>2}),'Pointer shifts a hero layer');
 
-  assert(await p.eval(()=>document.querySelectorAll('.project').length===2 && !document.querySelector('[data-filter]')),'Two real projects, no filter theater');
+  assert(await p.eval(()=>document.querySelectorAll('.project').length===0 && !!document.getElementById('diario')),'Home diary replaces the project list');
   await p.eval(()=>document.querySelector('.theme-toggle').click());
   assert(await p.eval(()=>document.documentElement.dataset.theme==='dark'),'Dark theme toggle');
   await p.goto(base);
@@ -76,7 +79,7 @@ try{
   const plain=await b.newPage({width:390,height:844});
   await plain.send('Emulation.setScriptExecutionDisabled',{value:true});
   await plain.goto(base);
-  assert(await plain.eval(()=>document.querySelectorAll('.project').length===2 && document.querySelector('h1').getBoundingClientRect().height>0),'Content available without JS');
+  assert(await plain.eval(()=>document.querySelector('h1').innerText.includes('Guilherme') && document.querySelector('h1').getBoundingClientRect().height>0),'Content available without JS');
 
   const blocked=await b.newPage();
   await blocked.send('Page.addScriptToEvaluateOnNewDocument',{source:'Object.defineProperty(window,"localStorage",{get(){throw new Error("blocked")}})'});
@@ -120,19 +123,10 @@ try{
 
   const anchors=await b.newPage({width:1440,height:900});
   await anchors.goto(base+'/curriculo.html');
-  await anchors.eval(()=>document.querySelector('a[href="/#projetos"]').click());
-  await sleep(2200);
-  const fromReading=await anchors.eval(()=>({hash:location.hash,top:document.getElementById('projetos')?.getBoundingClientRect().top,scrollY}));
-  await sleep(500);
-  const fromReadingStable=await anchors.eval(()=>scrollY);
-  await anchors.goto(base);
-  await anchors.eval(()=>document.querySelector('.hero .button[href="#projetos"]').click());
-  await sleep(2200);
-  const inPage=await anchors.eval(()=>({hash:location.hash,top:document.getElementById('projetos')?.getBoundingClientRect().top,scrollY}));
-  await sleep(500);
-  const inPageStable=await anchors.eval(()=>scrollY);
-  const anchorsOk=fromReading.hash==='#projetos' && Math.abs(fromReading.top-32)<=2 && Math.abs(fromReadingStable-fromReading.scrollY)<=2 && inPage.hash==='#projetos' && Math.abs(inPage.top-32)<=2 && Math.abs(inPageStable-inPage.scrollY)<=2;
-  assert(anchorsOk,'focus-3 cross-page and in-page anchors settle once',{fromReading,fromReadingStable,inPage,inPageStable});
+  await anchors.eval(()=>document.querySelector('a.signature').click());
+  await sleep(800);
+  const fromReading=await anchors.eval(()=>({path:location.pathname,hero:!!document.getElementById('hero')}));
+  assert(fromReading.hero,'focus-3 signature returns home',fromReading);
 
   const zoom=await b.newPage({width:1440,height:1400});
   await zoom.goto(base);

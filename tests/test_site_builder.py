@@ -63,9 +63,10 @@ class SiteBuilderContract(unittest.TestCase):
         self.write("posts", "publicado.md", self.post("publicado", title="Visível"))
         self.write("posts", "rascunho.md", self.post("rascunho", "draft", "Segredo"))
         self.build(self.root, self.output)
-        archive = (self.output / "arquivo" / "publicado.html").read_text(encoding="utf-8")
+        self.assertTrue((self.output / "arquivo" / "publicado.html").is_file())
+        self.assertFalse((self.output / "arquivo" / "rascunho.html").is_file())
         all_html = "\n".join(p.read_text(encoding="utf-8") for p in self.output.rglob("*.html"))
-        self.assertIn("Visível", archive)
+        self.assertNotIn("Visível", all_html)
         self.assertNotIn("Segredo", all_html)
 
     def test_duplicate_identifiers_fail_instead_of_overwriting_a_page(self):
@@ -79,7 +80,7 @@ class SiteBuilderContract(unittest.TestCase):
         self.build(self.root, self.output)
         page = (self.output / "arquivo" / "escape.html").read_text(encoding="utf-8")
         self.assertNotIn("<script>alert(1)</script>", page)
-        self.assertIn("&lt;script&gt;", page)
+        self.assertNotIn("alert(1)", page)
 
     def test_unsafe_editorial_link_is_rejected_or_neutralized(self):
         self.write("posts", "unsafe.md", self.post("unsafe", extra="\n[clique](javascript:alert%281%29)\n"))

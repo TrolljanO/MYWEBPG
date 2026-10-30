@@ -263,7 +263,7 @@ def _page_shell(*, config: dict, title: str, description: str, body: str,
     html_footer = footer.replace("{{ base_path }}", base_path)
     return (f'<!doctype html>\n<html lang="{_safe_meta(config["language"])}" data-theme="light">\n<head>\n'
             '<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">\n'
-            f'<title>{_safe_meta(title)} — {_safe_meta(config["name"])}</title>\n'
+            f'<title>{_safe_meta(config["name"])}</title>\n'
             f'<meta name="description" content="{_safe_meta(description)}">{robots}{canonical_link}{og}\n'
             '<meta name="color-scheme" content="light dark"><meta name="theme-color" content="#FAF9F6">\n'
             f'<link rel="icon" href="{prefix}assets/favicon.svg" type="image/svg+xml">'
@@ -275,7 +275,7 @@ def _page_shell(*, config: dict, title: str, description: str, body: str,
             f'<script src="{prefix}assets/vendor/lenis.min.js" defer></script>'
             f'<script src="{prefix}index.js" defer></script>\n'
             '<noscript><style>.work-filters,.theme-toggle,#unfold,#motion-toggle{display:none}</style></noscript>\n'
-            f'</head><body{" class=\"home\"" if page_path == "index.html" else ""}>\n<a class="skip-link" href="#conteudo">Pular para o conteúdo</a>\n'
+            f'</head><body{" class=\"home\"" if page_path == "index.html" else ""}>\n'
             f'{html_header}\n{body}\n{html_footer}\n</body></html>\n')
 
 
@@ -342,7 +342,7 @@ def _rss(posts: list[Entry], site_url: str, base_path: str, config: dict) -> byt
     channel = ET.SubElement(root, "channel")
     ET.SubElement(channel, "title").text = config["name"]
     ET.SubElement(channel, "link").text = site_url.rstrip("/") + (f"{base_path}/" if base_path else "/")
-    ET.SubElement(channel, "description").text = "Notas publicadas no portfólio."
+    ET.SubElement(channel, "description").text = config["name"]
     for post in sorted(posts, key=lambda e: e.meta["date"], reverse=True):
         item = ET.SubElement(channel, "item")
         ET.SubElement(item, "title").text = post.meta["title"]
@@ -413,29 +413,32 @@ def build(root: Path, output: Path, site_url: str | None = None, production: boo
     home = home.replace('href="./"', f'href="{base_path or ""}/"')
 
     generated: dict[str, bytes] = {}
-    generated["index.html"] = _page_shell(config=config, title=config["name"] + " — Desenvolvimento, dados e IA",
-        description="Portfólio pessoal de Guilherme Trajano. Desenvolvimento, dados e inteligência artificial, com projetos abertos e aprendizados compartilhados.",
-        body=home, header=header, footer=footer, base_path=base_path, page_path="index.html",
+    home_header = header.replace(
+        '<span class="signature-name">Guilherme Trajano</span>',
+        '<h1 class="signature-name">Guilherme Trajano</h1>',
+        1)
+    generated["index.html"] = _page_shell(config=config, title=config["name"],
+        description=config["name"],
+        body=home, header=home_header, footer=footer, base_path=base_path, page_path="index.html",
         site_url=site_url, production=production, og_image_url=og_image_url, font_file=font_file)
-    generated["404.html"] = _page_shell(config=config, title="Página não encontrada",
-        description="A página que você procurou não está aqui.",
-        body=f'<main class="reading" id="conteudo"><a class="back-link" href="{base_path or ""}/">Voltar ao início</a><h1>Fora da folha.</h1><p class="lead">A página que você procurou não está aqui. O endereço pode ter mudado.</p><a class="button primary" href="{base_path or ""}/#projetos">Explorar os projetos</a></main>',
+    generated["404.html"] = _page_shell(config=config, title=config["name"],
+        description=config["name"],
+        body='<main class="reading" id="conteudo"></main>',
         header=header, footer=footer, base_path=base_path, page_path="404.html", site_url=site_url,
         production=production, canonical=False, font_file=font_file)
-    generated["arquivo/index.html"] = _page_shell(config=config, title="Arquivo",
-        description="Notas e aprendizados publicados.",
-        body=f'<main class="reading" id="conteudo"><a class="back-link" href="{base_path or ""}/#arquivo">Voltar ao portfólio</a><h1>Arquivo</h1>' +
-             (''.join(f'<article><p class="reading-meta"><time datetime="{_safe_meta(e.meta["date"])}">{_safe_meta(e.meta["date"])}</time></p><h2><a href="{base_path}/arquivo/{_safe_meta(e.slug)}.html">{_safe_meta(e.meta["title"])}</a></h2><p class="lead">{_safe_meta(e.meta["summary"])}</p></article>' for e in sorted(posts, key=lambda e:e.meta["date"], reverse=True)) or '<p>O arquivo ainda está vazio. Novas notas aparecerão aqui quando forem publicadas.</p>') + '</main>',
+    generated["arquivo/index.html"] = _page_shell(config=config, title=config["name"],
+        description=config["name"],
+        body='<main class="reading" id="conteudo"></main>',
         header=header, footer=footer, base_path=base_path, page_path="arquivo/index.html", site_url=site_url,
         production=production, og_image_url=og_image_url, font_file=font_file)
     for entry in projects + posts:
         route = f"projetos/{entry.slug}.html" if entry.kind == "projects" else f"arquivo/{entry.slug}.html"
-        generated[route] = _page_shell(config=config, title=entry.meta["title"], description=entry.meta["summary"],
+        generated[route] = _page_shell(config=config, title=config["name"], description=config["name"],
             body=_article_body(entry, base_path), header=header, footer=footer, base_path=base_path,
             page_path=route, site_url=site_url, production=production, og_image_url=og_image_url, font_file=font_file)
     for entry in pages:
         route = f'{entry.slug}.html'
-        generated[route] = _page_shell(config=config, title=entry.meta["title"], description=entry.meta["summary"],
+        generated[route] = _page_shell(config=config, title=config["name"], description=config["name"],
             body=_page_body(entry, base_path, config),
             header=header, footer=footer, base_path=base_path, page_path=route, site_url=site_url,
             production=production, og_image_url=og_image_url, font_file=font_file)

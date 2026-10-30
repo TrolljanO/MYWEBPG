@@ -19,26 +19,25 @@ try{
     await p.setViewport({width,height:width===375?900:1000});
     await p.goto(base);
     await p.eval(async()=>{document.documentElement.dataset.theme='light';await document.fonts.ready;window.scrollTo(0,0)});
-    results.push(await p.eval(()=>({width:innerWidth,scrollWidth:document.documentElement.scrollWidth,title:document.querySelector('h1').innerText,hero:document.querySelector('.hero').getBoundingClientRect().toJSON(),font:getComputedStyle(document.querySelector('.hero-description')).fontFamily,bodySize:getComputedStyle(document.querySelector('.hero-description')).fontSize,errors:[...document.images].filter(image=>!image.complete || !image.naturalWidth).length})));
+    results.push(await p.eval(()=>({width:innerWidth,scrollWidth:document.documentElement.scrollWidth,title:document.querySelector('h1').innerText,hero:document.querySelector('.hero').getBoundingClientRect().toJSON(),name:getComputedStyle(document.querySelector('.signature-name')).fontFamily,errors:[...document.images].filter(image=>!image.complete || !image.naturalWidth).length})));
     await sleep(250);
     check(await p.eval(()=>document.documentElement.scrollWidth===innerWidth),`No overflow at ${width}`);
-    check(await p.eval(()=>{const element=document.querySelector('.hero .button');const rect=element.getBoundingClientRect();return rect.left>=0 && rect.right<=innerWidth && rect.height>=44}),`CTA reachable at ${width}`);
-    check(await p.eval(()=>getComputedStyle(document.querySelector('.hero-description')).display!=='none'),`Copy visible at ${width}`);
+    check(await p.eval(()=>{const hero=document.querySelector('.hero').getBoundingClientRect();const name=document.querySelector('.signature-name').getBoundingClientRect();return hero.left<=1 && hero.right>=innerWidth-1 && name.height>20 && !document.querySelector('.hero-copy')}),`Clean full-width hero at ${width}`);
     await p.screenshot({path:`${out}/hero-${width}.png`,format:'png'});
   }
   await p.eval(()=>document.documentElement.dataset.theme='dark');
   await sleep(250);
   await p.screenshot({path:`${out}/hero-dark.png`,format:'png'});
-  await p.eval(()=>{document.documentElement.dataset.theme='light';document.querySelector('.hero .button').focus()});
+  await p.eval(()=>{document.documentElement.dataset.theme='light';document.querySelector('.theme-toggle').focus()});
   results.push(await p.eval(()=>({focus:getComputedStyle(document.activeElement).outline,focused:document.activeElement.textContent,errors:performance.getEntriesByType('resource').filter(resource=>!resource.name.startsWith(location.origin)).map(resource=>resource.name)})));
   await p.screenshot({path:`${out}/hero-focus.png`,format:'png'});
 
   await p.goto(base+'/#hero');
   await sleep(300);
-  check(await p.eval(()=>{const hero=document.getElementById('hero');const rect=hero.getBoundingClientRect();return rect.top<120 && document.querySelectorAll('img.cut').length===34}),'Project anchor scrolls to PNG cut hero');
+  check(await p.eval(()=>{const hero=document.getElementById('hero');const rect=hero.getBoundingClientRect();return rect.top<120 && document.querySelectorAll('img.cut').length===26}),'Hero anchor shows the PNG cuts');
   await p.goto(base);
   const loadedCuts=await p.eval(()=>({count:document.querySelectorAll('img.cut').length,broken:[...document.querySelectorAll('img.cut')].filter(image=>image.loading!=='lazy' && image.naturalWidth<=0).length}));
-  check(loadedCuts.count===34 && loadedCuts.broken===0,'PNG cut composition loads',loadedCuts);
+  check(loadedCuts.count===26 && loadedCuts.broken===0,'PNG cut composition loads',loadedCuts);
   await p.eval(()=>{document.documentElement.style.zoom='2'});
   const overflow=await p.eval(()=>[...document.querySelectorAll('body *')].filter(element=>{const rect=element.getBoundingClientRect();return rect.width>0 && rect.right>innerWidth+1}).map(element=>element.className).filter(name=>typeof name==='string'));
   results.push({zoomOverflow:overflow});

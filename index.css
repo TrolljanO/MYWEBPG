@@ -681,8 +681,8 @@ h2 {
   width:calc(100% - 56px)}
 .header nav {
   gap:20px}
-.signature>span:last-child {
-  display:none}
+.signature .signature-name {
+  display:inline}
 .header-actions {
   gap:12px}
 .hero {
@@ -1188,7 +1188,10 @@ body.home .header {
   top:0;
   left:0;
   right:0;
-  background:transparent;
+  background:rgb(250 249 246 / .42);
+  backdrop-filter:blur(18px) saturate(1.2);
+  -webkit-backdrop-filter:blur(18px) saturate(1.2);
+  border-bottom:1px solid rgb(255 255 255 / .45);
 }
 .cloud-hero {
   position:relative;
@@ -1304,12 +1307,16 @@ body.home .header {
 .prancha h1,.prancha h2,.prancha h3,.prancha p,.prancha a:not(.button) {color:#1F1F1F}
 .prancha .intro-line,.prancha .hero-description,.prancha .section-heading>p,.prancha .archive-empty p {color:#1F1F1F}
 /* Hero: 9 camadas do fundo para a frente; a cópia é uma folha de cota +1, pilha dura + sombra macia. */
-.cloud-hero {display:grid;grid-template-columns:1fr;align-items:center;justify-items:start;min-height:max(720px,calc(100svh - 24px));margin-top:12px;padding:120px 48px 72px;background:#F3F1EC}
-body.home .header a,body.home .header .theme-toggle {background:#FAF9F6;color:#1F1F1F;padding-inline:10px}
-body.home .header .signature {padding-inline:8px}
-.cloud-hero .hero-copy.hero-sheet {width:min(560px,100%);padding:44px 48px 40px;text-align:left;background:#FAF9F6;box-shadow:6px 6px 0 #E7E4DD,7px 7px 0 #CFCBC2,0 18px 32px rgb(21 21 21 / .10);z-index:2} /* taste-skill-ignore: folha recortada sobre a cena */
-.cloud-hero .hero-sheet .intro-line,.cloud-hero .hero-sheet .hero-description {margin-inline:0;max-width:100%}
-.cloud-hero .hero-sheet h1 {font-size:clamp(64px,7vw,104px)}
+.cloud-hero {display:block;min-height:100svh;margin:0;padding:0;background:#F3F1EC}
+body.home .header a,body.home .header .theme-toggle {background:transparent;color:#1F1F1F;box-shadow:none}
+body.home .header .signature {padding-inline:0}
+body.home .header .theme-toggle {background:rgb(250 249 246 / .28);border-color:rgb(31 31 31 / .22)}
+.cloud-hero .hero-copy {width:min(420px,100%);padding:0;text-align:left;background:none;box-shadow:none;z-index:2}
+.cloud-hero .hero-description {margin:18px 0 0;max-width:12em}
+.cloud-hero .hero-copy h1,.cloud-hero .hero-description {text-shadow:0 0 14px #F3F1EC,0 1px 0 #F3F1EC}
+.gravura-anchor [class*="fish-"] {pointer-events:auto;cursor:pointer}
+.koi-note:empty {display:none}
+.koi-note {margin-top:12px;max-width:16em}
 .cloud-hero .button.primary {background:#1F1F1F;color:#FAF9F6;border-color:#1F1F1F}
 .cloud-hero .button.primary:hover {background:#FAF9F6;color:#1F1F1F}
 .hero-sky .cloud-bank {left:-4%;top:-8%;width:108%}
@@ -1322,18 +1329,14 @@ body.home .header .signature {padding-inline:8px}
 .hero-sky .cloud-l {left:4%;top:42%;width:12%}
 .hero-sky .cloud-r {right:2%;top:40%;width:20%}
 /* Koi: papel creme em CSS; massa de ondas em diagonal à direita, cardume fechado à esquerda. */
-.gravura-anchor.cut-stage {min-height:780px;background:#F1E5CC;padding-top:72px}
+.gravura-anchor.cut-stage {aspect-ratio:auto;min-height:max(720px,calc(100vw * 1008 / 1479));background:#F1E5CC;padding-top:0}
 .gravura-anchor .cuts {position:absolute;inset:0}
-.gravura-anchor .ripple-a {right:-8%;top:-10%;width:34%}
-.gravura-anchor .ripple-b {right:-10%;bottom:-14%;width:36%}
-.gravura-anchor .ripple-c {right:18%;top:22%;width:18%}
-.gravura-anchor .ripple-d {right:4%;top:44%;width:22%}
-.gravura-anchor .ripple-f {right:26%;bottom:2%;width:16%}
-.gravura-anchor .ripple-g {left:52%;top:6%;width:8%}
+.gravura-anchor .wave {inset:0;width:100%;height:100%;object-fit:fill}
+.gravura-anchor .wrap {padding-top:72px}
 .gravura-anchor .fish-white {left:20%;top:30%;width:15%}
 .gravura-anchor .fish-orange {left:33%;top:36%;width:11%}
 .gravura-anchor .fish-white-2 {left:24%;top:58%;width:11%}
-.gravura-anchor .fish-orange-2 {left:37%;top:58%;width:13%}
+.gravura-anchor .fish-orange-2 {left:38%;top:62%;width:9%}
 .gravura-anchor .fish-black {left:29%;top:76%;width:10%}
 .gravura-anchor .wrap {position:relative;z-index:1}
 /* Sakura: papel rosa em CSS, chão, árvore grande, pedras e pétalas na frente. */
@@ -1354,12 +1357,27 @@ body.home .header .signature {padding-inline:8px}
 .archive-section .p6 {left:30%;bottom:28%}
 .archive-section .wrap {position:relative;z-index:1;margin-inline:0 auto;max-width:620px;padding-left:48px}
 .archive-section .archive-empty {background:#FAF9F6}
-.footer.cut-stage {overflow:hidden;padding-bottom:160px}
-.footer .cuts {position:absolute;inset:auto 0 0 0;height:160px}
-.footer .ground-l {left:-2%;bottom:-4%;width:54%}
-.footer .ground-r {right:-2%;bottom:-4%;width:54%}
-.footer .root-band {left:36%;bottom:2%;width:28%}
-.footer .footer-bar {position:relative;z-index:1}
+.footer {padding:0}
+.footer-bar {position:relative;z-index:1;padding-block:72px 48px}
+.footer-sakura {position:relative;min-height:72vw;background:#F7EAE8;overflow:hidden}
+.footer-sakura .ground {left:0;bottom:-2%;width:100%}
+.footer-sakura .sakura-tree {left:19%;bottom:0;width:62%}
+.footer-sakura .rock {width:7%}
+.footer-sakura .r1 {left:28%;bottom:3%}
+.footer-sakura .r2 {right:22%;bottom:4%;width:6%}
+.footer-sakura .plant {left:42%;bottom:2%;width:8%}
+.footer-sakura .petal {width:40px}
+.footer-sakura .p1 {left:8%;top:10%}
+.footer-sakura .p2 {left:18%;top:28%}
+.footer-sakura .p3 {right:14%;top:16%}
+.footer-sakura .p4 {left:30%;top:18%}
+.footer-sakura .p5 {right:28%;top:8%}
+.footer-sakura .p6 {left:58%;top:24%}
+.gravura-anchor .archive-empty {background:transparent;max-width:34rem;margin-top:12px;padding:0}
+.gravura-anchor .archive-paper {display:none}
+.signature .signature-name {display:inline;font-family:Cormorant,Georgia,serif;font-weight:500;font-size:clamp(28px,3vw,40px);letter-spacing:-.04em;line-height:1}
+body.home .wrap {width:100%;max-width:none;margin-inline:0;padding-inline:clamp(20px,3vw,40px);box-sizing:border-box}
+body.home .prancha {margin-inline:0;border-radius:0}
 /* Escala tipográfica: nome, h2, h3, abertura, corpo. */
 h2,.contact-grid h2,.about-title h2 {font-size:clamp(48px,4.6vw,64px);line-height:.95}
 h3,.project h3,.large-copy,.archive-empty h3 {font-size:clamp(28px,2.6vw,40px);line-height:1.1}
@@ -1369,8 +1387,8 @@ h3,.project h3,.large-copy,.archive-empty h3 {font-size:clamp(28px,2.6vw,40px);l
 /* Mobile placement of the cuts; must follow the desktop rules above. */
 @media(max-width:700px) {
   .prancha {margin-inline:8px}
-  .cloud-hero {padding:140px 16px 48px;min-height:max(680px,100svh);justify-items:center}
-  .cloud-hero .hero-copy.hero-sheet {padding:28px 24px 24px;width:min(100%,360px)}
+  .cloud-hero {padding:0;min-height:100svh}
+  .cloud-hero .hero-copy {padding:0;width:min(100%,340px)}
   .hero-sky .cloud-bank {left:-50%;top:13%;width:190%}
   .hero-sky .dragon {left:-6%;top:14%;width:110%}
   .hero-sky .ridges {left:-34%;bottom:-6%;width:130%}
@@ -1379,15 +1397,12 @@ h3,.project h3,.large-copy,.archive-empty h3 {font-size:clamp(28px,2.6vw,40px);l
   .hero-sky .pagoda {left:36%;bottom:19%;width:30%}
   .hero-sky .cloud-front {left:-40%;bottom:-24%;width:180%}
   .hero-sky .cloud-l,.hero-sky .cloud-r {display:none}
-  .gravura-anchor.cut-stage {min-height:640px;padding-top:48px}
-  .gravura-anchor .ripple-a {right:-24%;top:30%;width:70%}
-  .gravura-anchor .ripple-b {right:-26%;bottom:-10%;width:70%}
-  .gravura-anchor .ripple-c {right:2%;top:58%;width:30%}
-  .gravura-anchor .ripple-d,.gravura-anchor .ripple-f,.gravura-anchor .ripple-g {display:none}
+  .gravura-anchor.cut-stage {min-height:70vh;padding-top:0}
+  .gravura-anchor .wrap {padding-top:48px}
   .gravura-anchor .fish-white {left:4%;top:44%;width:34%}
   .gravura-anchor .fish-orange {left:34%;top:50%;width:24%}
   .gravura-anchor .fish-white-2 {left:10%;top:68%;width:24%}
-  .gravura-anchor .fish-orange-2 {left:36%;top:72%;width:28%}
+  .gravura-anchor .fish-orange-2 {left:40%;top:74%;width:18%}
   .gravura-anchor .fish-black {left:22%;top:86%;width:20%}
   .archive-section.cut-stage {min-height:auto;padding:48px 0 420px}
   .archive-section .wrap {max-width:100%;padding-left:16px}
@@ -1398,5 +1413,10 @@ h3,.project h3,.large-copy,.archive-empty h3 {font-size:clamp(28px,2.6vw,40px);l
   .archive-section .plant {left:30%;bottom:3%;width:16%}
   .archive-section .petal {width:28px}
   .inline-links,.footer-bottom,.footer-bottom button {font-size:14px}
+  .header {min-height:72px;flex-wrap:nowrap}
+  .footer {padding:0}
+  .footer-sakura {min-height:104vw}
+  .footer-sakura .sakura-tree {left:4%;width:92%}
+  .footer-sakura .petal {width:28px}
 }
 .header nav {flex-wrap:wrap}
