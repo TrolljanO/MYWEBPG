@@ -1,0 +1,81 @@
+---
+import Arrow from '../components/ui/Arrow.astro';
+import Base from '../layouts/BaseLayout.astro';
+import Hero3D from '../components/motion/Hero3D.astro';
+import PostCard from '../components/blog/PostCard.astro';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+import { posts, projects } from '../lib/content';
+import { withBase } from '../lib/paths';
+const latest = (await posts()).slice(0, 3);
+const featured = (await projects()).filter((p) => p.data.featured).slice(0, 6);
+---
+
+<Base title="Portfólio & notas">
+  <div class="wrap">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">GUILHERME TRAJANO / PORTFÓLIO</p>
+        <h1>
+          Ideias em
+          <br />
+          <span>construção.</span>
+        </h1>
+        <p class="lead">Um espaço para projetos, experimentos e notas.</p>
+        <div class="actions">
+          <a class="button primary" href={withBase('projects/')}>
+            Explorar projetos{' '}
+            <span aria-hidden="true">
+              <Arrow direction="up-right" />
+            </span>
+          </a>
+          <a class="button" href={withBase('blog/')}>
+            Ler o blog{' '}
+            <span aria-hidden="true">
+              <Arrow direction="up-right" />
+            </span>
+          </a>
+        </div>
+      </div>
+      <Hero3D />
+    </section>
+    <section class="section rule">
+      <div class="section-heading">
+        <h2>Projetos selecionados.</h2>
+        <a class="button" href={withBase('projects/')}>
+          Todos os projetos <Arrow direction="up-right" />
+        </a>
+      </div>
+      <div class="project-list">
+        {featured.length ? (
+          featured.map((project) => <ProjectCard project={project} />)
+        ) : (
+          <p class="muted">Os primeiros projetos chegam em breve.</p>
+        )}
+      </div>
+    </section>
+    <section class="section rule">
+      <div class="section-heading">
+        <h2>Notas & descobertas.</h2>
+        <a class="button" href={withBase('blog/')}>
+          Todos os artigos <Arrow direction="up-right" />
+        </a>
+      </div>
+      <div class="post-grid">
+        {latest.length ? (
+          latest.map((post) => <PostCard post={post} />)
+        ) : (
+          <p class="muted">O caderno está aberto. Novos artigos em breve.</p>
+        )}
+      </div>
+    </section>
+    <section class="section rule two-col">
+      <h2>Sobre o trabalho.</h2>
+      <div>
+        <p class="lead">Este espaço está em construção.</p>
+        <a class="button" href={withBase('about/')}>
+          Sobre mim <Arrow direction="up-right" />
+        </a>
+      </div>
+    </section>
+  </div>
+</Base>

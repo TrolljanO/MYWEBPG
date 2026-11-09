@@ -1,0 +1,69 @@
+---
+import Arrow from '../ui/Arrow.astro';
+import type { CollectionEntry } from 'astro:content';
+import PostCard from './PostCard.astro';
+import { withBase, tagPath } from '../../lib/paths';
+interface Props {
+  entries: CollectionEntry<'blog'>[];
+  tags: string[];
+  currentTag?: string;
+  page: number;
+  total: number;
+  previous?: string;
+  next?: string;
+}
+const { entries, tags, currentTag, page, total, previous, next } = Astro.props;
+---
+
+<div class="wrap section">
+  <header class="page-header">
+    <p class="eyebrow">ARQUIVO / BLOG</p>
+    <h1>
+      {currentTag ? `Notas sobre ${currentTag}.` : 'Notas & descobertas.'}
+    </h1>
+    <p class="lead">Artigos, estudos e ideias em andamento.</p>
+  </header>
+  <nav class="tags" aria-label="Filtrar artigos por tag">
+    <a
+      class="tag"
+      href={withBase('blog/')}
+      aria-current={!currentTag ? 'page' : undefined}
+    >
+      Todos
+    </a>
+    {tags.map((t) => (
+      <a
+        class="tag"
+        href={tagPath(t)}
+        aria-current={currentTag === t ? 'page' : undefined}
+      >
+        {t}
+      </a>
+    ))}
+  </nav>
+  <div class="post-grid">
+    {entries.map((post) => (
+      <PostCard post={post} />
+    ))}
+    {!entries.length && <p>Nenhum artigo publicado ainda.</p>}
+  </div>
+  <nav class="pagination" aria-label="Paginação">
+    {previous ? (
+      <a class="button" href={previous}>
+        <Arrow direction="left" /> Página anterior
+      </a>
+    ) : (
+      <span />
+    )}
+    <span class="meta">
+      Página {page} de {total}
+    </span>
+    {next ? (
+      <a class="button" href={next}>
+        Próxima página <Arrow direction="right" />
+      </a>
+    ) : (
+      <span />
+    )}
+  </nav>
+</div>

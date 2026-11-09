@@ -1,0 +1,32 @@
+---
+import Arrow from '../ui/Arrow.astro';
+import type { CollectionEntry } from 'astro:content';
+import { withBase, tagPath } from '../../lib/paths';
+import { formatDate, readingTime } from '../../lib/editorial';
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+const { post } = Astro.props;
+---
+
+<article class="post-card">
+  <div class="meta">
+    <time datetime={post.data.pubDate.toISOString()}>
+      {formatDate(post.data.pubDate)}
+    </time>{' '}
+    · {post.data.readingTime || readingTime(post.body)} min
+  </div>
+  <h3>
+    <a class="title" href={withBase(`blog/${post.id}/`)}>
+      {post.data.title} <Arrow direction="up-right" />
+    </a>
+  </h3>
+  <p class="muted">{post.data.description}</p>
+  <div class="tags">
+    {post.data.tags.map((t) => (
+      <a class="tag" href={tagPath(t)}>
+        {t}
+      </a>
+    ))}
+  </div>
+</article>

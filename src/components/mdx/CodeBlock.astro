@@ -1,0 +1,11 @@
+---
+import type { ComponentProps } from 'astro/types';
+import { Code } from 'astro:components';
+interface Props {
+  code: string;
+  lang?: ComponentProps<typeof Code>['lang'];
+}
+const { code, lang = 'text' } = Astro.props;
+---
+
+<Code code={code} lang={lang} theme="github-dark" />

@@ -1,0 +1,39 @@
+---
+import Arrow from '../ui/Arrow.astro';
+import { site } from '../../config/site';
+import { withBase } from '../../lib/paths';
+---
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <p class="footer-name">
+          Vamos construir
+          <br />
+          uma boa pergunta.
+        </p>
+        <p class="muted">Software, dados e conversas que viram projetos.</p>
+      </div>
+      <div>
+        {site.socials.map((s) => (
+          <a href={s.href}>
+            {s.label} <Arrow direction="up-right" />
+          </a>
+        ))}
+        {site.email && <a href={`mailto:${site.email}`}>E-mail</a>}
+      </div>
+    </div>
+    <div class="footer-bottom meta">
+      <span>© {new Date().getFullYear()} Guilherme Trajano</span>
+      <nav aria-label="Rodapé">
+        <a href={withBase('resume/')}>Currículo</a>
+        <a href={withBase('rss.xml')}>RSS</a>
+        <a href={withBase('privacy/')}>Privacidade</a>
+        <a href="#top">
+          Voltar ao topo <Arrow direction="up" />
+        </a>
+      </nav>
+    </div>
+  </div>
+</footer>

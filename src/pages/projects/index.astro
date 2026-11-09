@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../components/projects/ProjectCard.astro';
+import { projects, allTags } from '../../lib/content';
+import { tagPath } from '../../lib/paths';
+const entries = await projects();
+---
+
+<Base
+  title="Projetos"
+  description="Estudos de caso e projetos de software, dados e IA."
+>
+  <div class="wrap section">
+    <header class="page-header">
+      <p class="eyebrow">PORTFÓLIO / PROJETOS</p>
+      <h1>
+        Do problema
+        <br />à prática.
+      </h1>
+      <p class="lead">Uma coleção em construção.</p>
+    </header>
+    <nav class="tags" aria-label="Filtrar projetos por tecnologia">
+      {allTags(entries).map((t) => (
+        <a class="tag" href={tagPath(t, 'projects')}>
+          {t}
+        </a>
+      ))}
+    </nav>
+    <div class="project-list">
+      {entries.map((project) => (
+        <ProjectCard project={project} />
+      ))}
+      {!entries.length && <p>Os primeiros estudos de caso chegam em breve.</p>}
+    </div>
+  </div>
+</Base>

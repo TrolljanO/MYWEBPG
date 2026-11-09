@@ -1,0 +1,9 @@
+node_modules
+dist
+.astro
+legacy
+.agents
+package-lock.json
+docs/PRD.md
+playwright-report
+test-results

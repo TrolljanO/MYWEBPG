@@ -1,0 +1,84 @@
+---
+import { withBase } from '../../lib/paths';
+const links = [
+  { label: 'Sobre', path: 'about/' },
+  { label: 'Projetos', path: 'projects/' },
+  { label: 'Blog', path: 'blog/' },
+];
+const active = (path: string) => Astro.url.pathname.startsWith(withBase(path));
+---
+
+<header class="header">
+  <div class="wrap header-inner">
+    <a href={withBase()} class="brand" aria-label="Guilherme Trajano, início">
+      <span aria-hidden="true">gt.</span> Guilherme Trajano
+    </a>
+    <nav class="nav desktop-nav" aria-label="Principal">
+      {links.map((l) => (
+        <a
+          href={withBase(l.path)}
+          aria-current={active(l.path) ? 'page' : undefined}
+        >
+          {l.label}
+        </a>
+      ))}
+    </nav>
+    <details class="mobile-nav">
+      <summary>Menu</summary>
+      <nav class="nav" aria-label="Principal mobile">
+        {links.map((l) => (
+          <a
+            href={withBase(l.path)}
+            aria-current={active(l.path) ? 'page' : undefined}
+          >
+            {l.label}
+          </a>
+        ))}
+      </nav>
+    </details>
+    <button
+      class="theme-toggle"
+      type="button"
+      aria-label="Alternar tema claro e escuro"
+      hidden
+    >
+      Tema
+    </button>
+  </div>
+</header>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.theme-toggle')!;
+  const media = matchMedia('(prefers-color-scheme: dark)');
+  const current = () =>
+    document.documentElement.dataset.theme ||
+    (media.matches ? 'dark' : 'light');
+  const sync = () => {
+    button.textContent = current() === 'dark' ? 'Tema claro' : 'Tema escuro';
+    button.setAttribute(
+      'aria-label',
+      `Ativar ${button.textContent.toLowerCase()}`,
+    );
+  };
+  button.hidden = false;
+  sync();
+  media.addEventListener('change', sync);
+  button.addEventListener('click', () => {
+    const t = current() === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = t;
+    try {
+      localStorage.setItem('theme', t);
+    } catch {
+      /* Storage may be unavailable. */
+    }
+    sync();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const menu = document.querySelector<HTMLDetailsElement>('.mobile-nav');
+      if (menu?.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    }
+  });
+</script>

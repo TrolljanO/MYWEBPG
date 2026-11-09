@@ -1,3 +1,10 @@
-.taste-skill/
+node_modules/
 dist/
-__pycache__/
+.astro/
+.env
+.env.*
+!.env.example
+playwright-report/
+test-results/
+.shots/
+coverage/

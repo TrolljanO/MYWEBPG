@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/BaseLayout.astro';
+const enabled = Boolean(
+  import.meta.env.PUBLIC_ANALYTICS_SRC &&
+  import.meta.env.PUBLIC_ANALYTICS_DOMAIN,
+);
+---
+
+<Base
+  title="Privacidade"
+  description="Como este site trata suas preferências e dados de navegação."
+>
+  <article class="wrap reading section prose">
+    <h1>Privacidade.</h1>
+    <p>
+      Este site é estático e não oferece cadastro. A preferência de tema é salva
+      apenas neste navegador.
+    </p>
+    <h2>Métricas de acesso</h2>
+    {enabled ? (
+      <>
+        <p>
+          Métricas opcionais só carregam depois da sua autorização. Preferências
+          Do Not Track e Global Privacy Control são respeitadas.
+        </p>
+        <div class="actions">
+          <button class="button" data-consent="granted" hidden>
+            Permitir métricas
+          </button>
+          <button class="button" data-consent="denied" hidden>
+            Recusar métricas
+          </button>
+        </div>
+        <p role="status" id="consent-status"></p>
+      </>
+    ) : (
+      <p>As métricas de acesso estão desativadas.</p>
+    )}
+    <h2>Serviços externos</h2>
+    <p>
+      Links para redes sociais abrem serviços com suas próprias políticas de
+      privacidade. Vídeos externos só são carregados quando você escolhe
+      assisti-los. O provedor de hospedagem pode registrar dados técnicos de
+      acesso.
+    </p>
+  </article>
+</Base>
+<script>
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-consent]')
+    .forEach((button) => {
+      button.hidden = false;
+      button.addEventListener('click', () => {
+        try {
+          localStorage.setItem('analytics-consent', button.dataset.consent!);
+          location.reload();
+        } catch {
+          document.querySelector('#consent-status')!.textContent =
+            'Seu navegador não permite salvar a preferência. As métricas permanecem desativadas.';
+        }
+      });
+    });
+</script>

@@ -1,0 +1,37 @@
+---
+const src = import.meta.env.PUBLIC_ANALYTICS_SRC;
+const domain = import.meta.env.PUBLIC_ANALYTICS_DOMAIN;
+if (src && !src.startsWith('https://'))
+  throw new Error('Analytics exige HTTPS');
+---
+
+{src && domain && (
+  <div data-analytics-src={src} data-analytics-domain={domain} hidden />
+)}
+<script>
+  // No tracking request before explicit consent. DNT and GPC override stored consent.
+  function load() {
+    const config = document.querySelector<HTMLElement>('[data-analytics-src]');
+    if (
+      !config ||
+      navigator.doNotTrack === '1' ||
+      (navigator as Navigator & { globalPrivacyControl?: boolean })
+        .globalPrivacyControl
+    )
+      return;
+    try {
+      if (localStorage.getItem('analytics-consent') !== 'granted') return;
+    } catch {
+      return;
+    }
+    if (document.querySelector('[data-analytics-script]')) return;
+    const script = document.createElement('script');
+    script.src = config.dataset.analyticsSrc!;
+    script.defer = true;
+    script.dataset.domain = config.dataset.analyticsDomain;
+    script.dataset.analyticsScript = '';
+    document.head.append(script);
+  }
+  load();
+  window.addEventListener('analytics-consent-change', load);
+</script>
