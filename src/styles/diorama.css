@@ -10,7 +10,7 @@
   width: 100%;
   margin-inline: auto;
   aspect-ratio: var(--ar-w, 3) / var(--ar-h, 2);
-  background: #f3ecdf;
+  background: var(--paper);
   overflow: hidden;
 }
 .diorama-plane {
@@ -45,6 +45,7 @@
   width: min(1400px, 100% - var(--space) * 2);
   margin: 0.75rem auto 0;
   font-size: var(--step-small);
+  color: var(--text);
 }
 .diorama-stage .motion-toggle,
 .diorama > .motion-toggle {
@@ -54,9 +55,9 @@
   z-index: 30;
   margin: 0;
   white-space: nowrap;
-  background: #f6f3ec;
-  color: #1c1916;
-  border: 1px solid #1c1916;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--text);
 }
 .plate-frame:has(.diorama--full),
 .diorama--full {

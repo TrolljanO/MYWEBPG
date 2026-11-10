@@ -95,13 +95,46 @@ const structured = jsonLd || {
       set:html={JSON.stringify(structured).replace(/</g, '\\u003c')}
     />
     <script is:inline>
-      try {
-        const t = localStorage.getItem('theme');
-        if (t === 'dark' || t === 'light')
-          document.documentElement.dataset.theme = t;
-      } catch {
-        /* Storage may be unavailable. */
-      }
+      (() => {
+        const root = document.documentElement;
+        const dark = '#171614';
+        const light = '#f6f3ec';
+        const systemDark = () =>
+          matchMedia('(prefers-color-scheme: dark)').matches;
+        let stored = null;
+        try {
+          const t = localStorage.getItem('theme');
+          if (t === 'dark' || t === 'light') stored = t;
+        } catch {
+          /* Storage may be unavailable. */
+        }
+        if (stored) root.dataset.theme = stored;
+        const applyThemeColor = () => {
+          const chosen = root.dataset.theme;
+          const theme =
+            chosen === 'dark' || chosen === 'light'
+              ? chosen
+              : systemDark()
+                ? 'dark'
+                : 'light';
+          const content = theme === 'dark' ? dark : light;
+          for (const meta of document.querySelectorAll(
+            'meta[name="theme-color"]',
+          )) {
+            meta.setAttribute('content', content);
+            meta.removeAttribute('media');
+          }
+        };
+        applyThemeColor();
+        new MutationObserver(applyThemeColor).observe(root, {
+          attributes: true,
+          attributeFilter: ['data-theme'],
+        });
+        matchMedia('(prefers-color-scheme: dark)').addEventListener(
+          'change',
+          applyThemeColor,
+        );
+      })();
     </script>
     <slot name="head" />
   </head>

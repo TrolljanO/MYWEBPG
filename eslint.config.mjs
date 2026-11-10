@@ -10,6 +10,8 @@ export default defineConfig(
       '.astro/**',
       'legacy/**',
       '.agents/**',
+      '.taste-skill/**',
+      '.serena/**',
       'playwright-report/**',
       'test-results/**',
     ],

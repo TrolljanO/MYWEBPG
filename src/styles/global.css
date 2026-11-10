@@ -387,15 +387,8 @@ p {
 
 .footer {
   padding-block: 3rem;
-  background: #f6f3ec;
-  color: #1c1916;
-  --text: #1c1916;
-  --bg: #f6f3ec;
-  --muted: #5e574e;
-  --line: #d5cdc0;
-  --accent: #7a2f2c;
-  --on-accent: #f6f3ec;
-  --surface: #ebe4d8;
+  background: var(--bg);
+  color: var(--text);
 }
 .footer-top,
 .footer-bottom {
@@ -583,20 +576,13 @@ p {
 .opening {
   position: relative;
   padding-bottom: clamp(1rem, 3vw, 2rem);
-  background: #f3ecdf;
-  color: #1c1916;
-  --text: #1c1916;
-  --bg: #f3ecdf;
-  --muted: #5e574e;
-  --line: #d5cdc0;
-  --accent: #7a2f2c;
-  --on-accent: #f6f3ec;
+  background: var(--bg);
+  color: var(--text);
 }
 .plate-frame {
   position: relative;
   width: 100%;
   margin-inline: auto;
-  background: #f3ecdf;
 }
 .plate-frame .diorama-stage {
   width: 100%;
@@ -628,27 +614,12 @@ p {
   position: relative;
   margin-top: 0;
   padding-top: clamp(1.5rem, 4vw, 3rem);
-  background: #f3ecdf;
-  color: #1c1916;
-  --text: #1c1916;
-  --bg: #f3ecdf;
-  --muted: #5e574e;
-  --line: #d5cdc0;
-  --accent: #7a2f2c;
-  --on-accent: #f6f3ec;
+  background: var(--bg);
+  color: var(--text);
 }
 .paper-band {
-  background: #f6f3ec;
-  color: #1c1916;
-  --text: #1c1916;
-  --bg: #f6f3ec;
-  --muted: #5e574e;
-  --line: #d5cdc0;
-  --accent: #7a2f2c;
-  --on-accent: #f6f3ec;
-  --surface: #ebe4d8;
-  --sheet: #ebe4d8;
-  --sheet-under: #d5cdc0;
+  background: var(--bg);
+  color: var(--text);
 }
 .method-sheet {
   position: absolute;
