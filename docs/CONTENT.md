@@ -60,6 +60,6 @@ Disponíveis: `Callout`, `Figure`, `CodeBlock`, `Details`, `ComparisonTable`, `V
 ## Personalização inicial
 
 1. Edite `src/config/site.ts` e as páginas de Sobre/Currículo.
-2. Substitua/remova os dois rascunhos de exemplo.
+2. Mantenha os rascunhos `exemplo-de-artigo.mdx` e `exemplo-de-projeto.md`. O teste editorial copia os dois para as fixtures. Os dois continuam `draft: true` e não geram rota.
 3. Troque a copy da home e `public/og.png`.
 4. Revise a política de privacidade se ativar analytics ou outros serviços.

@@ -4,7 +4,7 @@ Esqueleto estático para Guilherme Trajano. Conteúdo e direção artística ser
 
 ## Começar
 
-Node 22.12+ (recomendado Node 22 LTS), npm e Git.
+Node `>=22.23.4` (`engines.node`). O CI e o deploy usam Node 24. npm e Git.
 
 ```sh
 npm ci
@@ -32,7 +32,7 @@ Edite o arquivo criado em `src/content/`, preencha os campos e altere `draft: fa
 | Paleta, espaçamento, tipografia, motion | `src/styles/tokens.css`                         |
 | Layout responsivo e componentes         | `src/styles/global.css`, `src/components/`      |
 | Estilo da leitura                       | `src/styles/typography.css`                     |
-| Cena substituível e suas regras         | `src/lib/three/hero-scene.ts`, `Hero3D.astro`   |
+| Cena da home e do blog                  | `src/components/motion/PlateStage.astro`        |
 | SEO global e imagem social              | `src/layouts/BaseLayout.astro`, `public/og.png` |
 | Schemas editoriais                      | `src/content.config.ts`                         |
 
@@ -40,19 +40,22 @@ O e-mail está vazio intencionalmente. Sobre e currículo têm apenas seções p
 
 ## Stack
 
-Astro 7, TypeScript strict, Content Collections + Zod 4, Markdown/MDX, Tailwind CSS 4 via Vite, Three.js e GSAP/ScrollTrigger. Astro entrega HTML estático. A fonte Manrope é local, com licença incluída. ESLint, Prettier, Astro Check, Vitest, Playwright e axe cobrem qualidade.
+Astro 7, TypeScript strict, Content Collections + Zod 4, Markdown/MDX, Tailwind CSS 4 via Vite. Astro entrega HTML estático. Manrope e Cormorant Garamond são locais. A licença da Cormorant está em `src/assets/fonts/cormorantgaramond-OFL.txt`. ESLint, Prettier, Astro Check, Vitest, Playwright e axe cobrem qualidade.
 
-Não há React, SPA, CMS externo, banco ou backend. Artigos não importam Three.js/GSAP. Navegação e leitura funcionam sem JavaScript. A cena é lazy, usa um único canvas, limita DPR, pausa fora da tela/aba oculta/bateria baixa, respeita redução de movimento e mantém fallback SVG. Um botão permite pausar a animação.
+Não há React, SPA, CMS externo, banco ou backend. GSAP não entra no layout base nem nas páginas de leitura. Navegação e leitura funcionam sem JavaScript. A cena é `PlateStage`: CSS, sem canvas. Com `prefers-reduced-motion` ou Save-Data o diorama fica pausado e o botão de pausa não aparece. Com movimento permitido, o botão pausa a animação.
 
 ## Comandos de qualidade
 
 ```sh
-npm run validate       # lint, tipos, unidade, build e links internos
+npm run build          # gera o site estático em dist/
+npm run validate       # gate: lint, tipos, unidade, build e links internos
 npm run format:check
 npx playwright install chromium
 npm run test:e2e       # preview do build, teclado, a11y, temas, mobile, sem JS
 npm run test:content   # fixtures temporárias: publicação, MDX, paginação e falhas esperadas
 ```
+
+`npm run validate` é o gate. O workflow Pages roda esse gate antes de publicar `dist/`.
 
 `test:content` escreve fixtures com prefixo `qa-`, testa builds reais e as remove em `finally`; não execute em paralelo com outro build. Ao terminar, restaura o build sem fixtures. `npm run format` formata os arquivos atuais. Os arquivos históricos e a skill vendorizada não são reformatados.
 
@@ -80,6 +83,6 @@ O workflow tem rebuild horário para datas futuras; o GitHub pode atrasar/agenda
 
 ## Skill awwwards
 
-Skill solicitada baixada de [juliobsz/skills](https://github.com/juliobsz/skills/tree/add880bd6ec9f5592a1482846fc0dd282c9161bc/awwwards), commit `add880bd6ec9f5592a1482846fc0dd282c9161bc`, para `.agents/skills/awwwards/`, com sua licença. Foi aplicada à separação de tokens, fallback visual, acessibilidade e motion. A camada artística é deliberadamente provisória: não representa um design final nem uma pontuação/avaliação oficial Awwwards.
+Skill solicitada baixada de [juliobsz/skills](https://github.com/juliobsz/skills/tree/add880bd6ec9f5592a1482846fc0dd282c9161bc/awwwards), commit `add880bd6ec9f5592a1482846fc0dd282c9161bc`, para `.agents/skills/awwwards/`, com sua licença. Foi aplicada à separação de tokens, acessibilidade e motion. A camada artística é deliberadamente provisória: não representa um design final nem uma pontuação/avaliação oficial Awwwards.
 
 Licenças de dependências e fontes permanecem próprias. Não foi imposta nova licença ao conteúdo/código original do proprietário.
