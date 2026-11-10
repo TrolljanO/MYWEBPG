@@ -601,59 +601,28 @@ p {
 .plate-frame .diorama-stage {
   width: 100%;
 }
-.scene-split {
-  display: grid;
-  grid-template-columns: minmax(18rem, 34rem) minmax(0, 1fr);
-  align-items: center;
-  column-gap: clamp(0.75rem, 2vw, 1.75rem);
-  padding: 0.5rem clamp(0.75rem, 2vw, 1.5rem) 0.25rem;
+.plate-frame:has(.hero-sheet) {
+  display: flex;
+  flex-direction: column;
+  overflow-x: clip;
 }
-.scene-split .diorama {
-  min-width: 0;
-}
-.scene-split .diorama-stage {
-  width: min(100%, calc((100svh - 10.75rem) * var(--ar-w, 1) / var(--ar-h, 1)));
-  margin-left: auto;
-  margin-right: 0;
-}
-.scene-split .hero-sheet {
+.plate-frame:has(.hero-sheet) > .diorama {
   order: -1;
-  position: relative;
-  inset: auto;
-  left: auto;
-  bottom: auto;
-  width: 100%;
   min-width: 0;
-  z-index: 2;
-}
-.scene-split .hero-sheet h1 {
-  overflow-wrap: anywhere;
-}
-@media (max-width: 1080px) {
-  .scene-split {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 0.75rem;
-  }
-  .scene-split .hero-sheet {
-    width: 100%;
-    margin: 0;
-  }
-  .scene-split .diorama-stage {
-    width: min(100%, calc((100svh - 22rem) * var(--ar-w, 1) / var(--ar-h, 1)));
-    margin-inline: auto;
-  }
 }
 .hero-sheet,
 .method-sheet {
-  position: absolute;
   z-index: 4;
-  left: clamp(1rem, 3vw, 2rem);
-  bottom: 4.5rem;
-  width: min(34rem, 46%);
   padding: 1.4rem 1.5rem 0.4rem;
+}
+.hero-sheet {
+  position: relative;
+  width: 100%;
+  min-width: 0;
 }
 .hero-sheet h1 {
   margin-top: 0.1em;
+  overflow-wrap: anywhere;
 }
 .koi-chapter {
   position: relative;
@@ -682,6 +651,9 @@ p {
   --sheet-under: #d5cdc0;
 }
 .method-sheet {
+  position: absolute;
+  left: clamp(1rem, 3vw, 2rem);
+  bottom: 4.5rem;
   width: min(26rem, 40%);
   padding: 1.3rem 1.4rem 0.4rem;
 }
@@ -791,8 +763,16 @@ p {
 }
 /* Palco estreito */
 
+@media (min-aspect-ratio: 3/2) and (min-width: 1000px) {
+  .hero-sheet {
+    position: absolute;
+    left: clamp(1rem, 3vw, 2rem);
+    top: calc(var(--stage-h) / 2);
+    translate: 0 -50%;
+    width: min(34rem, calc(100vw - var(--stage-h) - 3rem));
+  }
+}
 @media (max-width: 800px) {
-  .hero-sheet,
   .method-sheet {
     position: relative;
     top: auto;
@@ -800,33 +780,6 @@ p {
     bottom: auto;
     width: min(100% - 1.5rem, 40rem);
     margin: 1rem auto 0;
-  }
-  .scene-split {
-    height: calc(100svh - 5.5rem);
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-    align-content: start;
-    row-gap: 0.75rem;
-  }
-  .scene-split .hero-sheet {
-    width: 100%;
-    margin: 0;
-  }
-  .scene-split .diorama {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100%;
-    min-height: 0;
-    container-type: size;
-  }
-  .scene-split .diorama-stage {
-    flex: 0 0 auto;
-    width: min(
-      100cqw,
-      calc((100cqh - 4.75rem) * var(--ar-w, 1) / var(--ar-h, 1))
-    );
-    margin-inline: auto;
   }
   .archive-body {
     margin-top: 0;

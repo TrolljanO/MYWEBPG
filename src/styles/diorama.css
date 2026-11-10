@@ -46,15 +46,34 @@
   margin: 0.75rem auto 0;
   font-size: var(--step-small);
 }
-.diorama-stage .motion-toggle {
+.diorama-stage .motion-toggle,
+.diorama > .motion-toggle {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
   z-index: 30;
   margin: 0;
+  white-space: nowrap;
   background: #f6f3ec;
   color: #1c1916;
   border: 1px solid #1c1916;
+}
+.plate-frame:has(.diorama--full),
+.diorama--full {
+  --stage-h: min(100vw, 62svh);
+}
+.diorama--full .diorama-stage {
+  width: 100%;
+  aspect-ratio: auto;
+  height: var(--stage-h);
+}
+.diorama--full .diorama-plane img {
+  object-fit: contain;
+  object-position: center;
+}
+.diorama--full .diorama-plane:first-child img {
+  object-fit: cover;
+  object-position: center;
 }
 @keyframes paper-drift {
   from {
@@ -78,5 +97,14 @@
 @media (max-width: 800px) {
   .diorama-stage {
     width: 100%;
+  }
+}
+@media (min-aspect-ratio: 3/2) and (min-width: 1000px) {
+  .plate-frame:has(.diorama--full),
+  .diorama--full {
+    --stage-h: min(100vw, calc(100svh - 5.5rem));
+  }
+  .diorama--full .diorama-plane:not(:first-child) img {
+    object-position: right center;
   }
 }

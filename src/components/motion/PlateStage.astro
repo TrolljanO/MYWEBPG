@@ -13,15 +13,23 @@ interface Props {
   label: string;
   loading: 'eager' | 'lazy';
   decoding?: 'async' | 'auto' | 'sync';
+  variant?: 'full';
+  sizes?: string;
 }
-const { layers, caption, note, label, loading, decoding } = Astro.props;
+const { layers, caption, note, label, loading, decoding, variant, sizes } =
+  Astro.props;
 const stage = layers[0].src;
-// Chromium drops a percentage inside the sizes attribute and then fetches the largest candidate. 100vw matches the stage.
-const sizes = 'min(100vw, calc((100svh - 5.5rem) * 1.5))';
-const stageStyle = `--ar-w:${stage.width};--ar-h:${stage.height};aspect-ratio:${stage.width} / ${stage.height}`;
+// Chromium drops a percentage inside sizes and then fetches the largest file.
+const imageSizes =
+  sizes ??
+  (variant === 'full'
+    ? 'min(100vw, calc(100svh - 5.5rem))'
+    : 'min(100vw, calc((100svh - 5.5rem) * 1.5))');
+const stageStyle = `--ar-w:${stage.width};--ar-h:${stage.height}`;
+const figureClass = variant === 'full' ? 'diorama diorama--full' : 'diorama';
 ---
 
-<figure class="diorama" data-diorama>
+<figure class={figureClass} data-diorama>
   <div class="diorama-stage" data-stage style={stageStyle}>
     {layers.map((layer) => (
       <div
@@ -33,22 +41,22 @@ const stageStyle = `--ar-w:${stage.width};--ar-h:${stage.height};aspect-ratio:${
           <Image
             src={layer.src}
             alt=""
-            widths={[828, 1248, 2400, 2496]}
-            sizes={sizes}
+            widths={[480, 828, 1248, 2400]}
+            sizes={imageSizes}
             loading={loading}
             decoding={decoding}
           />
         </div>
       </div>
     ))}
-    <button class="motion-toggle" type="button" hidden aria-pressed="false">
-      Pausar movimento
-    </button>
   </div>
   <figcaption>
     <span>{caption}</span>
     <span class="muted">{note}</span>
   </figcaption>
+  <button class="motion-toggle" type="button" hidden aria-pressed="false">
+    Pausar movimento
+  </button>
   <p class="sr-only">{label}</p>
 </figure>
 <script>

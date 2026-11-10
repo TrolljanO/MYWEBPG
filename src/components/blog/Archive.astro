@@ -36,14 +36,7 @@ const sakura = [
 
 <section>
   {!currentTag && (
-    <div class="plate-frame scene-split">
-      <PlateStage
-        layers={sakura}
-        loading="eager"
-        caption="Sakura"
-        note="Oito folhas no mesmo quadro. Ilustração com IA."
-        label="Diorama de papel em oito folhas: o céu, o chão, as pedras, as raízes, o tronco, os ramos, as flores e as pétalas."
-      />
+    <div class="plate-frame">
       <div class="paper-sheet hero-sheet">
         <h1>Notas & descobertas.</h1>
         <p class="lead">
@@ -51,6 +44,15 @@ const sakura = [
           rascunho.
         </p>
       </div>
+      <PlateStage
+        variant="full"
+        sizes="min(100vw, calc(100svh - 5.5rem))"
+        layers={sakura}
+        loading="eager"
+        caption="Sakura"
+        note="Oito folhas no mesmo quadro. Ilustração com IA."
+        label="Diorama de papel em oito folhas: o céu, o chão, as pedras, as raízes, o tronco, os ramos, as flores e as pétalas."
+      />
     </div>
   )}
   <div class="wrap section archive-body">

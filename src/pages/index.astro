@@ -60,14 +60,7 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <section class="opening">
-    <div class="plate-frame scene-split">
-      <PlateStage
-        layers={cumeeira}
-        loading="eager"
-        caption="Cumeeira"
-        note="Seis folhas no mesmo quadro. Ilustração com IA."
-        label="Diorama de papel em seis folhas registradas: céu, nuvens de trás, serras, o monte com o pagode, o dragão e as nuvens da frente."
-      />
+    <div class="plate-frame">
       <div class="paper-sheet hero-sheet">
         <p class="intro-line">
           Desenvolvimento, dados e inteligência artificial.
@@ -99,6 +92,15 @@ const jsonLd = {
           Curiosidade como ponto de partida. Comportamento real como evidência.
         </p>
       </div>
+      <PlateStage
+        variant="full"
+        sizes="min(100vw, calc(100svh - 5.5rem))"
+        layers={cumeeira}
+        loading="eager"
+        caption="Cumeeira"
+        note="Seis folhas no mesmo quadro. Ilustração com IA."
+        label="Diorama de papel em seis folhas registradas: céu, nuvens de trás, serras, o monte com o pagode, o dragão e as nuvens da frente."
+      />
     </div>
   </section>
   <section class="section paper-band">
@@ -125,6 +127,8 @@ const jsonLd = {
   <section class="koi-chapter">
     <div class="plate-frame">
       <PlateStage
+        variant="full"
+        sizes="100vw"
         layers={onda}
         loading="lazy"
         decoding="async"
