@@ -2,6 +2,11 @@
 import Arrow from '../ui/Arrow.astro';
 import { site } from '../../config/site';
 import { withBase } from '../../lib/paths';
+
+const linkedIn = site.socials.find(
+  (item) => item.href === 'https://www.linkedin.com/in/trajanogui/',
+);
+const otherSocials = site.socials.filter((item) => item !== linkedIn);
 ---
 
 <footer class="footer">
@@ -16,7 +21,12 @@ import { withBase } from '../../lib/paths';
         <p class="muted">Desenvolvimento, dados e inteligência artificial.</p>
       </div>
       <div>
-        {site.socials.map((s) => (
+        {linkedIn && (
+          <a class="button primary" href={linkedIn.href}>
+            {linkedIn.label} <Arrow direction="up-right" />
+          </a>
+        )}
+        {otherSocials.map((s) => (
           <a href={s.href}>
             {s.label} <Arrow direction="up-right" />
           </a>

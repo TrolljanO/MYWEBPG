@@ -637,11 +637,31 @@ p {
   font-size: var(--step-title);
   line-height: 1.25;
 }
+.archive-empty {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding: 1.6rem 1.5rem 0.8rem;
+  position: relative;
+  isolation: isolate;
+  background: var(--sheet);
+}
+.archive-empty p {
+  margin: 0 0 0.8rem;
+  font-family: var(--font-display);
+  font-size: var(--step-title);
+  line-height: 1.25;
+}
+.archive-empty a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
 .project-card::before,
 .post-card::before,
 .reading::before,
 .notebook::before,
 .notebook-empty::before,
+.archive-empty::before,
 .hero-sheet::before,
 .method-sheet::before,
 .project-card::after,
@@ -649,6 +669,7 @@ p {
 .reading::after,
 .notebook::after,
 .notebook-empty::after,
+.archive-empty::after,
 .hero-sheet::after,
 .method-sheet::after {
   content: '';
@@ -661,6 +682,7 @@ p {
 .reading::before,
 .notebook::before,
 .notebook-empty::before,
+.archive-empty::before,
 .hero-sheet::before,
 .method-sheet::before {
   z-index: -2;
@@ -671,7 +693,8 @@ p {
   translate: 7px 9px;
 }
 .notebook::before,
-.notebook-empty::before {
+.notebook-empty::before,
+.archive-empty::before {
   translate: 8px 10px;
 }
 .project-card::after,
@@ -679,6 +702,7 @@ p {
 .reading::after,
 .notebook::after,
 .notebook-empty::after,
+.archive-empty::after,
 .hero-sheet::after,
 .method-sheet::after {
   z-index: -1;

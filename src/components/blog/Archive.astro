@@ -24,20 +24,32 @@ const sakura = [
 
 <section>
   {!currentTag && (
-    <PlateStage
-      layers={sakura}
-      caption="Sakura"
-      note="A árvore e o tapete de pétalas, no mesmo quadro. Ilustração com IA."
-      label="Diorama de papel: a cerejeira ao fundo e o tapete de pétalas à frente."
-    />
+    <div class="plate-frame">
+      <PlateStage
+        layers={sakura}
+        caption="Sakura"
+        note="A árvore e o tapete de pétalas, no mesmo quadro. Ilustração com IA."
+        label="Diorama de papel: a cerejeira ao fundo e o tapete de pétalas à frente."
+      />
+      <div class="paper-sheet hero-sheet">
+        <h1>Notas & descobertas.</h1>
+        <p class="lead">
+          O arquivo está pronto. Um texto entra aqui quando deixa de ser
+          rascunho.
+        </p>
+      </div>
+    </div>
   )}
   <div class="wrap section archive-body">
-    <header class="page-header">
-      <h1>
-        {currentTag ? `Notas sobre ${currentTag}.` : 'Notas & descobertas.'}
-      </h1>
-      <p class="lead">Um texto entra aqui quando deixa de ser rascunho.</p>
-    </header>
+    {currentTag && (
+      <header class="page-header">
+        <h1>{`Notas sobre ${currentTag}.`}</h1>
+        <p class="lead">
+          O arquivo está pronto. Um texto entra aqui quando deixa de ser
+          rascunho.
+        </p>
+      </header>
+    )}
     <nav class="tags" aria-label="Filtrar artigos por tag">
       <a
         class="tag"
@@ -62,7 +74,10 @@ const sakura = [
         <PostCard post={post} />
       ))}
       {!entries.length && (
-        <p class="notebook-empty">Nenhum artigo publicado ainda.</p>
+        <div class="paper-sheet archive-empty">
+          <p>Nenhum artigo publicado ainda.</p>
+          <a href={withBase('rss.xml')}>RSS</a>
+        </div>
       )}
     </div>
     <nav class="pagination" aria-label="Paginação">
