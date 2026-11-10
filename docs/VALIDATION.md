@@ -24,6 +24,8 @@ Verificado em 9 de novembro de 2026, no build de produção local, Node 24 (CI c
 - Open Graph usa imagem provisória compartilhada por padrão; uma capa pode personalizar o preview do artigo. Geração automática de OG por título é evolução opcional.
 - Não foi atribuída nota de design Awwwards: conteúdo e identidade finais estão explicitamente fora do escopo solicitado.
 
+O rastreador lê `robots.txt` só na raiz do host. Este arquivo sai em `/MYWEBPG/robots.txt`. Não há domínio próprio. O Search Console não foi alterado.
+
 ## Primeiro carregamento da home
 
 Medido em 10 de novembro de 2026, nos arquivos de `dist/` deste build, e conferido no Chromium em 1280×720 com densidade 1. O palco mede 948 CSS px. O `sizes` gravado é `min(100vw, calc((100svh - 5.5rem) * 1.5))`. Com `100%` no lugar de `100vw`, o Chromium descarta o atributo e pede o candidato de 2496. Com `100vw`, o slot de 948 px escolhe o candidato de 1248, o 1x de 2496. Os números abaixo são o corpo de cada arquivo, sem gzip. O preview chega a comprimir o CSS na rede; a conta não usa esse desconto.

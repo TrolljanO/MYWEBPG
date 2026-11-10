@@ -14,6 +14,7 @@ interface Props {
   type?: 'website' | 'article';
   jsonLd?: Record<string, unknown>;
   noindex?: boolean;
+  publishedTime?: string;
 }
 const {
   title,
@@ -23,8 +24,10 @@ const {
   type = 'website',
   jsonLd,
   noindex = false,
+  publishedTime,
 } = Astro.props;
 const canonical = canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
+const documentTitle = `${title} | ${site.name}`;
 const structured = jsonLd || {
   '@context': 'https://schema.org',
   '@type': 'Person',
@@ -36,7 +39,7 @@ const structured = jsonLd || {
 ---
 
 <!doctype html>
-<html lang="pt-BR">
+<html lang={site.locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,12 +50,24 @@ const structured = jsonLd || {
       type="font/woff2"
       crossorigin
     />
-    <title>{title} | {site.name}</title>
+    <title>{documentTitle}</title>
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark light" />
+    <meta
+      name="theme-color"
+      content="#f6f3ec"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#171614"
+      media="(prefers-color-scheme: dark)"
+    />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex,follow" />}
     <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={withBase('apple-touch-icon.png')} />
+    <link rel="manifest" href={withBase('manifest.webmanifest')} />
     <link
       rel="alternate"
       type="application/rss+xml"
@@ -61,19 +76,23 @@ const structured = jsonLd || {
     />
     <link rel="sitemap" href={withBase('sitemap-index.xml')} />
     <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:type" content={type} />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={documentTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={image} />
-    <meta property="og:image:alt" content={`${title} | ${site.name}`} />
+    <meta property="og:image:alt" content={documentTitle} />
+    {publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
+    <meta name="twitter:title" content={documentTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={image} />
     <script
       type="application/ld+json"
-      set:html={JSON.stringify(structured).replace(/</g, '\u003c')}
+      set:html={JSON.stringify(structured).replace(/</g, '\\u003c')}
     />
     <script is:inline>
       try {

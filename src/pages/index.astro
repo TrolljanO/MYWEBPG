@@ -3,8 +3,9 @@ import Arrow from '../components/ui/Arrow.astro';
 import Base from '../layouts/BaseLayout.astro';
 import PlateStage from '../components/motion/PlateStage.astro';
 import ProjectCard from '../components/projects/ProjectCard.astro';
+import { site } from '../config/site';
 import { projects } from '../lib/content';
-import { withBase } from '../lib/paths';
+import { absolute, withBase } from '../lib/paths';
 import nuvens from '../assets/diorama/cumeeira/01-nuvens.webp';
 import serras from '../assets/diorama/cumeeira/02-serras.webp';
 import monte from '../assets/diorama/cumeeira/03-monte.webp';
@@ -31,11 +32,30 @@ const onda = [
   { src: koi, depth: 4 },
   { src: petalas, depth: 5 },
 ];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      name: site.name,
+      jobTitle: site.role,
+      url: absolute(),
+      sameAs: site.socials.map((item) => item.href),
+    },
+    {
+      '@type': 'WebSite',
+      name: site.name,
+      url: absolute(),
+      inLanguage: site.locale,
+    },
+  ],
+};
 ---
 
 <Base
-  title="Portfólio"
+  title={site.role}
   description="Desenvolvimento, dados e inteligência artificial. Projetos abertos e um arquivo em preparação."
+  jsonLd={jsonLd}
 >
   <section class="opening">
     <div class="plate-frame">

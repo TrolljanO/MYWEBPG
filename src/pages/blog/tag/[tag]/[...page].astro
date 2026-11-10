@@ -19,6 +19,7 @@ const { page, tags, tag } = Astro.props;
 <Base
   title={`${tag} · página ${page.currentPage}`}
   description={`Artigos com a tag ${tag}. Página ${page.currentPage} do arquivo.`}
+  noindex={page.data.length < 2}
 >
   <Archive
     entries={page.data}

@@ -20,6 +20,7 @@ const { tag, entries, tags } = Astro.props;
 <Base
   title={`Projetos · ${tag}`}
   description={`Estudos de caso com a tecnologia ${tag}.`}
+  noindex={entries.length < 2}
 >
   <div class="wrap section">
     <h1>Projetos / {tag}</h1>
