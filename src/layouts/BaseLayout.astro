@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import cormorant from '../assets/fonts/cormorant-500.woff2';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import Analytics from '../components/layout/Analytics.astro';
@@ -39,6 +40,13 @@ const structured = jsonLd || {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="preload"
+      href={cormorant}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <title>{title} | {site.name}</title>
     <meta name="description" content={description} />
     <meta name="color-scheme" content="dark light" />

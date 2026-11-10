@@ -41,6 +41,7 @@ const onda = [
     <div class="plate-frame">
       <PlateStage
         layers={cumeeira}
+        loading="eager"
         caption="Cumeeira"
         note="Cinco folhas no mesmo quadro. Ilustração com IA."
         label="Diorama de papel em cinco folhas registradas: nuvens, serras, o monte com o pagode, o dragão e os pinheiros da frente."
@@ -103,6 +104,8 @@ const onda = [
     <div class="plate-frame">
       <PlateStage
         layers={onda}
+        loading="lazy"
+        decoding="async"
         caption="Na onda"
         note="A onda em duas folhas, o peixe e as pétalas por cima. Ilustração com IA."
         label="Diorama de papel: a onda de trás, a onda da frente, a espuma com o koi claro, o koi cinábrio e pétalas soltas."
