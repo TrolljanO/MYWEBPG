@@ -1,10 +1,10 @@
 .prose {
-  font-size: 1.125rem;
+  font-size: var(--step-body);
   line-height: 1.75;
   overflow-wrap: anywhere;
 }
 .prose h2 {
-  font-size: 2rem;
+  font-size: var(--step-title);
   margin-top: 2.5rem;
 }
 .prose h3 {
@@ -33,7 +33,7 @@
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  font-size: 0.85rem;
+  font-size: var(--step-small);
   position: relative;
   max-width: 100%;
 }
@@ -44,7 +44,7 @@
   background: var(--surface);
   padding: 0.15rem 0.3rem;
   border-radius: var(--radius);
-  font-size: 0.9em;
+  font-size: var(--step-small);
 }
 .prose img {
   display: block;
@@ -65,7 +65,7 @@
   padding: 0.7rem;
 }
 .prose details {
-  border: 1px solid var(--line);
+  background: var(--sheet-under);
   padding: 1rem;
   margin-block: 1.5rem;
 }
@@ -81,7 +81,7 @@
   padding: 0.4rem 0.8rem;
   background: var(--surface);
   color: var(--text);
-  font-size: 0.8rem;
+  font-size: var(--step-small);
 }
 .copy-code:hover {
   background: var(--text);

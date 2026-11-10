@@ -12,7 +12,6 @@
   aspect-ratio: 3 / 2;
   background: var(--paper);
   overflow: hidden;
-  border-block: 1px solid #d7cec0;
 }
 .diorama-plane {
   position: absolute;
@@ -45,13 +44,17 @@
   flex-wrap: wrap;
   width: min(1400px, 100% - var(--space) * 2);
   margin: 0.75rem auto 0;
-  font-size: 0.85rem;
+  font-size: var(--step-small);
 }
-.diorama .motion-toggle {
-  position: static;
-  margin-left: auto;
-  background: transparent;
-  color: inherit;
+.diorama-stage .motion-toggle {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 6;
+  margin: 0;
+  background: #f6f3ec;
+  color: #1c1916;
+  border: 1px solid #1c1916;
 }
 @keyframes paper-drift {
   from {
@@ -75,8 +78,5 @@
 @media (max-width: 800px) {
   .diorama-stage {
     width: 100%;
-  }
-  .diorama figcaption {
-    font-size: 0.8rem;
   }
 }

@@ -29,13 +29,13 @@ const height = layers[0]?.src.height;
         </div>
       </div>
     ))}
+    <button class="motion-toggle" type="button" hidden aria-pressed="false">
+      Pausar movimento
+    </button>
   </div>
   <figcaption>
     <span>{caption}</span>
     <span class="muted">{note}</span>
-    <button class="motion-toggle" type="button" hidden aria-pressed="false">
-      Pausar movimento
-    </button>
   </figcaption>
   <p class="sr-only">{label}</p>
 </figure>

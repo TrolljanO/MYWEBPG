@@ -36,9 +36,7 @@ const sakura = [
       <h1>
         {currentTag ? `Notas sobre ${currentTag}.` : 'Notas & descobertas.'}
       </h1>
-      <p class="lead">
-        O arquivo está pronto. Um texto entra aqui quando deixa de ser rascunho.
-      </p>
+      <p class="lead">Um texto entra aqui quando deixa de ser rascunho.</p>
     </header>
     <nav class="tags" aria-label="Filtrar artigos por tag">
       <a
@@ -58,6 +56,7 @@ const sakura = [
         </a>
       ))}
     </nav>
+    <h2>O arquivo está pronto.</h2>
     <div class="post-grid">
       {entries.map((post) => (
         <PostCard post={post} />
