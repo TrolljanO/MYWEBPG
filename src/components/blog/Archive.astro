@@ -4,8 +4,14 @@ import type { CollectionEntry } from 'astro:content';
 import PlateStage from '../motion/PlateStage.astro';
 import PostCard from './PostCard.astro';
 import { withBase, tagPath } from '../../lib/paths';
-import arvore from '../../assets/diorama/sakura/01-arvore.webp';
-import tapete from '../../assets/diorama/sakura/02-tapete.webp';
+import ceu from '../../assets/diorama/sakura/01-ceu.webp';
+import chao from '../../assets/diorama/sakura/02-chao.webp';
+import pedras from '../../assets/diorama/sakura/03-pedras.webp';
+import raizes from '../../assets/diorama/sakura/04-raizes.webp';
+import tronco from '../../assets/diorama/sakura/05-tronco.webp';
+import ramos from '../../assets/diorama/sakura/06-ramos.webp';
+import flores from '../../assets/diorama/sakura/07-flores.webp';
+import petalas from '../../assets/diorama/sakura/08-petalas.webp';
 interface Props {
   entries: CollectionEntry<'blog'>[];
   tags: string[];
@@ -17,20 +23,26 @@ interface Props {
 }
 const { entries, tags, currentTag, page, total, previous, next } = Astro.props;
 const sakura = [
-  { src: arvore, depth: 1 },
-  { src: tapete, depth: 2 },
+  { src: ceu, depth: 1 },
+  { src: chao, depth: 2 },
+  { src: pedras, depth: 3 },
+  { src: raizes, depth: 4 },
+  { src: tronco, depth: 5 },
+  { src: ramos, depth: 6 },
+  { src: flores, depth: 7 },
+  { src: petalas, depth: 8 },
 ];
 ---
 
 <section>
   {!currentTag && (
-    <div class="plate-frame">
+    <div class="plate-frame scene-split">
       <PlateStage
         layers={sakura}
         loading="eager"
         caption="Sakura"
-        note="A árvore e o tapete de pétalas, no mesmo quadro. Ilustração com IA."
-        label="Diorama de papel: a cerejeira ao fundo e o tapete de pétalas à frente."
+        note="Oito folhas no mesmo quadro. Ilustração com IA."
+        label="Diorama de papel em oito folhas: o céu, o chão, as pedras, as raízes, o tronco, os ramos, as flores e as pétalas."
       />
       <div class="paper-sheet hero-sheet">
         <h1>Notas & descobertas.</h1>

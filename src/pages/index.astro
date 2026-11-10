@@ -6,11 +6,12 @@ import ProjectCard from '../components/projects/ProjectCard.astro';
 import { site } from '../config/site';
 import { projects } from '../lib/content';
 import { absolute, withBase } from '../lib/paths';
-import nuvens from '../assets/diorama/cumeeira/01-nuvens.webp';
-import serras from '../assets/diorama/cumeeira/02-serras.webp';
-import monte from '../assets/diorama/cumeeira/03-monte.webp';
-import dragao from '../assets/diorama/cumeeira/04-dragao.webp';
-import pinheiros from '../assets/diorama/cumeeira/05-pinheiros.webp';
+import ceu from '../assets/diorama/cumeeira/01-ceu.webp';
+import nuvensAtras from '../assets/diorama/cumeeira/02-nuvens-atras.webp';
+import serras from '../assets/diorama/cumeeira/03-serras.webp';
+import monte from '../assets/diorama/cumeeira/04-monte.webp';
+import dragao from '../assets/diorama/cumeeira/05-dragao.webp';
+import nuvensFrente from '../assets/diorama/cumeeira/06-nuvens-frente.webp';
 import ondaTras from '../assets/diorama/koi/01-onda-tras.webp';
 import ondaFrente from '../assets/diorama/koi/02-onda-frente.webp';
 import espuma from '../assets/diorama/koi/03-espuma.webp';
@@ -19,11 +20,12 @@ import petalas from '../assets/diorama/koi/06-petalas.webp';
 
 const featured = (await projects()).filter((p) => p.data.featured).slice(0, 6);
 const cumeeira = [
-  { src: nuvens, depth: 1 },
-  { src: serras, depth: 2 },
-  { src: monte, depth: 3 },
-  { src: dragao, depth: 4 },
-  { src: pinheiros, depth: 5 },
+  { src: ceu, depth: 1 },
+  { src: nuvensAtras, depth: 2 },
+  { src: serras, depth: 3 },
+  { src: monte, depth: 4 },
+  { src: dragao, depth: 5 },
+  { src: nuvensFrente, depth: 6 },
 ];
 const onda = [
   { src: ondaTras, depth: 1 },
@@ -58,13 +60,13 @@ const jsonLd = {
   jsonLd={jsonLd}
 >
   <section class="opening">
-    <div class="plate-frame">
+    <div class="plate-frame scene-split">
       <PlateStage
         layers={cumeeira}
         loading="eager"
         caption="Cumeeira"
-        note="Cinco folhas no mesmo quadro. Ilustração com IA."
-        label="Diorama de papel em cinco folhas registradas: nuvens, serras, o monte com o pagode, o dragão e os pinheiros da frente."
+        note="Seis folhas no mesmo quadro. Ilustração com IA."
+        label="Diorama de papel em seis folhas registradas: céu, nuvens de trás, serras, o monte com o pagode, o dragão e as nuvens da frente."
       />
       <div class="paper-sheet hero-sheet">
         <p class="intro-line">
@@ -99,7 +101,7 @@ const jsonLd = {
       </div>
     </div>
   </section>
-  <section class="section">
+  <section class="section paper-band">
     <div class="wrap">
       <div class="section-heading">
         <h2>Trabalho em aberto.</h2>
@@ -143,7 +145,7 @@ const jsonLd = {
       </div>
     </div>
   </section>
-  <section class="section">
+  <section class="section paper-band">
     <div class="wrap">
       <div class="notebook paper-sheet">
         <h2>O caderno está abrindo.</h2>

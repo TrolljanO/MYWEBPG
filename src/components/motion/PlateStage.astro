@@ -15,12 +15,14 @@ interface Props {
   decoding?: 'async' | 'auto' | 'sync';
 }
 const { layers, caption, note, label, loading, decoding } = Astro.props;
-// Chromium drops a percentage inside the sizes attribute and then fetches the 2496 candidate. 100vw matches the stage.
+const stage = layers[0].src;
+// Chromium drops a percentage inside the sizes attribute and then fetches the largest candidate. 100vw matches the stage.
 const sizes = 'min(100vw, calc((100svh - 5.5rem) * 1.5))';
+const stageStyle = `--ar-w:${stage.width};--ar-h:${stage.height};aspect-ratio:${stage.width} / ${stage.height}`;
 ---
 
 <figure class="diorama" data-diorama>
-  <div class="diorama-stage" data-stage>
+  <div class="diorama-stage" data-stage style={stageStyle}>
     {layers.map((layer) => (
       <div
         class="diorama-plane"
@@ -31,7 +33,7 @@ const sizes = 'min(100vw, calc((100svh - 5.5rem) * 1.5))';
           <Image
             src={layer.src}
             alt=""
-            widths={[828, 1248, 2496]}
+            widths={[828, 1248, 2400, 2496]}
             sizes={sizes}
             loading={loading}
             decoding={decoding}

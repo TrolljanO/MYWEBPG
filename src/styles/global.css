@@ -363,7 +363,15 @@ p {
 }
 .footer {
   padding-block: 3rem;
-  background: var(--surface);
+  background: #f6f3ec;
+  color: #1c1916;
+  --text: #1c1916;
+  --bg: #f6f3ec;
+  --muted: #5e574e;
+  --line: #d5cdc0;
+  --accent: #7a2f2c;
+  --on-accent: #f6f3ec;
+  --surface: #ebe4d8;
 }
 .footer-top,
 .footer-bottom {
@@ -542,15 +550,66 @@ p {
 }
 .opening {
   position: relative;
-  padding-bottom: clamp(1.5rem, 4vw, 3rem);
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+  background: #f3ecdf;
+  color: #1c1916;
+  --text: #1c1916;
+  --bg: #f3ecdf;
+  --muted: #5e574e;
+  --line: #d5cdc0;
+  --accent: #7a2f2c;
+  --on-accent: #f6f3ec;
 }
 .plate-frame {
   position: relative;
-  width: min(100%, calc((100svh - 5.5rem) * 1.5));
+  width: 100%;
   margin-inline: auto;
+  background: #f3ecdf;
 }
 .plate-frame .diorama-stage {
   width: 100%;
+}
+.scene-split {
+  display: grid;
+  grid-template-columns: minmax(18rem, 34rem) minmax(0, 1fr);
+  align-items: center;
+  column-gap: clamp(0.75rem, 2vw, 1.75rem);
+  padding: 0.5rem clamp(0.75rem, 2vw, 1.5rem) 0.25rem;
+}
+.scene-split .diorama {
+  min-width: 0;
+}
+.scene-split .diorama-stage {
+  width: min(100%, calc((100svh - 10.75rem) * var(--ar-w, 1) / var(--ar-h, 1)));
+  margin-left: auto;
+  margin-right: 0;
+}
+.scene-split .hero-sheet {
+  order: -1;
+  position: relative;
+  inset: auto;
+  left: auto;
+  bottom: auto;
+  width: 100%;
+  min-width: 0;
+  z-index: 2;
+}
+.scene-split .hero-sheet h1 {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1080px) {
+  .scene-split {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.75rem;
+  }
+  .scene-split .hero-sheet {
+    width: 100%;
+    margin: 0;
+  }
+  .scene-split .diorama-stage {
+    width: min(100%, calc((100svh - 22rem) * var(--ar-w, 1) / var(--ar-h, 1)));
+    margin-inline: auto;
+  }
 }
 .hero-sheet,
 .method-sheet {
@@ -566,7 +625,29 @@ p {
 }
 .koi-chapter {
   position: relative;
-  margin-top: clamp(1.5rem, 4vw, 3rem);
+  margin-top: 0;
+  padding-top: clamp(1.5rem, 4vw, 3rem);
+  background: #f3ecdf;
+  color: #1c1916;
+  --text: #1c1916;
+  --bg: #f3ecdf;
+  --muted: #5e574e;
+  --line: #d5cdc0;
+  --accent: #7a2f2c;
+  --on-accent: #f6f3ec;
+}
+.paper-band {
+  background: #f6f3ec;
+  color: #1c1916;
+  --text: #1c1916;
+  --bg: #f6f3ec;
+  --muted: #5e574e;
+  --line: #d5cdc0;
+  --accent: #7a2f2c;
+  --on-accent: #f6f3ec;
+  --surface: #ebe4d8;
+  --sheet: #ebe4d8;
+  --sheet-under: #d5cdc0;
 }
 .method-sheet {
   width: min(26rem, 40%);
@@ -685,6 +766,33 @@ p {
     bottom: auto;
     width: min(100% - 1.5rem, 40rem);
     margin: 1rem auto 0;
+  }
+  .scene-split {
+    height: calc(100svh - 5.5rem);
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    align-content: start;
+    row-gap: 0.75rem;
+  }
+  .scene-split .hero-sheet {
+    width: 100%;
+    margin: 0;
+  }
+  .scene-split .diorama {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    min-height: 0;
+    container-type: size;
+  }
+  .scene-split .diorama-stage {
+    flex: 0 0 auto;
+    width: min(
+      100cqw,
+      calc((100cqh - 4.75rem) * var(--ar-w, 1) / var(--ar-h, 1))
+    );
+    margin-inline: auto;
   }
   .archive-body {
     margin-top: 0;
