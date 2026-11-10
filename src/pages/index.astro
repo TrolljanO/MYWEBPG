@@ -1,29 +1,66 @@
 ---
 import Arrow from '../components/ui/Arrow.astro';
 import Base from '../layouts/BaseLayout.astro';
-import Hero3D from '../components/motion/Hero3D.astro';
-import PostCard from '../components/blog/PostCard.astro';
+import PlateStage from '../components/motion/PlateStage.astro';
 import ProjectCard from '../components/projects/ProjectCard.astro';
-import { posts, projects } from '../lib/content';
+import { projects } from '../lib/content';
 import { withBase } from '../lib/paths';
-const latest = (await posts()).slice(0, 3);
+import nuvens from '../assets/diorama/cumeeira/01-nuvens.webp';
+import serras from '../assets/diorama/cumeeira/02-serras.webp';
+import monte from '../assets/diorama/cumeeira/03-monte.webp';
+import dragao from '../assets/diorama/cumeeira/04-dragao.webp';
+import pinheiros from '../assets/diorama/cumeeira/05-pinheiros.webp';
+import ondaTras from '../assets/diorama/koi/01-onda-tras.webp';
+import ondaFrente from '../assets/diorama/koi/02-onda-frente.webp';
+import espuma from '../assets/diorama/koi/03-espuma.webp';
+import koi from '../assets/diorama/koi/05-koi.webp';
+import petalas from '../assets/diorama/koi/06-petalas.webp';
+
 const featured = (await projects()).filter((p) => p.data.featured).slice(0, 6);
+const cumeeira = [
+  { src: nuvens, depth: 1 },
+  { src: serras, depth: 2 },
+  { src: monte, depth: 3 },
+  { src: dragao, depth: 4 },
+  { src: pinheiros, depth: 5 },
+];
+const onda = [
+  { src: ondaTras, depth: 1 },
+  { src: ondaFrente, depth: 2 },
+  { src: espuma, depth: 3 },
+  { src: koi, depth: 4 },
+  { src: petalas, depth: 5 },
+];
 ---
 
-<Base title="Portfólio & notas">
-  <div class="wrap">
-    <section class="hero">
-      <div>
-        <p class="eyebrow">GUILHERME TRAJANO / PORTFÓLIO</p>
+<Base
+  title="Portfólio"
+  description="Desenvolvimento, dados e inteligência artificial. Projetos abertos e um arquivo em preparação."
+>
+  <section class="opening">
+    <div class="plate-frame">
+      <PlateStage
+        layers={cumeeira}
+        caption="Cumeeira"
+        note="Cinco folhas no mesmo quadro. Ilustração com IA."
+        label="Diorama de papel em cinco folhas registradas: nuvens, serras, o monte com o pagode, o dragão e os pinheiros da frente."
+      />
+      <div class="paper-sheet hero-sheet">
+        <p class="intro-line">
+          Desenvolvimento, dados e inteligência artificial.
+        </p>
         <h1>
-          Ideias em
+          Guilherme
           <br />
-          <span>construção.</span>
+          Trajano.
         </h1>
-        <p class="lead">Um espaço para projetos, experimentos e notas.</p>
+        <p class="hero-statement">
+          Venho de vendas. Construo com código. Investigo o que a IA pode fazer
+          por quem projeta e constrói.
+        </p>
         <div class="actions">
           <a class="button primary" href={withBase('projects/')}>
-            Explorar projetos{' '}
+            Conheça meu trabalho{' '}
             <span aria-hidden="true">
               <Arrow direction="up-right" />
             </span>
@@ -35,16 +72,24 @@ const featured = (await projects()).filter((p) => p.data.featured).slice(0, 6);
             </span>
           </a>
         </div>
+        <p class="hero-note">
+          Curiosidade como ponto de partida. Comportamento real como evidência.
+        </p>
       </div>
-      <Hero3D />
-    </section>
-    <section class="section rule">
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
       <div class="section-heading">
-        <h2>Projetos selecionados.</h2>
+        <h2>Trabalho em aberto.</h2>
         <a class="button" href={withBase('projects/')}>
           Todos os projetos <Arrow direction="up-right" />
         </a>
       </div>
+      <p class="muted">
+        Experimentos que ganharam forma. Código, decisões e espaço para
+        melhorar.
+      </p>
       <div class="project-list">
         {featured.length ? (
           featured.map((project) => <ProjectCard project={project} />)
@@ -52,30 +97,37 @@ const featured = (await projects()).filter((p) => p.data.featured).slice(0, 6);
           <p class="muted">Os primeiros projetos chegam em breve.</p>
         )}
       </div>
-    </section>
-    <section class="section rule">
-      <div class="section-heading">
-        <h2>Notas & descobertas.</h2>
-        <a class="button" href={withBase('blog/')}>
-          Todos os artigos <Arrow direction="up-right" />
-        </a>
-      </div>
-      <div class="post-grid">
-        {latest.length ? (
-          latest.map((post) => <PostCard post={post} />)
-        ) : (
-          <p class="muted">O caderno está aberto. Novos artigos em breve.</p>
-        )}
-      </div>
-    </section>
-    <section class="section rule two-col">
-      <h2>Sobre o trabalho.</h2>
-      <div>
-        <p class="lead">Este espaço está em construção.</p>
+    </div>
+  </section>
+  <section class="koi-chapter">
+    <div class="plate-frame">
+      <PlateStage
+        layers={onda}
+        caption="Na onda"
+        note="A onda em duas folhas, o peixe e as pétalas por cima. Ilustração com IA."
+        label="Diorama de papel: a onda de trás, a onda da frente, a espuma com o koi claro, o koi cinábrio e pétalas soltas."
+      />
+      <div class="paper-sheet method-sheet">
+        <h2>A bagagem vira método.</h2>
+        <p class="lead">Antes de escrever código, aprendi a ouvir pessoas.</p>
+        <p>
+          A trajetória começou em vendas e segue no desenvolvimento, em dados e
+          na inteligência artificial aplicada à arquitetura e construção.
+        </p>
         <a class="button" href={withBase('about/')}>
           Sobre mim <Arrow direction="up-right" />
         </a>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrap">
+      <div class="notebook paper-sheet">
+        <p>O caderno está abrindo. O arquivo espera o primeiro texto.</p>
+        <a class="button" href={withBase('blog/')}>
+          Abrir o arquivo <Arrow direction="up-right" />
+        </a>
+      </div>
+    </div>
+  </section>
 </Base>

@@ -1,0 +1,86 @@
+---
+import type { ImageMetadata } from 'astro';
+
+interface Layer {
+  src: ImageMetadata;
+  depth: number;
+}
+interface Props {
+  layers: Layer[];
+  caption: string;
+  note: string;
+  label: string;
+}
+const { layers, caption, note, label } = Astro.props;
+const width = layers[0]?.src.width;
+const height = layers[0]?.src.height;
+---
+
+<figure class="diorama" data-diorama>
+  <div class="diorama-stage" data-stage>
+    {layers.map((layer) => (
+      <div
+        class="diorama-plane"
+        data-depth={layer.depth}
+        style={`--depth:${layer.depth}`}
+      >
+        <div class="diorama-shift">
+          <img src={layer.src.src} alt="" width={width} height={height} />
+        </div>
+      </div>
+    ))}
+  </div>
+  <figcaption>
+    <span>{caption}</span>
+    <span class="muted">{note}</span>
+    <button class="motion-toggle" type="button" hidden aria-pressed="false">
+      Pausar movimento
+    </button>
+  </figcaption>
+  <p class="sr-only">{label}</p>
+</figure>
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const saveData = (
+    navigator as Navigator & { connection?: { saveData?: boolean } }
+  ).connection?.saveData;
+  const quiet = reduced.matches || saveData;
+  for (const host of document.querySelectorAll<HTMLElement>(
+    '[data-diorama]:not([data-bound])',
+  )) {
+    host.setAttribute('data-bound', '');
+    if (quiet) host.setAttribute('data-paused', '');
+    const button = host.querySelector<HTMLButtonElement>('.motion-toggle');
+    if (!button || quiet) continue;
+    button.hidden = false;
+    const stage = host.querySelector<HTMLElement>('[data-stage]');
+    const planes = [...host.querySelectorAll<HTMLElement>('[data-depth]')];
+    let paused = false;
+    const place = (x: number, y: number) => {
+      for (const plane of planes) {
+        const depth = Number(plane.dataset.depth);
+        const shift = plane.querySelector<HTMLElement>('.diorama-shift');
+        if (!shift) continue;
+        shift.style.translate = `${(x * depth * 7).toFixed(1)}px ${(y * depth * 5).toFixed(1)}px`;
+      }
+    };
+    stage?.addEventListener('pointermove', (event) => {
+      if (paused || !stage) return;
+      const rect = stage.getBoundingClientRect();
+      place(
+        (event.clientX - rect.left) / rect.width - 0.5,
+        (event.clientY - rect.top) / rect.height - 0.5,
+      );
+    });
+    stage?.addEventListener('pointerleave', () => {
+      if (!paused) place(0, 0);
+    });
+    button.addEventListener('click', () => {
+      paused = !paused;
+      button.setAttribute('aria-pressed', String(paused));
+      button.textContent = paused ? 'Retomar movimento' : 'Pausar movimento';
+      host.toggleAttribute('data-paused', paused);
+      if (paused) place(0, 0);
+    });
+  }
+</script>

@@ -6,7 +6,7 @@ role: 'Seu papel'
 status: 'em progresso'
 tags: [exemplo, typescript]
 draft: true
-featured: true
+featured: false
 metrics: []
 ---
 

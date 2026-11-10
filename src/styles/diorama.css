@@ -1,0 +1,82 @@
+.diorama {
+  position: relative;
+  display: grid;
+  margin: 0;
+  min-width: 0;
+  isolation: isolate;
+}
+.diorama-stage {
+  position: relative;
+  width: min(100%, calc((100svh - 5.5rem) * 1.5));
+  margin-inline: auto;
+  aspect-ratio: 3 / 2;
+  background: var(--paper);
+  overflow: hidden;
+  border-block: 1px solid #d7cec0;
+}
+.diorama-plane {
+  position: absolute;
+  inset: 0;
+  z-index: var(--depth);
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  animation: paper-drift calc(6.4s + var(--depth) * 0.35s) ease-in-out infinite
+    alternate;
+}
+.diorama-shift,
+.diorama-plane img {
+  width: 100%;
+  height: 100%;
+}
+.diorama-shift {
+  transition: translate 0.7s var(--ease);
+}
+.diorama-plane img {
+  display: block;
+  max-width: none;
+  object-fit: fill;
+}
+.diorama figcaption {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: min(1400px, 100% - var(--space) * 2);
+  margin: 0.75rem auto 0;
+  font-size: 0.85rem;
+}
+.diorama .motion-toggle {
+  position: static;
+  margin-left: auto;
+  background: transparent;
+  color: inherit;
+}
+@keyframes paper-drift {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: calc(var(--depth) * -3px) calc(var(--depth) * -4px);
+  }
+}
+[data-diorama][data-paused] .diorama-plane {
+  animation: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .diorama-plane {
+    animation: none;
+  }
+  .diorama-shift {
+    transition: none;
+  }
+}
+@media (max-width: 800px) {
+  .diorama-stage {
+    width: 100%;
+  }
+  .diorama figcaption {
+    font-size: 0.8rem;
+  }
+}

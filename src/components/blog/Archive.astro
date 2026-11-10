@@ -1,8 +1,11 @@
 ---
 import Arrow from '../ui/Arrow.astro';
 import type { CollectionEntry } from 'astro:content';
+import PlateStage from '../motion/PlateStage.astro';
 import PostCard from './PostCard.astro';
 import { withBase, tagPath } from '../../lib/paths';
+import arvore from '../../assets/diorama/sakura/01-arvore.webp';
+import tapete from '../../assets/diorama/sakura/02-tapete.webp';
 interface Props {
   entries: CollectionEntry<'blog'>[];
   tags: string[];
@@ -13,57 +16,74 @@ interface Props {
   next?: string;
 }
 const { entries, tags, currentTag, page, total, previous, next } = Astro.props;
+const sakura = [
+  { src: arvore, depth: 1 },
+  { src: tapete, depth: 2 },
+];
 ---
 
-<div class="wrap section">
-  <header class="page-header">
-    <p class="eyebrow">ARQUIVO / BLOG</p>
-    <h1>
-      {currentTag ? `Notas sobre ${currentTag}.` : 'Notas & descobertas.'}
-    </h1>
-    <p class="lead">Artigos, estudos e ideias em andamento.</p>
-  </header>
-  <nav class="tags" aria-label="Filtrar artigos por tag">
-    <a
-      class="tag"
-      href={withBase('blog/')}
-      aria-current={!currentTag ? 'page' : undefined}
-    >
-      Todos
-    </a>
-    {tags.map((t) => (
+<section>
+  {!currentTag && (
+    <PlateStage
+      layers={sakura}
+      caption="Sakura"
+      note="A árvore e o tapete de pétalas, no mesmo quadro. Ilustração com IA."
+      label="Diorama de papel: a cerejeira ao fundo e o tapete de pétalas à frente."
+    />
+  )}
+  <div class="wrap section archive-body">
+    <header class="page-header">
+      <h1>
+        {currentTag ? `Notas sobre ${currentTag}.` : 'Notas & descobertas.'}
+      </h1>
+      <p class="lead">
+        O arquivo está pronto. Um texto entra aqui quando deixa de ser rascunho.
+      </p>
+    </header>
+    <nav class="tags" aria-label="Filtrar artigos por tag">
       <a
         class="tag"
-        href={tagPath(t)}
-        aria-current={currentTag === t ? 'page' : undefined}
+        href={withBase('blog/')}
+        aria-current={!currentTag ? 'page' : undefined}
       >
-        {t}
+        Todos
       </a>
-    ))}
-  </nav>
-  <div class="post-grid">
-    {entries.map((post) => (
-      <PostCard post={post} />
-    ))}
-    {!entries.length && <p>Nenhum artigo publicado ainda.</p>}
+      {tags.map((t) => (
+        <a
+          class="tag"
+          href={tagPath(t)}
+          aria-current={currentTag === t ? 'page' : undefined}
+        >
+          {t}
+        </a>
+      ))}
+    </nav>
+    <div class="post-grid">
+      {entries.map((post) => (
+        <PostCard post={post} />
+      ))}
+      {!entries.length && (
+        <p class="notebook-empty">Nenhum artigo publicado ainda.</p>
+      )}
+    </div>
+    <nav class="pagination" aria-label="Paginação">
+      {previous ? (
+        <a class="button" href={previous}>
+          <Arrow direction="left" /> Página anterior
+        </a>
+      ) : (
+        <span />
+      )}
+      <span class="meta">
+        Página {page} de {total}
+      </span>
+      {next ? (
+        <a class="button" href={next}>
+          Próxima página <Arrow direction="right" />
+        </a>
+      ) : (
+        <span />
+      )}
+    </nav>
   </div>
-  <nav class="pagination" aria-label="Paginação">
-    {previous ? (
-      <a class="button" href={previous}>
-        <Arrow direction="left" /> Página anterior
-      </a>
-    ) : (
-      <span />
-    )}
-    <span class="meta">
-      Página {page} de {total}
-    </span>
-    {next ? (
-      <a class="button" href={next}>
-        Próxima página <Arrow direction="right" />
-      </a>
-    ) : (
-      <span />
-    )}
-  </nav>
-</div>
+</section>

@@ -12,25 +12,24 @@ O proprietário pediu apenas o esqueleto e vai refazer todo conteúdo e design. 
 | Caderno de hipóteses | Publicação técnica contínua          | Notas e índices editoriais                   | Clareza; índice tipográfico          | 3 / 4 / 5 / 4                                           |
 | Trajetórias          | Nome Trajano e percurso profissional | Linhas que conectam projetos                 | Continuidade; mapa de caminhos       | 3 / 3 / 4 / 4                                           |
 
-Escolha provisória: estudo espacial, porque demonstra a integração 3D sem comprometer a futura direção artística. A portabilidade alta é intencional para um boilerplate.
+Escolha em 2026-11-09, a pedido do proprietário: diorama de papercut. Cada cena é uma pilha de pranchas com o mesmo tamanho. O alfa cobre o quadro inteiro e o motivo fica na coordenada em que foi desenhado. Não se recorta a folha para depois reposicionar no CSS.
 
-Idea: um espaço de trabalho para ideias em construção.
-Metaphor: desenho estrutural de um experimento.
-Signature: wireframe leve que responde ao ponteiro e scroll.
-Emotion: clareza e curiosidade.
-Motion verb: orientar; rotações pequenas, links deslocam poucos pixels.
-Screenshot: título à esquerda, estudo geométrico à direita.
+Idea: a página segura um diorama de papel, e cada folha conta uma distância.
+Metaphor: gravura japonesa cortada em planos, não um modelo 3D.
+Signature: três cenas. Cumeeira na abertura, koi na onda no meio, sakura no arquivo.
+Emotion: papel, tinta e um pouco de teatro de caixa.
+Motion verb: assentar como folha; o deslocamento é curto e mais forte nas folhas da frente.
+Screenshot: o nome numa folha estável sobre a cumeeira.
 
 ## Sistema
 
-Fundo #101719, superfície #182225, texto #e9eff0, secundário #a8b8bc, linha #46575c e acento #8cdae5. Tema claro usa o mesmo sistema com contraste recalibrado. Manrope variável local; mono de sistema para metadados. Display fluido 3–7rem, tracking negativo; leitura 18px/1.75 e 72ch (prioridade do PRD). Gutter fluido, largura máxima 1400px, radius 3px. Ease expo-out; CSS 200ms para feedback e GSAP apenas na cena.
+Papel #f6f3ec, tinta #1c1916, superfície #ebe4d8, secundário #5e574e, linha #d5cdc0, acento #7a2f2c. O prato do diorama permanece #f3ecdf nos dois temas. Tema escuro usa carvão #171614 e texto #f3eee6, sem preto ou branco puro. Cormorant Garamond local no título, Manrope na interface. Display fluido, tracking negativo. Radius 2px. Ease expo-out. O diorama anima em CSS; o ponteiro só ajusta o deslocamento. GSAP e Three.js não entram na home nesta etapa.
 
 Composição:
 
 ```text
-Home:       [texto e CTAs  | estudo espacial]
-Projetos:   [título       | resumo          | tags]
-Blog:       [índice editorial em colunas, depois empilhado no mobile]
+Home:       [cumeeira em pranchas / folha com o nome / projetos em folhas / koi]
+Blog:       [sakura / caderno vazio até o primeiro texto publicado]
 Sobre:      [coluna de leitura]
 Rodapé:     [contato      | redes]
 ```
