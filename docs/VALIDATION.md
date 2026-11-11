@@ -51,3 +51,16 @@ Ficou de fora:
 - O candidato de 2400 da cumeeira, nestes dois viewports. O `srcset` gerado traz 828, 1248 e 2400. No móvel 390×844 com densidade 2, o mesmo conjunto (HTML, CSS, WOFF2 e as seis folhas eager no candidato de 828) soma 367898 bytes.
 
 A Cormorant de display continua o WOFF2 estático, peso 500, subset Latin, de 19512 bytes.
+
+## Primeiro carregamento em 11 de novembro de 2026
+
+Medido no Chromium, cache desligado, sobre o preview de produção deste build. O número é a soma de `transferSize` do documento e dos recursos. A home em 1440×900 usa densidade 1. A home em 390×844 usa densidade 2. O blog pediu os mesmos candidatos de imagem nos dois viewports.
+
+| Página   | Viewport |   Bytes |
+| -------- | -------- | ------: |
+| `/`      | 1440×900 | 1591495 |
+| `/blog/` | 1440×900 |  806827 |
+| `/`      | 390×844  |  586043 |
+| `/blog/` | 390×844  |  806827 |
+
+A Manrope do corpo é `manrope.woff2`, subset Latin, eixo `wght` de 400 a 700, 21492 bytes no disco e 21792 bytes na transferência. `dist/_astro` não tem `.ttf`. O preload da Manrope está no `head`. Em 1440×900 a largura de uma amostra em Manrope não mudou entre o DOM pronto e `document.fonts.ready`.

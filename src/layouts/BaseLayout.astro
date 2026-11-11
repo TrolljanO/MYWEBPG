@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import cormorant from '../assets/fonts/cormorant-500.woff2';
+import manrope from '../assets/fonts/manrope.woff2';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import PaperField from '../components/motion/PaperField.astro';
@@ -46,6 +47,13 @@ const structured = jsonLd || {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="preload"
+      href={manrope}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link
       rel="preload"
       href={cormorant}
