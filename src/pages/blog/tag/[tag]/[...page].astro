@@ -20,6 +20,7 @@ const { page, tags, tag } = Astro.props;
   title={`${tag} · página ${page.currentPage}`}
   description={`Artigos com a tag ${tag}. Página ${page.currentPage} do arquivo.`}
   noindex={page.data.length < 2}
+  surface="blog"
 >
   <Archive
     entries={page.data}

@@ -3,6 +3,18 @@
   line-height: 1.75;
   overflow-wrap: anywhere;
 }
+[data-surface='blog'] .prose {
+  color: var(--text);
+  font-size: var(--step-read);
+  line-height: var(--leading-read);
+}
+[data-surface='blog'] .prose a {
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+}
+[data-surface='blog'] .prose blockquote {
+  color: var(--text);
+}
 .prose h2 {
   font-size: var(--step-title);
   margin-top: 2.5rem;

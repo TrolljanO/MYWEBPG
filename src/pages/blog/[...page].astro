@@ -13,6 +13,7 @@ const { page, tags } = Astro.props;
 <Base
   title={page.currentPage === 1 ? 'Blog' : `Blog · página ${page.currentPage}`}
   description={`Arquivo de artigos e estudos de Guilherme Trajano. Página ${page.currentPage}.`}
+  surface="blog"
 >
   <Archive
     entries={page.data}

@@ -51,3 +51,35 @@
     --sheet-under: #24211d;
   }
 }
+
+/* Blog: cor de leitura. A home fica nos tokens de :root. */
+[data-surface='blog'] {
+  --bg: #f2ecdf;
+  --text: #211d19;
+  --muted: #5a5248;
+  --sheet: #f8f4ea;
+  --sheet-under: #e3dbcc;
+  --accent: #7a2f2c;
+  --measure: 42rem;
+  --step-read: clamp(1.125rem, 1rem + 0.5vw, 1.3125rem);
+  --leading-read: 1.7;
+  --step-article-title: clamp(2.2rem, 5vw, 3.4rem);
+}
+:root[data-theme='dark'] [data-surface='blog'] {
+  --bg: #1d1b18;
+  --text: #e9e2d6;
+  --muted: #b3a898;
+  --sheet: #24211d;
+  --sheet-under: #141311;
+  --accent: #e7b2a4;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) [data-surface='blog'] {
+    --bg: #1d1b18;
+    --text: #e9e2d6;
+    --muted: #b3a898;
+    --sheet: #24211d;
+    --sheet-under: #141311;
+    --accent: #e7b2a4;
+  }
+}

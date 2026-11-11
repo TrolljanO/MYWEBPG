@@ -390,6 +390,10 @@ p {
   background: var(--bg);
   color: var(--text);
 }
+[data-surface='blog'] .footer {
+  background: var(--bg);
+  color: var(--text);
+}
 .footer-top,
 .footer-bottom {
   display: flex;
@@ -439,6 +443,15 @@ p {
   padding: clamp(1.4rem, 4vw, 3rem);
   position: relative;
   isolation: isolate;
+}
+[data-surface='blog'] .reading {
+  max-width: calc(var(--measure) + 6rem);
+}
+[data-surface='blog'] .reading h1 {
+  font-size: var(--step-article-title);
+}
+[data-surface='blog'] .reading .lead {
+  color: var(--text);
 }
 .pagination {
   display: flex;
