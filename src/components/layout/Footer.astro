@@ -3,9 +3,7 @@ import Arrow from '../ui/Arrow.astro';
 import { site } from '../../config/site';
 import { withBase } from '../../lib/paths';
 
-const linkedIn = site.socials.find(
-  (item) => item.href === 'https://www.linkedin.com/in/trajanogui/',
-);
+const linkedIn = site.socials.find((item) => item.label === 'LinkedIn');
 const otherSocials = site.socials.filter((item) => item !== linkedIn);
 ---
 

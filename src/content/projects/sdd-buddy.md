@@ -2,7 +2,6 @@
 title: SDD-Buddy
 summary: Assistente que organiza ideias em especificações e planos revisáveis por etapas.
 startDate: 2025-11-20
-role: Autor
 status: em progresso
 tags: [python, fastapi, react]
 featured: true

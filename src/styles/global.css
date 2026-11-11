@@ -131,8 +131,7 @@ img {
 .meta {
   color: var(--muted);
 }
-.meta,
-.eyebrow {
+.meta {
   font-family: var(--font-sans);
   font-size: var(--step-small);
   letter-spacing: 0.03em;
@@ -178,6 +177,10 @@ p {
   top: -8rem;
   left: 1rem;
   z-index: 50;
+  display: inline-flex;
+  align-items: center;
+  min-width: 44px;
+  min-height: 44px;
   padding: 1rem;
   background: var(--text);
   color: var(--bg);
@@ -205,6 +208,7 @@ p {
   letter-spacing: -0.04em;
   display: inline-flex;
   align-items: center;
+  min-width: 44px;
   min-height: 44px;
   white-space: nowrap;
 }
@@ -219,8 +223,11 @@ p {
   align-items: center;
 }
 .nav a {
+  display: inline-flex;
+  align-items: center;
   padding: 0.5rem 0.8rem;
   text-decoration: none;
+  min-width: 44px;
   min-height: 44px;
 }
 .nav a:hover {
@@ -235,6 +242,7 @@ p {
 .motion-toggle {
   border: 1px solid var(--line);
   background: var(--surface);
+  min-width: 44px;
   min-height: 44px;
   padding: 0.4rem 0.8rem;
   border-radius: var(--radius);
@@ -258,6 +266,7 @@ p {
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
+  min-width: 44px;
   min-height: 48px;
   border: 1px solid var(--line);
   padding: 0.65rem 1.2rem;
@@ -335,6 +344,7 @@ p {
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  min-width: 44px;
   min-height: 44px;
   padding: 0.3rem 0.6rem;
 }
@@ -353,6 +363,7 @@ p {
   background: var(--sheet-under);
   border: 0;
   padding: 0.5rem 0.7rem;
+  min-width: 44px;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -427,6 +438,7 @@ p {
 .footer a {
   display: inline-flex;
   align-items: center;
+  min-width: 44px;
   min-height: 44px;
   margin-right: 1rem;
   padding-inline: 0.75rem;
@@ -437,7 +449,7 @@ p {
   font-synthesis: none;
   font-size: var(--step-head);
   letter-spacing: -0.04em;
-  line-height: 0.95;
+  line-height: 1.05;
 }
 /* Leitura */
 
@@ -449,6 +461,7 @@ p {
   margin-bottom: 2rem;
 }
 .breadcrumbs a {
+  min-width: 44px;
   min-height: 44px;
   display: inline-flex;
   align-items: center;
@@ -672,10 +685,6 @@ p {
   position: relative;
   isolation: isolate;
 }
-.notebook {
-  width: fit-content;
-  max-width: min(34rem, 100%);
-}
 .notebook-empty {
   margin: 0;
   font-family: var(--font-display);
@@ -699,6 +708,7 @@ p {
 .archive-empty a {
   display: inline-flex;
   align-items: center;
+  min-width: 44px;
   min-height: 44px;
 }
 .project-card::before,

@@ -75,7 +75,6 @@ const figureClass = variant === 'full' ? 'diorama diorama--full' : 'diorama';
     button.hidden = false;
     const stage = host.querySelector<HTMLElement>('[data-stage]');
     const planes = [...host.querySelectorAll<HTMLElement>('[data-depth]')];
-    let paused = false;
     const place = (x: number, y: number) => {
       for (const plane of planes) {
         const depth = Number(plane.dataset.depth);
@@ -85,7 +84,7 @@ const figureClass = variant === 'full' ? 'diorama diorama--full' : 'diorama';
       }
     };
     stage?.addEventListener('pointermove', (event) => {
-      if (paused || !stage) return;
+      if (host.hasAttribute('data-paused') || !stage) return;
       const rect = stage.getBoundingClientRect();
       place(
         (event.clientX - rect.left) / rect.width - 0.5,
@@ -93,14 +92,29 @@ const figureClass = variant === 'full' ? 'diorama diorama--full' : 'diorama';
       );
     });
     stage?.addEventListener('pointerleave', () => {
-      if (!paused) place(0, 0);
+      if (!host.hasAttribute('data-paused')) place(0, 0);
     });
     button.addEventListener('click', () => {
-      paused = !paused;
-      button.setAttribute('aria-pressed', String(paused));
-      button.textContent = paused ? 'Retomar movimento' : 'Pausar movimento';
-      host.toggleAttribute('data-paused', paused);
-      if (paused) place(0, 0);
+      const pausing = !host.hasAttribute('data-paused');
+      for (const other of document.querySelectorAll<HTMLElement>(
+        '[data-diorama]',
+      )) {
+        other.toggleAttribute('data-paused', pausing);
+        const otherButton =
+          other.querySelector<HTMLButtonElement>('.motion-toggle');
+        if (otherButton && !otherButton.hidden) {
+          otherButton.setAttribute('aria-pressed', String(pausing));
+          otherButton.textContent = pausing
+            ? 'Retomar movimento'
+            : 'Pausar movimento';
+        }
+        if (!pausing) continue;
+        other
+          .querySelectorAll<HTMLElement>('.diorama-shift')
+          .forEach((shift) => {
+            shift.style.translate = '0px 0px';
+          });
+      }
     });
   }
 </script>

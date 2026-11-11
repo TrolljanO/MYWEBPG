@@ -2,7 +2,6 @@
 title: Micro-RAG
 summary: Busca em documentos técnicos de gestão de estoques para responder perguntas com trechos citáveis.
 startDate: 2025-11-11
-role: Autor
 status: em progresso
 tags: [python, fastapi, busca-em-documentos]
 featured: true

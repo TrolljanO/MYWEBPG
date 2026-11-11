@@ -83,7 +83,7 @@ const sakura = [
         </a>
       ))}
     </nav>
-    <h2>O arquivo está pronto.</h2>
+    {entries.length > 0 && <h2>Artigos</h2>}
     <div class="post-grid">
       {entries.map((post) => (
         <PostCard post={post} />

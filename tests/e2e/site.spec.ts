@@ -67,11 +67,10 @@ test('Pausar movimento na home', async ({ page }) => {
   await expect(pause).toHaveCount(2);
   await expect(pause.first()).toBeVisible();
   await pause.first().click();
-  const resume = page.getByRole('button', { name: 'Retomar movimento' });
-  await expect(resume).toBeVisible();
-  await expect(
-    page.locator('[data-diorama][data-paused]').filter({ has: resume }),
-  ).toHaveCount(1);
+  await expect(page.locator('[data-diorama][data-paused]')).toHaveCount(2);
+  await expect
+    .poll(() => page.evaluate(() => document.getAnimations().length))
+    .toBe(0);
 });
 const axeTags = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
 const visitorRoutes = [
