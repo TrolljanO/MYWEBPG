@@ -1,0 +1,230 @@
+<canvas id="paper-field" aria-hidden="true"></canvas>
+<script>
+  const body = document.body;
+  const root = document.documentElement;
+  const canvas = document.querySelector<HTMLCanvasElement>('#paper-field');
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const saveData = (
+    navigator as Navigator & { connection?: { saveData?: boolean } }
+  ).connection?.saveData;
+
+  const useCss = () => {
+    body.dataset.paper = 'css';
+    root.dataset.paperFrames = '0';
+    canvas?.remove();
+  };
+
+  if (!canvas || reduced || saveData) {
+    useCss();
+  } else {
+    const gl = canvas.getContext('webgl', {
+      alpha: false,
+      antialias: false,
+      preserveDrawingBuffer: true,
+    });
+    if (!gl) {
+      useCss();
+    } else {
+      const vert = `
+        attribute vec2 a_pos;
+        void main() {
+          gl_Position = vec4(a_pos, 0.0, 1.0);
+        }
+      `;
+      const frag = `
+        precision highp float;
+        uniform float u_crumple;
+        uniform vec3 u_paper;
+        uniform vec2 u_resolution;
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+        }
+        float vnoise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(
+            mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x),
+            mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x),
+            u.y
+          );
+        }
+        vec3 voronoi(vec2 p) {
+          vec2 cell = floor(p);
+          vec2 f = fract(p);
+          float d1 = 8.0;
+          float d2 = 8.0;
+          vec2 id = cell;
+          for (int y = -1; y <= 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+              vec2 g = vec2(float(x), float(y));
+              vec2 o = vec2(
+                hash(cell + g),
+                hash(cell + g + vec2(13.1, 4.7))
+              );
+              vec2 r = g + o - f;
+              float d = dot(r, r);
+              if (d < d1) {
+                d2 = d1;
+                d1 = d;
+                id = cell + g;
+              } else if (d < d2) {
+                d2 = d;
+              }
+            }
+          }
+          return vec3(sqrt(d1), sqrt(d2), hash(id));
+        }
+        void main() {
+          vec2 uv = gl_FragCoord.xy / u_resolution;
+          float fibre =
+            vnoise(uv * vec2(28.0, 140.0)) * 0.55 +
+            vnoise(uv * vec2(70.0, 320.0)) * 0.45;
+          fibre = (fibre - 0.5) * 0.08;
+          vec3 coarse = voronoi(uv * 3.2);
+          vec3 fine = voronoi(uv * 8.5);
+          float tilt =
+            (hash(vec2(coarse.z, 2.3)) * 2.0 - 1.0) * 0.65 +
+            (hash(vec2(fine.z, 5.1)) * 2.0 - 1.0) * 0.35;
+          float edge =
+            (1.0 - smoothstep(0.0, 0.06, coarse.y - coarse.x)) +
+            (1.0 - smoothstep(0.0, 0.035, fine.y - fine.x));
+          float fold = tilt * u_crumple * 0.22;
+          float line = min(edge, 1.5) * u_crumple * 0.18;
+          vec3 col = u_paper * (1.0 + fibre + fold) - vec3(line);
+          gl_FragColor = vec4(clamp(col, 0.0, 1.0), 1.0);
+        }
+      `;
+      const compile = (type: number, source: string) => {
+        const shader = gl.createShader(type);
+        if (!shader) return null;
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+          gl.deleteShader(shader);
+          return null;
+        }
+        return shader;
+      };
+      const program = gl.createProgram();
+      const vs = compile(gl.VERTEX_SHADER, vert);
+      const fs = compile(gl.FRAGMENT_SHADER, frag);
+      if (!program || !vs || !fs) {
+        useCss();
+      } else {
+        gl.attachShader(program, vs);
+        gl.attachShader(program, fs);
+        gl.bindAttribLocation(program, 0, 'a_pos');
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+          useCss();
+        } else {
+          const buffer = gl.createBuffer();
+          gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+          gl.bufferData(
+            gl.ARRAY_BUFFER,
+            new Float32Array([-1, -1, 3, -1, -1, 3]),
+            gl.STATIC_DRAW,
+          );
+          gl.enableVertexAttribArray(0);
+          gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+          gl.useProgram(program);
+          const uCrumple = gl.getUniformLocation(program, 'u_crumple');
+          const uPaper = gl.getUniformLocation(program, 'u_paper');
+          const uResolution = gl.getUniformLocation(program, 'u_resolution');
+          let frames = 0;
+          let crumple = 1;
+          let idle = false;
+          let generation = 0;
+          const bump = () => {
+            frames += 1;
+            root.dataset.paperFrames = String(frames);
+          };
+          const paperColor = () => {
+            const raw = getComputedStyle(body).getPropertyValue('--bg').trim();
+            const hex = /^#[0-9a-fA-F]{6}$/.test(raw) ? raw : '#f2ecdf';
+            const n = Number.parseInt(hex.slice(1), 16);
+            return [
+              ((n >> 16) & 255) / 255,
+              ((n >> 8) & 255) / 255,
+              (n & 255) / 255,
+            ] as const;
+          };
+          let color = paperColor();
+          const resize = () => {
+            const dpr = Math.min(1.5, window.devicePixelRatio || 1);
+            const width = Math.max(
+              1,
+              Math.floor(Math.min(1600, window.innerWidth) * dpr),
+            );
+            const height = Math.max(1, Math.floor(window.innerHeight * dpr));
+            if (canvas.width !== width || canvas.height !== height) {
+              canvas.width = width;
+              canvas.height = height;
+            }
+            gl.viewport(0, 0, canvas.width, canvas.height);
+          };
+          const draw = () => {
+            resize();
+            gl.useProgram(program);
+            gl.uniform1f(uCrumple, crumple);
+            gl.uniform3f(uPaper, color[0], color[1], color[2]);
+            gl.uniform2f(uResolution, canvas.width, canvas.height);
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+          };
+          const animate = (
+            ms: number,
+            from: number,
+            to: number,
+            next?: () => void,
+          ) => {
+            const gen = ++generation;
+            idle = false;
+            const started = performance.now();
+            const step = (now: number) => {
+              if (gen !== generation) return;
+              bump();
+              const k = Math.min(1, (now - started) / ms);
+              const eased = 1 - (1 - k) ** 2;
+              crumple = from + (to - from) * eased;
+              draw();
+              if (k < 1) {
+                requestAnimationFrame(step);
+                return;
+              }
+              crumple = to;
+              bump();
+              draw();
+              if (next) next();
+              else idle = true;
+            };
+            requestAnimationFrame(step);
+          };
+          body.dataset.paper = 'webgl';
+          draw();
+          animate(1400, 1, 0.1);
+          const onTheme = () => {
+            animate(450, crumple, 1, () => {
+              color = paperColor();
+              animate(1400, 1, 0.1);
+            });
+          };
+          new MutationObserver(onTheme).observe(root, {
+            attributes: true,
+            attributeFilter: ['data-theme'],
+          });
+          matchMedia('(prefers-color-scheme: dark)').addEventListener(
+            'change',
+            onTheme,
+          );
+          window.addEventListener('resize', () => {
+            resize();
+            if (!idle) return;
+            bump();
+            draw();
+          });
+        }
+      }
+    }
+  }
+</script>

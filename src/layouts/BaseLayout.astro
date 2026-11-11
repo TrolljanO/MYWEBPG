@@ -3,6 +3,7 @@ import '../styles/global.css';
 import cormorant from '../assets/fonts/cormorant-500.woff2';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import PaperField from '../components/motion/PaperField.astro';
 import Analytics from '../components/layout/Analytics.astro';
 import { site } from '../config/site';
 import { withBase, absolute } from '../lib/paths';
@@ -141,6 +142,7 @@ const structured = jsonLd || {
     <slot name="head" />
   </head>
   <body id="top" data-surface={surface}>
+    {surface === 'blog' && <PaperField />}
     <a class="skip-link" href="#main">
       Pular para o conteúdo
     </a>
