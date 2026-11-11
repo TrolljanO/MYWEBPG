@@ -40,9 +40,11 @@ O e-mail está vazio intencionalmente. Sobre e currículo têm apenas seções p
 
 ## Stack
 
-Astro 7, TypeScript strict, Content Collections + Zod 4, Markdown/MDX, Tailwind CSS 4 via Vite. Astro entrega HTML estático. Manrope e Cormorant Garamond são locais. A licença da Cormorant está em `src/assets/fonts/cormorantgaramond-OFL.txt`. ESLint, Prettier, Astro Check, Vitest, Playwright e axe cobrem qualidade.
+Astro 7, TypeScript strict, Content Collections + Zod 4, Markdown/MDX, Tailwind CSS 4 via Vite. Astro entrega HTML estático. Manrope e Cormorant Garamond são locais. A Manrope do corpo é um WOFF2 variável, subset Latin, pesos 400 a 700. A licença da Manrope está em `src/assets/fonts/manrope-OFL.txt`. A licença da Cormorant está em `src/assets/fonts/cormorantgaramond-OFL.txt`. ESLint, Prettier, Astro Check, Vitest, Playwright e axe cobrem qualidade.
 
-Não há React, SPA, CMS externo, banco ou backend. GSAP não entra no layout base nem nas páginas de leitura. Navegação e leitura funcionam sem JavaScript. A cena é `PlateStage`: CSS, sem canvas. Com `prefers-reduced-motion` ou Save-Data o diorama fica pausado e o botão de pausa não aparece. Com movimento permitido, o botão pausa a animação.
+Não há React, SPA, CMS externo, banco ou backend. GSAP não entra no layout base nem nas páginas de leitura. Navegação e leitura funcionam sem JavaScript. As pranchas são `PlateStage` em CSS. O blog tem tema próprio e um campo de papel: o canvas fica só nessa superfície, e a textura CSS entra quando o movimento está reduzido. Com `prefers-reduced-motion` ou Save-Data o diorama fica pausado e o botão de pausa não aparece. Com movimento permitido, o botão pausa a animação.
+
+O primeiro carregamento medido em 11 de novembro de 2026 está em `docs/VALIDATION.md`. A soma de `transferSize`, com o cache desligado, foi 1591495 bytes na home em 1440×900, 806827 no blog em 1440×900, 586043 na home em 390×844 e 806827 no blog em 390×844. A Manrope transferida pesa 21792 bytes.
 
 ## Comandos de qualidade
 

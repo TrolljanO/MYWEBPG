@@ -84,12 +84,54 @@ const visitorRoutes = [
   ['sdd-buddy', './projects/sdd-buddy/'],
   ['micro-rag', './projects/micro-rag/'],
 ];
-test('axe nas rotas abertas sem artigo publicado', async ({ page }) => {
-  for (const [name, path] of visitorRoutes) {
-    const response = await page.goto(path);
-    expect(response?.status(), name).toBe(name === '404' ? 404 : 200);
-    const result = await new AxeBuilder({ page }).withTags(axeTags).analyze();
-    expect(result.violations, name).toEqual([]);
+for (const theme of ['light', 'dark'] as const) {
+  test(`axe nas rotas abertas no tema ${theme}`, async ({ page }) => {
+    await page.addInitScript((value) => {
+      localStorage.setItem('theme', value);
+    }, theme);
+    for (const [name, path] of visitorRoutes) {
+      const response = await page.goto(path);
+      expect(response?.status(), name).toBe(name === '404' ? 404 : 200);
+      await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+      const result = await new AxeBuilder({ page }).withTags(axeTags).analyze();
+      expect(result.violations, name).toEqual([]);
+    }
+  });
+}
+test('o blog com movimento reduzido não anima', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('./blog/');
+  await expect(page.locator('body')).toHaveAttribute('data-paper', 'css');
+  await expect(page.locator('#paper-field')).toHaveCount(0);
+  await expect(page.locator('[data-diorama][data-paused]')).toHaveCount(1);
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () =>
+          document
+            .getAnimations()
+            .filter((animation) => animation.playState === 'running').length,
+      ),
+    )
+    .toBe(0);
+});
+test('o palco ocupa a largura da página em 390', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const [path, count] of [
+    ['./', 2],
+    ['./blog/', 1],
+  ] as const) {
+    await page.goto(path);
+    const widths = await page.locator('.diorama-stage').evaluateAll((nodes) =>
+      nodes.map((node) => ({
+        width: node.getBoundingClientRect().width,
+        viewport: document.documentElement.clientWidth,
+      })),
+    );
+    expect(widths, path).toHaveLength(count);
+    for (const box of widths) {
+      expect(box.width, path).toBeGreaterThanOrEqual(box.viewport - 1);
+    }
   }
 });
 test('RSS e robots incluem o base path correto', async ({ request }) => {

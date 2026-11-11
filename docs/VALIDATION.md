@@ -64,3 +64,9 @@ Medido no Chromium, cache desligado, sobre o preview de produção deste build. 
 | `/blog/` | 390×844  |  806827 |
 
 A Manrope do corpo é `manrope.woff2`, subset Latin, eixo `wght` de 400 a 700, 21492 bytes no disco e 21792 bytes na transferência. `dist/_astro` não tem `.ttf`. O preload da Manrope está no `head`. Em 1440×900 a largura de uma amostra em Manrope não mudou entre o DOM pronto e `document.fonts.ready`.
+
+## Checagens em 11 de novembro de 2026
+
+- Vitest: 6 testes. São 4 de regras editoriais, 1 de paginação e 1 da versão do Node no `.nvmrc`.
+- Playwright: 22 testes. O axe percorre as nove rotas abertas no tema claro e no tema escuro, nas tags `wcag2a`, `wcag2aa`, `wcag21aa` e `wcag22aa`. O blog com movimento reduzido fica em `data-paper="css"`, sem canvas e sem animação em execução. Em 390×844 o palco da home e o do blog medem a largura da página.
+- A suíte não abre artigo publicado. Save-Data e a falha de compilação do shader não foram exercitados. Lighthouse, outro navegador e leitor de tela não rodaram.

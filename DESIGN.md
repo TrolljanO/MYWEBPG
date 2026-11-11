@@ -23,7 +23,7 @@ Screenshot: o nome numa folha estável, ao lado da cumeeira e fora do palco.
 
 ## Sistema
 
-Papel #f6f3ec, tinta #1c1916, superfície #ebe4d8, secundário #5e574e, linha #d5cdc0, acento #7a2f2c. O prato do diorama permanece #f3ecdf nos dois temas. Cormorant Garamond local no título, Manrope na interface. Display fluido, tracking negativo. Radius 2px. Ease expo-out. A cena é `PlateStage`: CSS, sem canvas. O ponteiro só ajusta o deslocamento.
+Papel #f6f3ec, tinta #1c1916, superfície #ebe4d8, secundário #5e574e, linha #d5cdc0, acento #7a2f2c. O prato do diorama permanece #f3ecdf nos dois temas. Cormorant Garamond local no título, Manrope na interface. Display fluido, tracking negativo. Radius 2px. Ease expo-out. As pranchas são `PlateStage` em CSS. O ponteiro só ajusta o deslocamento. O blog tem tema e movimento de papel: um canvas WebGL amassa, assenta e para. Sem movimento, com Save-Data ou sem WebGL, o fundo fica na textura CSS.
 
 Tema escuro, em `:root[data-theme='dark']` e quando o sistema pede escuro sem tema explícito. Os tokens saem de `src/styles/tokens.css`. Não há preto nem branco puro:
 
@@ -42,6 +42,8 @@ Tema escuro, em `:root[data-theme='dark']` e quando o sistema pede escuro sem te
 
 A seção de trabalho e o rodapé ficam no papel claro nos dois temas. O fundo deles é `#f6f3ec`. O prato, a abertura e o capítulo da koi ficam em `#f3ecdf`.
 
+O blog, em `[data-surface='blog']`, usa outra tinta. No claro, `--bg` é `#f2ecdf` e `--text` é `#211d19`. No escuro, `--bg` é `#1d1b18` e `--text` é `#e9e2d6`. A folha `.paper-sheet` continua `#f6f3ec` com tinta `#1c1916` nos dois temas. O campo de papel existe só no blog. A home e os projetos não montam esse canvas.
+
 Composição, como o código monta hoje:
 
 ```text
@@ -49,7 +51,8 @@ Home:       [folha com o nome fora do palco | cumeeira em seis pranchas]
             [trabalho no papel #f6f3ec]
             [koi | folha do método sobre o capítulo]
             [caderno no mesmo papel claro]
-Blog:       [folha das notas fora do palco | sakura em oito pranchas]
+Blog:       [sakura em oito pranchas | folha das notas no papel claro]
+            [fundo no tema do blog, com o campo de papel]
             [arquivo vazio até o primeiro texto publicado]
 Sobre:      [coluna de leitura]
 Rodapé:     [contato      | redes] no papel #f6f3ec, nos dois temas
@@ -73,4 +76,4 @@ Estas marcas ficam registradas como exceção ao inspetor. O registro não adota
 - smooth scroll
 - Iconify
 
-`few-pictures` e `still-page` não entram nesta lista.
+Nas páginas de leitura, `few-pictures` e `still-page` também ficam como exceção. São sobre, currículo, privacidade, a lista de projetos, o estudo de caso e o artigo. A home e o blog mantêm o diorama.
