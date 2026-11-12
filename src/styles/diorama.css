@@ -57,7 +57,7 @@
   white-space: nowrap;
   background: var(--bg);
   color: var(--text);
-  border: 1px solid var(--text);
+  border-color: transparent;
 }
 .plate-frame:has(.diorama--full),
 .diorama--full {
@@ -67,6 +67,24 @@
   width: 100%;
   aspect-ratio: auto;
   height: var(--stage-h);
+  /* A borda do palco some na cor da página: sem linha dura entre as seções. */
+  --fade-top: 0px;
+  --fade-bottom: 5rem;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 var(--fade-top),
+    #000 calc(100% - var(--fade-bottom)),
+    transparent
+  );
+}
+.koi-chapter .diorama-stage {
+  --fade-top: 5rem;
+}
+/* Na koi todas as folhas usam o mesmo ajuste, senão a onda de trás sai do registro. */
+.koi-chapter .diorama--full .diorama-plane:first-child img {
+  object-fit: contain;
+  object-position: inherit;
 }
 .diorama--full .diorama-plane img {
   object-fit: contain;
@@ -103,9 +121,104 @@
 @media (min-aspect-ratio: 3/2) and (min-width: 1000px) {
   .plate-frame:has(.diorama--full),
   .diorama--full {
-    --stage-h: min(100vw, calc(100svh - 5.5rem));
+    --stage-h: min(100vw, calc(100svh - var(--header-h)));
   }
-  .diorama--full .diorama-plane:not(:first-child) img {
+  .diorama--full .diorama-plane:not(:first-child) img,
+  .koi-chapter .diorama--full .diorama-plane:first-child img {
     object-position: right center;
+  }
+}
+
+/* Caixa de luz: a cena fica no fundo e cinco folhas recortadas ocupam a largura. */
+
+.plate-frame:has(.diorama--lightbox),
+.diorama--lightbox {
+  --stage-h: min(100vw, 46svh);
+  --sheet-left: clamp(1rem, 3vw, 2rem);
+  --sheet-w: min(27rem, 40vw);
+}
+.diorama--lightbox .diorama-stage {
+  container-type: inline-size;
+  background: var(--box-front);
+  /* --od é o lado do quadro da cena; --ox e --oy, o centro do vão. */
+  --od: min(120cqw, calc(var(--stage-h) * 1.15));
+  --ox: 50cqw;
+  --oy: calc(var(--stage-h) * 0.5);
+  --bleed: 56px;
+}
+.diorama--lightbox .diorama-plane {
+  inset: auto;
+  left: calc(var(--ox) - var(--od) / 2);
+  top: calc(var(--oy) - var(--od) * 0.41);
+  width: var(--od);
+  height: var(--od);
+  background: var(--box-void);
+}
+.diorama--lightbox .diorama-plane ~ .diorama-plane {
+  background: none;
+}
+.diorama--lightbox .diorama-plane img,
+.diorama--lightbox .diorama-plane:first-child img {
+  object-fit: fill;
+  filter: var(--box-art);
+}
+.diorama--lightbox .diorama-stage::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--ox) - var(--od) / 2);
+  top: calc(var(--oy) - var(--od) * 0.41);
+  z-index: var(--art-top);
+  width: var(--od);
+  height: var(--od);
+  background: var(--box-glow);
+  pointer-events: none;
+}
+.diorama--lightbox .diorama-frame {
+  inset: calc(var(--bleed) * -1);
+  width: auto;
+  height: auto;
+  background: none;
+}
+.diorama-frame .diorama-shift {
+  filter: drop-shadow(-5px -5px 10px var(--box-edge))
+    drop-shadow(8px 12px 20px var(--box-shade));
+}
+.diorama-cut {
+  width: 100%;
+  height: 100%;
+  --cut: color-mix(
+    in oklab,
+    var(--box-front) calc(var(--t) * 100%),
+    var(--box-back)
+  );
+  /* A luz cai com a distância do vão. */
+  background: radial-gradient(
+    circle at calc(var(--ox) + var(--bleed)) calc(var(--oy) + var(--bleed)),
+    var(--cut) calc(var(--od) * 0.45),
+    color-mix(in oklab, var(--cut) 45%, var(--box-front)) calc(var(--od) * 1.1)
+  );
+  mask-image: linear-gradient(#000 0 0), var(--hole);
+  mask-repeat: no-repeat;
+  mask-size:
+    100% 100%,
+    calc(var(--od) * 2) calc(var(--od) * 2);
+  mask-position:
+    0 0,
+    calc(var(--ox) - var(--od) + var(--bleed))
+      calc(var(--oy) - var(--od) + var(--bleed));
+  mask-composite: exclude;
+}
+@media (min-width: 1000px) {
+  /* Lado a lado em toda janela larga. O palco não fica menor que a folha do nome. */
+  .plate-frame:has(.diorama--lightbox),
+  .diorama--lightbox {
+    --stage-h: clamp(31rem, calc(100svh - var(--header-h)), 64vw);
+  }
+  .diorama--lightbox .diorama-stage {
+    --od: min(
+      calc(var(--stage-h) * 1.2),
+      calc((100cqw - var(--sheet-left) - var(--sheet-w)) * 1.15)
+    );
+    --ox: calc((100cqw + var(--sheet-left) + var(--sheet-w)) / 2);
   }
 }

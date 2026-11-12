@@ -8,12 +8,12 @@ interface Layer {
 }
 interface Props {
   layers: Layer[];
-  caption: string;
-  note: string;
+  caption?: string;
+  note?: string;
   label: string;
   loading: 'eager' | 'lazy';
   decoding?: 'async' | 'auto' | 'sync';
-  variant?: 'full';
+  variant?: 'full' | 'lightbox';
   sizes?: string;
 }
 const { layers, caption, note, label, loading, decoding, variant, sizes } =
@@ -23,10 +23,50 @@ const stage = layers[0].src;
 const imageSizes =
   sizes ??
   (variant === 'full'
-    ? 'min(100vw, calc(100svh - 5.5rem))'
-    : 'min(100vw, calc((100svh - 5.5rem) * 1.5))');
-const stageStyle = `--ar-w:${stage.width};--ar-h:${stage.height}`;
-const figureClass = variant === 'full' ? 'diorama diorama--full' : 'diorama';
+    ? 'min(100vw, calc(100svh - 3.75rem))'
+    : 'min(100vw, calc((100svh - 3.75rem) * 1.5))');
+const lightbox = variant === 'lightbox';
+const top = Math.max(...layers.map((layer) => layer.depth));
+const stageStyle = `--ar-w:${stage.width};--ar-h:${stage.height};--art-top:${top}`;
+const figureClass = lightbox
+  ? 'diorama diorama--full diorama--lightbox'
+  : variant === 'full'
+    ? 'diorama diorama--full'
+    : 'diorama';
+// Caixa de luz: cinco folhas com um vão liso e orgânico, do fundo (vão menor) para a frente.
+// O vão é desenhado em 2000 unidades com centro em 1000,1000 e vira máscara CSS da folha.
+const hole = (i: number) => {
+  const phase = (k: number) =>
+    ((Math.sin(i * 12.9898 + k * 78.233) * 43758.5453) % 1) * Math.PI * 2;
+  const points = Array.from({ length: 48 }, (_, j) => {
+    const a = (j / 48) * Math.PI * 2;
+    const r =
+      1 +
+      0.05 * Math.sin(2 * a + phase(1)) +
+      0.04 * Math.sin(3 * a + phase(2)) +
+      0.018 * Math.sin(5 * a + phase(3));
+    return [
+      1000 + (410 + i * 62) * r * Math.cos(a),
+      1000 + (335 + i * 54) * r * Math.sin(a),
+    ];
+  });
+  // Curva pelos pontos médios: sem quina e sem trecho reto.
+  const mid = (j: number) => {
+    const [x1, y1] = points[j];
+    const [x2, y2] = points[(j + 1) % points.length];
+    return `${Math.round((x1 + x2) / 2)} ${Math.round((y1 + y2) / 2)}`;
+  };
+  const curve = points
+    .map(([x, y], j) => `Q${Math.round(x)} ${Math.round(y)} ${mid(j)}`)
+    .join('');
+  return `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 2000'%3E%3Cpath d='M${mid(points.length - 1)}${curve}Z'/%3E%3C/svg%3E")`;
+};
+const frames = lightbox
+  ? [0, 1, 2, 3, 4].map((i) => ({
+      depth: top + 1 + i,
+      style: `--depth:${top + 1 + i};--t:${i / 4};--hole:${hole(i)}`,
+    }))
+  : [];
 ---
 
 <figure class={figureClass} data-diorama>
@@ -49,11 +89,24 @@ const figureClass = variant === 'full' ? 'diorama diorama--full' : 'diorama';
         </div>
       </div>
     ))}
+    {frames.map((frame) => (
+      <div
+        class="diorama-plane diorama-frame"
+        data-depth={frame.depth}
+        style={frame.style}
+      >
+        <div class="diorama-shift">
+          <div class="diorama-cut" />
+        </div>
+      </div>
+    ))}
   </div>
-  <figcaption>
-    <span>{caption}</span>
-    <span class="muted">{note}</span>
-  </figcaption>
+  {caption && (
+    <figcaption>
+      <span>{caption}</span>
+      <span class="muted">{note}</span>
+    </figcaption>
+  )}
   <button class="motion-toggle" type="button" hidden aria-pressed="false">
     Pausar movimento
   </button>

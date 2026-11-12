@@ -12,16 +12,30 @@
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --font-mono: ui-monospace, monospace;
   --step-small: 0.875rem;
-  --step-body: 1.125rem;
-  --step-lead: clamp(1.15rem, 2vw, 1.5rem);
-  --step-title: 1.7rem;
-  --step-head: clamp(1.9rem, 4vw, 3.5rem);
-  --step-display: clamp(2.7rem, 7vw, 6.2rem);
-  --sheet: #ebe4d8;
+  --step-body: 1rem;
+  --step-lead: clamp(1rem, 1.3vw, 1.2rem);
+  --step-title: 1.3rem;
+  --step-head: clamp(1.6rem, 2.8vw, 2.6rem);
+  --step-display: clamp(2.25rem, 4.4vw, 4.25rem);
+  --header-h: 3.75rem;
+  /* Folha na cor da página: o relevo vem da sombra. */
+  --sheet: #f6f3ec;
   --sheet-under: #d5cdc0;
-  --space: clamp(1.25rem, 4vw, 4rem);
-  --radius: 2px;
+  --space: clamp(1.25rem, 3.5vw, 3rem);
+  --radius: 0.9rem;
+  --radius-sheet: 1.5rem;
+  /* Relevo macio: uma luz e uma sombra, sem linha dura. */
+  --soft-hi: light-dark(rgb(255 255 255 / 0.9), rgb(255 255 255 / 0.05));
+  --soft-lo: light-dark(rgb(58 44 30 / 0.2), rgb(0 0 0 / 0.55));
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Caixa de luz da cumeeira: papel branco no claro, luz por trás no escuro. */
+  --box-front: #f6f3ec;
+  --box-back: #e4ddd0;
+  --box-edge: rgb(255 255 255 / 0.85);
+  --box-shade: rgb(58 44 30 / 0.26);
+  --box-void: #b9b9b7;
+  --box-art: sepia(0.2) brightness(1.03);
+  --box-glow: none;
 }
 :root[data-theme='dark'] {
   color-scheme: dark;
@@ -33,8 +47,21 @@
   --accent: #e7b2a4;
   --on-accent: #1c1916;
   --paper: #f3ecdf;
-  --sheet: #3c3832;
+  --sheet: #171614;
   --sheet-under: #24211d;
+  --box-front: #171614;
+  --box-back: #a8641f;
+  --box-edge: rgb(255 200 120 / 0.14);
+  --box-shade: rgb(0 0 0 / 0.6);
+  --box-void: #d39a48;
+  --box-art: sepia(1) saturate(1.9) hue-rotate(-12deg) brightness(1.02)
+    contrast(1.12);
+  --box-glow: radial-gradient(
+    closest-side at 50% 41%,
+    rgb(255 240 190 / 0.36),
+    rgb(255 190 90 / 0.18) 55%,
+    rgb(70 28 0 / 0.5) 100%
+  );
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
@@ -47,8 +74,21 @@
     --accent: #e7b2a4;
     --on-accent: #1c1916;
     --paper: #f3ecdf;
-    --sheet: #3c3832;
+    --sheet: #171614;
     --sheet-under: #24211d;
+    --box-front: #171614;
+    --box-back: #a8641f;
+    --box-edge: rgb(255 200 120 / 0.14);
+    --box-shade: rgb(0 0 0 / 0.6);
+    --box-void: #d39a48;
+    --box-art: sepia(1) saturate(1.9) hue-rotate(-12deg) brightness(1.02)
+      contrast(1.12);
+    --box-glow: radial-gradient(
+      closest-side at 50% 41%,
+      rgb(255 240 190 / 0.36),
+      rgb(255 190 90 / 0.18) 55%,
+      rgb(70 28 0 / 0.5) 100%
+    );
   }
 }
 

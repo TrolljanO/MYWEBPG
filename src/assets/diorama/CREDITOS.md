@@ -15,6 +15,8 @@ Post: https://grok.com/imagine/post/e8097549-1e03-4a6e-8c4f-2a5b7528b973
 - `cumeeira/05-dragao.webp`
 - `cumeeira/06-nuvens-frente.webp`
 
+As cinco folhas recortadas que emolduram a cumeeira na home não são arquivo de imagem. São máscaras CSS desenhadas por código em `src/components/motion/PlateStage.astro`.
+
 ## Sakura
 
 Mestre: a cerejeira inteira, com chão, tronco, copa e pétalas.

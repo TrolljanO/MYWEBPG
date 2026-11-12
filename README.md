@@ -69,7 +69,7 @@ Configuração padrão: `https://trolljano.github.io/MYWEBPG/`.
 2. Revise e faça merge do branch para `main` quando quiser substituir o site atual.
 3. O workflow Pages valida o projeto e publica `dist/` somente após sucesso.
 
-Este branch não altera Pages nem publica o site atual. PRs recebem build/testes e artefato `static-preview`; GitHub Pages não oferece URLs independentes de preview por PR neste boilerplate.
+O Pages deste repositório já está configurado para GitHub Actions. Pushes no branch de trabalho validam o projeto; integrar em `main` dispara a publicação. PRs recebem build/testes e artefato `static-preview`; GitHub Pages não oferece URLs independentes de preview por PR neste boilerplate.
 
 Para domínio próprio, configure as variáveis de repositório `SITE_URL=https://seu-dominio` e `BASE_PATH=/`. Configure o domínio no Pages e adicione `public/CNAME` quando apropriado. Localmente, use variáveis de shell: `SITE_URL=https://seu-dominio BASE_PATH=/ npm run build`. `.env.example` é referência; a configuração Astro lê `process.env`, portanto arquivos `.env` não substituem automaticamente `SITE_URL/BASE_PATH` no config.
 
@@ -78,6 +78,7 @@ O workflow tem rebuild horário para datas futuras; o GitHub pode atrasar/agenda
 ## Documentação
 
 - `docs/CONTENT.md`: frontmatter, imagens, MDX, redes sociais e publicação.
+- `docs/BOT-PUBLISHING.md`: publicação de Markdown por um bot externo, como o Grokbot.
 - `docs/ARCHITECTURE.md`: rotas, responsabilidades, segurança e extensão visual.
 - `docs/VALIDATION.md`: evidências e limites da validação.
 - `DESIGN.md`: direção provisória e decisões para facilitar redesign.

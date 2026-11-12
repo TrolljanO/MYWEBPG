@@ -1,5 +1,19 @@
 # Validação do boilerplate
 
+## Preparação para Pages em 12 de novembro de 2026
+
+Validação local com Node 24.15.0, incluindo as alterações da caixa de luz e do relevo que estavam sem commit:
+
+- `npm run validate`: ESLint passou; Astro Check verificou 54 arquivos com zero erros, warnings ou hints; 6 testes unitários passaram; build de 13 páginas e verificação de links/assets passaram.
+- `npm run format:check`: passou.
+- `npm run test:content`: passou com 35 páginas de fixtures, paginação, tags, Markdown/MDX, SEO, RSS, rascunhos e datas; imagem sem alt e frontmatter inválido impediram o build como esperado. O script removeu as fixtures e restaurou o build de produção.
+- `CI=true npm run test:e2e`: 23 testes Chromium passaram em 35,3 s, sobre o preview de produção.
+- `npm audit --omit=dev`: zero vulnerabilidades conhecidas.
+- GitHub API: Actions habilitado; Pages com `build_type: workflow`, HTTPS obrigatório e URL `https://trolljano.github.io/MYWEBPG/`. Sem variáveis de domínio próprio: valem os defaults do workflow.
+- O deploy continua condicionado a `main`. Esta verificação local não comprova um deploy desta versão. A integração do Grokbot não foi executada; o contrato está em `docs/BOT-PUBLISHING.md`.
+
+Os registros abaixo são históricos. As limitações de navegador, leitor de tela e Lighthouse continuam aplicáveis.
+
 Verificado em 10 de novembro de 2026, no build de produção local, Node 24.15.0. O CI e o deploy usam Node 24. `engines.node` é `>=22.23.4`.
 
 - ESLint: passou.
@@ -51,6 +65,16 @@ Ficou de fora:
 - O candidato de 2400 da cumeeira, nestes dois viewports. O `srcset` gerado traz 828, 1248 e 2400. No móvel 390×844 com densidade 2, o mesmo conjunto (HTML, CSS, WOFF2 e as seis folhas eager no candidato de 828) soma 367898 bytes.
 
 A Cormorant de display continua o WOFF2 estático, peso 500, subset Latin, de 19512 bytes.
+
+Medido de novo em 11 de novembro de 2026, depois que a cumeeira virou caixa de luz. A conta agora é outra: soma o corpo de tudo o que o Chromium recebeu no primeiro carregamento da home, menos as folhas da koi. Entram HTML, CSS, as duas fontes e as seis folhas eager. O `sizes` da cumeeira é `(min-width: 1000px) calc(120svh - 6.6rem), 100vw`.
+
+| Viewport     | Quadro da cena | Candidato | Bytes recebidos |
+| ------------ | -------------: | --------: | --------------: |
+| 1280×720, 1x |     758 CSS px |       828 |          412520 |
+| 1440×900, 1x |     974 CSS px |      1248 |          603344 |
+| 390×844, 2x  |     446 CSS px |       828 |          412520 |
+
+O HTML da home foi de 17943 para 25548 bytes sem gzip. A diferença são as cinco máscaras das folhas recortadas, cada uma uma curva de 48 pontos no atributo `style`. Os bytes da tabela foram medidos com a máscara anterior, de 300 pontos, quando o HTML tinha 34683 bytes; as imagens não mudaram.
 
 ## Primeiro carregamento em 11 de novembro de 2026
 

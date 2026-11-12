@@ -39,7 +39,7 @@
   box-sizing: border-box;
 }
 html {
-  scroll-padding-top: 7rem;
+  scroll-padding-top: 5rem;
 }
 body {
   margin: 0;
@@ -131,7 +131,7 @@ img {
   margin-inline: auto;
 }
 .section {
-  padding-block: clamp(3rem, 7vw, 7rem);
+  padding-block: clamp(2.5rem, 4.5vw, 4.5rem);
 }
 .muted,
 .meta {
@@ -198,14 +198,16 @@ p {
   position: sticky;
   top: 0;
   z-index: 20;
-  background: var(--surface);
+  /* Mesma cor da página e uma sombra macia: sem linha entre a barra e o conteúdo. */
+  background: var(--bg);
+  box-shadow: 0 10px 24px -14px var(--soft-lo);
 }
 .header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  min-height: 88px;
+  min-height: var(--header-h);
 }
 .brand {
   font-size: var(--step-body);
@@ -246,12 +248,32 @@ p {
 }
 .theme-toggle,
 .motion-toggle {
-  border: 1px solid var(--line);
-  background: var(--surface);
+  border: 1px solid transparent;
+  background: var(--bg);
   min-width: 44px;
   min-height: 44px;
-  padding: 0.4rem 0.8rem;
-  border-radius: var(--radius);
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: var(--step-small);
+  box-shadow:
+    -4px -4px 10px var(--soft-hi),
+    5px 6px 14px var(--soft-lo);
+}
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  padding: 0;
+}
+/* Lâmpada: acesa no tema claro, apagada no escuro. */
+.theme-toggle .lamp-rays {
+  opacity: 0;
+}
+.theme-toggle[data-lamp='on'] .lamp-glass {
+  fill: #f0b445;
+}
+.theme-toggle[data-lamp='on'] .lamp-rays {
+  opacity: 1;
 }
 .theme-toggle:hover,
 .motion-toggle:hover {
@@ -271,13 +293,25 @@ p {
   display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
+  gap: 1.25rem;
   min-width: 44px;
-  min-height: 48px;
-  border: 1px solid var(--line);
-  padding: 0.65rem 1.2rem;
+  min-height: 44px;
+  border: 1px solid transparent;
+  padding: 0.45rem 1rem;
+  font-size: 0.9375rem;
   text-decoration: none;
   border-radius: var(--radius);
+  background: var(--bg);
+  box-shadow:
+    -5px -5px 12px var(--soft-hi),
+    6px 8px 16px var(--soft-lo);
+}
+.button:active,
+.theme-toggle:active,
+.motion-toggle:active {
+  box-shadow:
+    inset 3px 3px 8px var(--soft-lo),
+    inset -3px -3px 8px var(--soft-hi);
 }
 .button:hover {
   background: var(--text);
@@ -374,6 +408,7 @@ p {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
+  border-radius: var(--radius);
 }
 .tag:hover {
   background: var(--surface);
@@ -502,6 +537,7 @@ p {
   padding: 1.5rem;
   background: var(--sheet-under);
   margin-block: 2rem;
+  border-radius: var(--radius);
 }
 .toc a {
   display: inline-flex;
@@ -613,17 +649,47 @@ p {
 /* Folha e palco */
 
 .paper-sheet {
-  background: #f6f3ec;
-  color: #1c1916;
-  --text: #1c1916;
-  --bg: #f6f3ec;
-  --line: #d5cdc0;
-  --accent: #7a2f2c;
-  --on-accent: #f6f3ec;
-  --surface: #ebe4d8;
-  --muted: #5e574e;
-  --sheet: #ebe4d8;
-  --sheet-under: #d5cdc0;
+  --sheet: var(--bg);
+  background: var(--bg);
+  color: var(--text);
+}
+.project-card,
+.post-card,
+.reading,
+.notebook,
+.notebook-empty,
+.archive-empty,
+.hero-sheet,
+.method-sheet {
+  border-radius: var(--radius-sheet);
+  box-shadow:
+    -8px -8px 20px var(--soft-hi),
+    10px 12px 26px var(--soft-lo);
+}
+/* Sobre o prato claro da arte a folha fica no papel claro nos dois temas. */
+@media (min-width: 801px) {
+  .method-sheet {
+    color-scheme: light;
+    --bg: #f6f3ec;
+    --text: #1c1916;
+    --muted: #5e574e;
+    --line: #d5cdc0;
+    --accent: #7a2f2c;
+    --on-accent: #f6f3ec;
+    --surface: #ebe4d8;
+  }
+}
+@media (min-aspect-ratio: 3/2) and (min-width: 1000px) {
+  [data-surface='blog'] .hero-sheet {
+    color-scheme: light;
+    --bg: #f6f3ec;
+    --text: #1c1916;
+    --muted: #5e574e;
+    --line: #d5cdc0;
+    --accent: #7a2f2c;
+    --on-accent: #f6f3ec;
+    --surface: #ebe4d8;
+  }
 }
 .opening {
   position: relative;
@@ -717,66 +783,6 @@ p {
   min-width: 44px;
   min-height: 44px;
 }
-.project-card::before,
-.post-card::before,
-.reading::before,
-.notebook::before,
-.notebook-empty::before,
-.archive-empty::before,
-.hero-sheet::before,
-.method-sheet::before,
-.project-card::after,
-.post-card::after,
-.reading::after,
-.notebook::after,
-.notebook-empty::after,
-.archive-empty::after,
-.hero-sheet::after,
-.method-sheet::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-.project-card::before,
-.post-card::before,
-.reading::before,
-.notebook::before,
-.notebook-empty::before,
-.archive-empty::before,
-.hero-sheet::before,
-.method-sheet::before {
-  z-index: -2;
-  background: var(--sheet-under);
-  translate: 6px 8px;
-}
-.project-card::before {
-  translate: 7px 9px;
-}
-.notebook::before,
-.notebook-empty::before,
-.archive-empty::before {
-  translate: 8px 10px;
-}
-.project-card::after,
-.post-card::after,
-.reading::after,
-.notebook::after,
-.notebook-empty::after,
-.archive-empty::after,
-.hero-sheet::after,
-.method-sheet::after {
-  z-index: -1;
-  background: var(--sheet);
-}
-.hero-sheet::before,
-.method-sheet::before {
-  background: #ebe4d8;
-}
-.hero-sheet::after,
-.method-sheet::after {
-  background: #f6f3ec;
-}
 .archive-body {
   position: relative;
   z-index: 2;
@@ -790,6 +796,31 @@ p {
     top: calc(var(--stage-h) / 2);
     translate: 0 -50%;
     width: min(34rem, calc(100vw - var(--stage-h) - 3rem));
+  }
+}
+/* Caixa de luz da home: no escuro o nome fica na folha da frente, sem cartão. */
+
+.plate-frame:has(.diorama--lightbox) .hero-sheet {
+  background: none;
+  box-shadow: none;
+}
+@media (min-width: 1000px) {
+  .plate-frame:has(.diorama--lightbox) .hero-sheet {
+    position: absolute;
+    left: var(--sheet-left);
+    top: calc(var(--stage-h) / 2);
+    translate: 0 -50%;
+    width: var(--sheet-w);
+    padding: 1.5rem 1.6rem 0.5rem;
+    background: light-dark(var(--bg), transparent);
+    box-shadow:
+      -10px -10px 24px light-dark(rgb(255 255 255 / 0.85), transparent),
+      12px 14px 30px light-dark(rgb(58 44 30 / 0.18), transparent);
+  }
+}
+@media (max-width: 999.98px) {
+  .diorama--lightbox > .motion-toggle {
+    top: calc(var(--stage-h) - 3.5rem);
   }
 }
 @media (max-width: 800px) {

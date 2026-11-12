@@ -20,7 +20,7 @@ Home e blog → dioramas de pranchas WebP com alfa no quadro inteiro (CSS) → p
 
 Não há ClientRouter: páginas fazem navegação nativa, sem lifecycle global de SPA. Theme toggle e botões JS ficam ocultos até estarem prontos. Menu mobile usa details/summary e funciona sem JS; Escape fecha com foco devolvido. A leitura e as tags são links HTML. O progresso de leitura é CSS, sem loop JS no blog.
 
-A home usa dois dioramas (cumeeira e koi) e o arquivo do blog usa a sakura. Cada cena é uma pilha de WebP do mesmo tamanho, com alfa no quadro inteiro e o motivo já na coordenada. O palco usa essa proporção; cada folha ocupa o palco inteiro, sem reposicionar uma camada no CSS. O movimento é CSS, com deslocamento curto no ponteiro. Há botão de pausa, reduced motion e Save-Data. Sem canvas. O módulo Three.js/GSAP da cena de exemplo permanece no repositório e não é montado. Artigos e o layout base não importam essas bibliotecas. Scroll é nativo; não há Lenis, pinning ou scroll-jacking.
+A home usa dois dioramas (cumeeira e koi) e o arquivo do blog usa a sakura. Cada cena é uma pilha de WebP do mesmo tamanho, com alfa no quadro inteiro e o motivo já na coordenada. O palco usa essa proporção; cada folha ocupa o palco inteiro, sem reposicionar uma camada no CSS. A cumeeira usa `variant="lightbox"`: as seis folhas ficam num quadro só, atrás de cinco folhas recortadas por máscara CSS. O movimento é CSS, com deslocamento curto no ponteiro. Há botão de pausa, reduced motion e Save-Data. Sem canvas. O módulo Three.js/GSAP da cena de exemplo permanece no repositório e não é montado. Artigos e o layout base não importam essas bibliotecas. Scroll é nativo; não há Lenis, pinning ou scroll-jacking.
 
 ## Limites e segurança
 

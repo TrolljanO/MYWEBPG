@@ -106,21 +106,26 @@ test('o arquivo vazio não repete o título', async ({ page }) => {
   await expect(page.getByText('O arquivo está pronto.')).toBeVisible();
 });
 
-test('o caderno ocupa a coluna e guarda a segunda folha', async ({ page }) => {
+test('o caderno ocupa a coluna e tem relevo macio', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('./');
   const widths = await page.evaluate(() => {
     const notebook = document.querySelector('.notebook');
     const wrap = notebook?.parentElement;
     if (!notebook || !wrap) return null;
-    const before = getComputedStyle(notebook, '::before');
+    const style = getComputedStyle(notebook);
     return {
       notebook: notebook.getBoundingClientRect().width,
       wrap: wrap.getBoundingClientRect().width,
-      layer: before.content,
+      radius: parseFloat(style.borderTopLeftRadius),
+      shadow: style.boxShadow,
+      layer: getComputedStyle(notebook, '::before').content,
     };
   });
   expect(widths).not.toBeNull();
   expect(widths!.notebook).toBeGreaterThan(widths!.wrap - 2);
-  expect(widths!.layer).not.toBe('none');
+  // Sem a segunda folha deslocada: canto redondo e sombra macia.
+  expect(widths!.layer).toBe('none');
+  expect(widths!.radius).toBeGreaterThanOrEqual(12);
+  expect(widths!.shadow).not.toBe('none');
 });

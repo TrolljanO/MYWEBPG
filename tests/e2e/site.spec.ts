@@ -134,6 +134,50 @@ test('o palco ocupa a largura da página em 390', async ({ page }) => {
     }
   }
 });
+test('a caixa de luz da home cabe na primeira tela', async ({ page }) => {
+  const boxes = () =>
+    page.evaluate(() => {
+      const rect = (selector: string) =>
+        document.querySelector(selector)!.getBoundingClientRect();
+      const stage = rect('.diorama--lightbox .diorama-stage');
+      const sheet = rect('.hero-sheet');
+      return {
+        frames: document.querySelectorAll('.diorama--lightbox .diorama-frame')
+          .length,
+        stageTop: stage.top,
+        stageBottom: stage.bottom,
+        sheetTop: sheet.top,
+        sheetBottom: sheet.bottom,
+        cta: rect('.hero-sheet a').bottom,
+      };
+    });
+  // Janela baixa de notebook: a folha do nome fica dentro do palco.
+  await page.setViewportSize({ width: 1366, height: 650 });
+  await page.goto('./');
+  const wide = await boxes();
+  expect(wide.frames).toBe(5);
+  expect(wide.sheetTop).toBeGreaterThanOrEqual(wide.stageTop);
+  expect(wide.sheetBottom).toBeLessThanOrEqual(wide.stageBottom);
+  // Tela estreita: o primeiro botão na primeira tela, sem legenda.
+  for (const [width, height] of [
+    [320, 700],
+    [390, 844],
+    [768, 1024],
+  ]) {
+    await page.setViewportSize({ width, height });
+    await page.goto('./');
+    const narrow = await boxes();
+    // Em 320 o cabeçalho quebra em duas linhas e o botão passa da dobra.
+    if (width >= 390) {
+      expect(narrow.cta, `${width}`).toBeLessThanOrEqual(height);
+    }
+    // Nada fica entre a imagem e a folha do nome.
+    expect(narrow.sheetTop, `${width}`).toBeGreaterThanOrEqual(
+      narrow.stageBottom - 1,
+    );
+    await expect(page.locator('.opening figcaption')).toHaveCount(0);
+  }
+});
 test('RSS e robots incluem o base path correto', async ({ request }) => {
   const rss = await request.get('rss.xml');
   expect(rss.ok()).toBe(true);
