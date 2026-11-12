@@ -1,0 +1,34 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../../../layouts/BaseLayout.astro';
+import Archive from '../../../../components/blog/Archive.astro';
+import { posts, allTags } from '../../../../lib/content';
+export const getStaticPaths = (async ({ paginate }) => {
+  const all = await posts();
+  const tags = allTags(all);
+  return tags.flatMap((tag) =>
+    paginate(
+      all.filter((p) => p.data.tags.includes(tag)),
+      { params: { tag }, pageSize: 12, props: { tags, tag } },
+    ),
+  );
+}) satisfies GetStaticPaths;
+const { page, tags, tag } = Astro.props;
+---
+
+<Base
+  title={`${tag} · página ${page.currentPage}`}
+  description={`Artigos com a tag ${tag}. Página ${page.currentPage} do arquivo.`}
+  noindex={page.data.length < 2}
+  surface="blog"
+>
+  <Archive
+    entries={page.data}
+    tags={tags}
+    currentTag={tag}
+    page={page.currentPage}
+    total={page.lastPage}
+    previous={page.url.prev}
+    next={page.url.next}
+  />
+</Base>

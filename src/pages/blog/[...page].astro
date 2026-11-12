@@ -1,0 +1,26 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Base from '../../layouts/BaseLayout.astro';
+import Archive from '../../components/blog/Archive.astro';
+import { posts, allTags } from '../../lib/content';
+export const getStaticPaths = (async ({ paginate }) => {
+  const all = await posts();
+  return paginate(all, { pageSize: 12, props: { tags: allTags(all) } });
+}) satisfies GetStaticPaths;
+const { page, tags } = Astro.props;
+---
+
+<Base
+  title={page.currentPage === 1 ? 'Blog' : `Blog · página ${page.currentPage}`}
+  description={`Arquivo de artigos e estudos de Guilherme Trajano. Página ${page.currentPage}.`}
+  surface="blog"
+>
+  <Archive
+    entries={page.data}
+    tags={tags}
+    page={page.currentPage}
+    total={page.lastPage}
+    previous={page.url.prev}
+    next={page.url.next}
+  />
+</Base>

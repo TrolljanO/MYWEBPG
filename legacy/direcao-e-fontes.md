@@ -11,6 +11,7 @@ Fontes lidas: index.html/css/js/md; inspiracoes.md; guia-dominio-porkbun.md; tex
 Dados: bio e experiência geral do rascunho etapa2-estrutura-voz.md. Datas marcadas CONFIRMAR e detalhes familiares omitidos. Não foi encontrado currículo separado, fundacao-identidade.md ou portfolio-schema.yaml. Domínio trajanogui.com é explicitamente um exemplo no guia; wiseforge.pro aparece como candidato. Nenhum domínio configurado.
 
 Projetos verificados pela API pública do GitHub e README em 2026-10-26:
+
 - https://github.com/TrolljanO/sdd_vibe_converter — assistente que organiza ideias em especificações; Python/FastAPI e React. As métricas do README não foram reproduzidas e não são usadas.
 - https://github.com/TrolljanO/micro-rag-jump — perguntas e respostas em documentos sobre estoques; Python/FastAPI e FAISS. Nenhuma chamada a LLM ou backend efetuada.
 - MYWEBPG — o próprio site, em construção.

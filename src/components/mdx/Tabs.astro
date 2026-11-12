@@ -1,0 +1,15 @@
+---
+// Native disclosures keep every panel reachable without JS and by keyboard.
+interface Props {
+  items: { title: string; content: string }[];
+}
+---
+
+<div>
+  {Astro.props.items.map((item) => (
+    <details>
+      <summary>{item.title}</summary>
+      <p>{item.content}</p>
+    </details>
+  ))}
+</div>

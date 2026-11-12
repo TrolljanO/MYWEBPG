@@ -1,0 +1,164 @@
+---
+import '../styles/global.css';
+import cormorant from '../assets/fonts/cormorant-500.woff2';
+import manrope from '../assets/fonts/manrope.woff2';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import PaperField from '../components/motion/PaperField.astro';
+import Analytics from '../components/layout/Analytics.astro';
+import { site } from '../config/site';
+import { withBase, absolute } from '../lib/paths';
+interface Props {
+  title: string;
+  description?: string;
+  canonicalUrl?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  jsonLd?: Record<string, unknown>;
+  noindex?: boolean;
+  publishedTime?: string;
+  surface?: 'blog';
+}
+const {
+  title,
+  description = site.description,
+  canonicalUrl,
+  image = absolute('og.png'),
+  type = 'website',
+  jsonLd,
+  noindex = false,
+  publishedTime,
+  surface,
+} = Astro.props;
+const canonical = canonicalUrl || new URL(Astro.url.pathname, Astro.site).href;
+const documentTitle = `${title} | ${site.name}`;
+const structured = jsonLd || {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  url: absolute(),
+  sameAs: site.socials.map((s) => s.href),
+};
+---
+
+<!doctype html>
+<html lang={site.locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="preload"
+      href={manrope}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href={cormorant}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <title>{documentTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="color-scheme" content="dark light" />
+    <meta
+      name="theme-color"
+      content="#f6f3ec"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#171614"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={withBase('apple-touch-icon.png')} />
+    <link rel="manifest" href={withBase('manifest.webmanifest')} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Artigos de Guilherme Trajano"
+      href={withBase('rss.xml')}
+    />
+    <link rel="sitemap" href={withBase('sitemap-index.xml')} />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:type" content={type} />
+    <meta property="og:title" content={documentTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:alt" content={documentTitle} />
+    {publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={documentTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structured).replace(/</g, '\\u003c')}
+    />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const dark = '#171614';
+        const light = '#f6f3ec';
+        const systemDark = () =>
+          matchMedia('(prefers-color-scheme: dark)').matches;
+        let stored = null;
+        try {
+          const t = localStorage.getItem('theme');
+          if (t === 'dark' || t === 'light') stored = t;
+        } catch {
+          /* Storage may be unavailable. */
+        }
+        if (stored) root.dataset.theme = stored;
+        const applyThemeColor = () => {
+          const chosen = root.dataset.theme;
+          const theme =
+            chosen === 'dark' || chosen === 'light'
+              ? chosen
+              : systemDark()
+                ? 'dark'
+                : 'light';
+          const content = theme === 'dark' ? dark : light;
+          for (const meta of document.querySelectorAll(
+            'meta[name="theme-color"]',
+          )) {
+            meta.setAttribute('content', content);
+            meta.removeAttribute('media');
+          }
+        };
+        applyThemeColor();
+        new MutationObserver(applyThemeColor).observe(root, {
+          attributes: true,
+          attributeFilter: ['data-theme'],
+        });
+        matchMedia('(prefers-color-scheme: dark)').addEventListener(
+          'change',
+          applyThemeColor,
+        );
+      })();
+    </script>
+    <slot name="head" />
+  </head>
+  <body id="top" data-surface={surface}>
+    {surface === 'blog' && <PaperField />}
+    <a class="skip-link" href="#main">
+      Pular para o conteúdo
+    </a>
+    <Header />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer />
+    <Analytics />
+  </body>
+</html>

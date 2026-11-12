@@ -1,0 +1,159 @@
+---
+import Arrow from '../components/ui/Arrow.astro';
+import Base from '../layouts/BaseLayout.astro';
+import PlateStage from '../components/motion/PlateStage.astro';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+import { site } from '../config/site';
+import { projects } from '../lib/content';
+import { absolute, withBase } from '../lib/paths';
+import ceu from '../assets/diorama/cumeeira/01-ceu.webp';
+import nuvensAtras from '../assets/diorama/cumeeira/02-nuvens-atras.webp';
+import serras from '../assets/diorama/cumeeira/03-serras.webp';
+import monte from '../assets/diorama/cumeeira/04-monte.webp';
+import dragao from '../assets/diorama/cumeeira/05-dragao.webp';
+import nuvensFrente from '../assets/diorama/cumeeira/06-nuvens-frente.webp';
+import ondaTras from '../assets/diorama/koi/01-onda-tras.webp';
+import ondaFrente from '../assets/diorama/koi/02-onda-frente.webp';
+import espuma from '../assets/diorama/koi/03-espuma.webp';
+import koi from '../assets/diorama/koi/05-koi.webp';
+import petalas from '../assets/diorama/koi/06-petalas.webp';
+
+const featured = (await projects()).filter((p) => p.data.featured).slice(0, 6);
+const cumeeira = [
+  { src: ceu, depth: 1 },
+  { src: nuvensAtras, depth: 2 },
+  { src: serras, depth: 3 },
+  { src: monte, depth: 4 },
+  { src: dragao, depth: 5 },
+  { src: nuvensFrente, depth: 6 },
+];
+const onda = [
+  { src: ondaTras, depth: 1 },
+  { src: ondaFrente, depth: 2 },
+  { src: espuma, depth: 3 },
+  { src: koi, depth: 4 },
+  { src: petalas, depth: 5 },
+];
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Person',
+      name: site.name,
+      jobTitle: site.role,
+      url: absolute(),
+      sameAs: site.socials.map((item) => item.href),
+    },
+    {
+      '@type': 'WebSite',
+      name: site.name,
+      url: absolute(),
+      inLanguage: site.locale,
+    },
+  ],
+};
+---
+
+<Base
+  title={site.role}
+  description="Desenvolvimento, dados e inteligência artificial. Projetos abertos e um arquivo em preparação."
+  jsonLd={jsonLd}
+>
+  <section class="opening">
+    <div class="plate-frame">
+      <div class="paper-sheet hero-sheet">
+        <p class="intro-line">
+          Desenvolvimento, dados e inteligência artificial.
+        </p>
+        <h1>
+          Guilherme
+          <br />
+          Trajano.
+        </h1>
+        <p class="hero-statement">
+          Venho de vendas. Construo com código. Investigo o que a IA pode fazer
+          por quem projeta e constrói.
+        </p>
+        <div class="actions">
+          <a class="button primary" href={withBase('projects/')}>
+            Conheça meu trabalho{' '}
+            <span aria-hidden="true">
+              <Arrow direction="up-right" />
+            </span>
+          </a>
+          <a class="button" href={withBase('blog/')}>
+            Ler o blog{' '}
+            <span aria-hidden="true">
+              <Arrow direction="up-right" />
+            </span>
+          </a>
+        </div>
+        <p class="hero-note">
+          Curiosidade como ponto de partida. Comportamento real como evidência.
+        </p>
+      </div>
+      <PlateStage
+        variant="lightbox"
+        sizes="(min-width: 1000px) calc(120svh - 4.5rem), 100vw"
+        layers={cumeeira}
+        loading="eager"
+        label="Caixa de luz de papel: seis folhas registradas (céu, nuvens de trás, serras, o monte com o pagode, o dragão e as nuvens da frente) vistas por um vão recortado em cinco folhas."
+      />
+    </div>
+  </section>
+  <section class="section paper-band">
+    <div class="wrap">
+      <div class="section-heading">
+        <h2>Trabalho em aberto.</h2>
+        <a class="button" href={withBase('projects/')}>
+          Todos os projetos <Arrow direction="up-right" />
+        </a>
+      </div>
+      <p class="muted">
+        Experimentos que ganharam forma. Código, decisões e espaço para
+        melhorar.
+      </p>
+      <div class="project-list">
+        {featured.length ? (
+          featured.map((project) => <ProjectCard project={project} />)
+        ) : (
+          <p class="muted">Os primeiros projetos chegam em breve.</p>
+        )}
+      </div>
+    </div>
+  </section>
+  <section class="koi-chapter">
+    <div class="plate-frame">
+      <PlateStage
+        variant="full"
+        sizes="100vw"
+        layers={onda}
+        loading="lazy"
+        decoding="async"
+        label="Diorama de papel: a onda de trás, a onda da frente, a espuma com o koi claro, o koi cinábrio e pétalas soltas."
+      />
+      <div class="paper-sheet method-sheet">
+        <h2>A bagagem vira método.</h2>
+        <p class="lead">Antes de escrever código, aprendi a ouvir pessoas.</p>
+        <p>
+          A trajetória começou em vendas e segue no desenvolvimento, em dados e
+          na inteligência artificial aplicada à arquitetura e construção.
+        </p>
+        <a class="button" href={withBase('about/')}>
+          Sobre mim <Arrow direction="up-right" />
+        </a>
+      </div>
+    </div>
+  </section>
+  <section class="section paper-band">
+    <div class="wrap">
+      <div class="notebook paper-sheet">
+        <h2>O caderno está abrindo.</h2>
+        <p>O arquivo espera o primeiro texto.</p>
+        <a class="button" href={withBase('blog/')}>
+          Abrir o arquivo <Arrow direction="up-right" />
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,118 @@
+.prose {
+  font-size: var(--step-body);
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+[data-surface='blog'] .prose {
+  color: var(--text);
+  font-size: var(--step-read);
+  line-height: var(--leading-read);
+}
+[data-surface='blog'] .prose a {
+  text-decoration-line: underline;
+  text-decoration-color: var(--accent);
+}
+[data-surface='blog'] .prose blockquote {
+  color: var(--text);
+}
+.prose h2 {
+  font-size: var(--step-title);
+  margin-top: 2.5rem;
+}
+.prose h3 {
+  margin-top: 2rem;
+}
+.prose p {
+  margin-block: 1.4rem;
+}
+.prose ul,
+.prose ol {
+  padding-left: 1.5rem;
+  list-style: revert;
+  margin-block: 1.5rem;
+}
+.prose li {
+  padding-left: 0.25rem;
+  margin: 0.4rem 0;
+}
+.prose blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.5rem;
+  color: var(--muted);
+}
+.prose pre {
+  padding: 1.25rem;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-size: var(--step-small);
+  position: relative;
+  max-width: 100%;
+}
+.prose pre:has(.copy-code) {
+  padding-top: 4rem;
+}
+.prose :not(pre) > code {
+  background: var(--surface);
+  padding: 0.15rem 0.3rem;
+  border-radius: var(--radius);
+  font-size: var(--step-small);
+}
+.prose img {
+  display: block;
+  margin-block: 2rem;
+  max-width: 100%;
+  height: auto;
+}
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  display: block;
+  overflow: auto;
+}
+.prose th,
+.prose td {
+  text-align: left;
+  border: 1px solid var(--line);
+  padding: 0.7rem;
+}
+.prose details {
+  background: var(--sheet-under);
+  padding: 1rem;
+  margin-block: 1.5rem;
+}
+.prose summary {
+  min-height: 44px;
+}
+.copy-code {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.5rem;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  padding: 0.4rem 0.8rem;
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--step-small);
+}
+.copy-code:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+.astro-code,
+.astro-code span {
+  color: var(--shiki-dark);
+  background-color: var(--shiki-dark-bg);
+}
+:root[data-theme='light'] .astro-code,
+:root[data-theme='light'] .astro-code span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) .astro-code,
+  :root:not([data-theme]) .astro-code span {
+    color: var(--shiki-light);
+    background-color: var(--shiki-light-bg);
+  }
+}

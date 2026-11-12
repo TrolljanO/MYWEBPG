@@ -1,0 +1,45 @@
+---
+import Base from '../../../layouts/BaseLayout.astro';
+import ProjectCard from '../../../components/projects/ProjectCard.astro';
+import { projects, allTags } from '../../../lib/content';
+import { withBase, tagPath } from '../../../lib/paths';
+export async function getStaticPaths() {
+  const entries = await projects();
+  return allTags(entries).map((tag) => ({
+    params: { tag },
+    props: {
+      tag,
+      entries: entries.filter((p) => p.data.tags.includes(tag)),
+      tags: allTags(entries),
+    },
+  }));
+}
+const { tag, entries, tags } = Astro.props;
+---
+
+<Base
+  title={`Projetos · ${tag}`}
+  description={`Estudos de caso com a tecnologia ${tag}.`}
+  noindex={entries.length < 2}
+>
+  <div class="wrap section">
+    <h1>Projetos / {tag}</h1>
+    <nav class="tags" aria-label="Filtrar projetos">
+      <a class="tag" href={withBase('projects/')}>
+        Todos
+      </a>
+      {tags.map((t) => (
+        <a
+          class="tag"
+          href={tagPath(t, 'projects')}
+          aria-current={tag === t ? 'page' : undefined}
+        >
+          {t}
+        </a>
+      ))}
+    </nav>
+    {entries.map((project) => (
+      <ProjectCard project={project} />
+    ))}
+  </div>
+</Base>

@@ -1,0 +1,118 @@
+---
+import Arrow from '../ui/Arrow.astro';
+import type { CollectionEntry } from 'astro:content';
+import PlateStage from '../motion/PlateStage.astro';
+import PostCard from './PostCard.astro';
+import { withBase, tagPath } from '../../lib/paths';
+import ceu from '../../assets/diorama/sakura/01-ceu.webp';
+import chao from '../../assets/diorama/sakura/02-chao.webp';
+import pedras from '../../assets/diorama/sakura/03-pedras.webp';
+import raizes from '../../assets/diorama/sakura/04-raizes.webp';
+import tronco from '../../assets/diorama/sakura/05-tronco.webp';
+import ramos from '../../assets/diorama/sakura/06-ramos.webp';
+import flores from '../../assets/diorama/sakura/07-flores.webp';
+import petalas from '../../assets/diorama/sakura/08-petalas.webp';
+interface Props {
+  entries: CollectionEntry<'blog'>[];
+  tags: string[];
+  currentTag?: string;
+  page: number;
+  total: number;
+  previous?: string;
+  next?: string;
+}
+const { entries, tags, currentTag, page, total, previous, next } = Astro.props;
+const sakura = [
+  { src: ceu, depth: 1 },
+  { src: chao, depth: 2 },
+  { src: pedras, depth: 3 },
+  { src: raizes, depth: 4 },
+  { src: tronco, depth: 5 },
+  { src: ramos, depth: 6 },
+  { src: flores, depth: 7 },
+  { src: petalas, depth: 8 },
+];
+---
+
+<section>
+  {!currentTag && (
+    <div class="plate-frame">
+      <div class="paper-sheet hero-sheet">
+        <h1>Notas & descobertas.</h1>
+        <p class="lead">
+          O arquivo está pronto. Um texto entra aqui quando deixa de ser
+          rascunho.
+        </p>
+      </div>
+      <PlateStage
+        variant="full"
+        sizes="min(100vw, calc(100svh - 3.75rem))"
+        layers={sakura}
+        loading="eager"
+        caption="Sakura"
+        note="Oito folhas no mesmo quadro. Ilustração com IA."
+        label="Diorama de papel em oito folhas: o céu, o chão, as pedras, as raízes, o tronco, os ramos, as flores e as pétalas."
+      />
+    </div>
+  )}
+  <div class="wrap section archive-body">
+    {currentTag && (
+      <header class="page-header">
+        <h1>{`Notas sobre ${currentTag}.`}</h1>
+        <p class="lead">
+          O arquivo está pronto. Um texto entra aqui quando deixa de ser
+          rascunho.
+        </p>
+      </header>
+    )}
+    <nav class="tags" aria-label="Filtrar artigos por tag">
+      <a
+        class="tag"
+        href={withBase('blog/')}
+        aria-current={!currentTag ? 'page' : undefined}
+      >
+        Todos
+      </a>
+      {tags.map((t) => (
+        <a
+          class="tag"
+          href={tagPath(t)}
+          aria-current={currentTag === t ? 'page' : undefined}
+        >
+          {t}
+        </a>
+      ))}
+    </nav>
+    {entries.length > 0 && <h2>Artigos</h2>}
+    <div class="post-grid">
+      {entries.map((post) => (
+        <PostCard post={post} />
+      ))}
+      {!entries.length && (
+        <div class="paper-sheet archive-empty">
+          <p>Nenhum artigo publicado ainda.</p>
+          <a href={withBase('rss.xml')}>RSS</a>
+        </div>
+      )}
+    </div>
+    <nav class="pagination" aria-label="Paginação">
+      {previous ? (
+        <a class="button" href={previous}>
+          <Arrow direction="left" /> Página anterior
+        </a>
+      ) : (
+        <span />
+      )}
+      <span class="meta">
+        Página {page} de {total}
+      </span>
+      {next ? (
+        <a class="button" href={next}>
+          Próxima página <Arrow direction="right" />
+        </a>
+      ) : (
+        <span />
+      )}
+    </nav>
+  </div>
+</section>

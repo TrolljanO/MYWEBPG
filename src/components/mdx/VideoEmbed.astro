@@ -1,0 +1,37 @@
+---
+import Arrow from '../ui/Arrow.astro';
+interface Props {
+  youtubeId: string;
+  title: string;
+}
+const { youtubeId, title } = Astro.props;
+if (!/^[a-zA-Z0-9_-]{11}$/.test(youtubeId))
+  throw new Error('ID de vídeo inválido');
+---
+
+<div class="toc" data-video={youtubeId} data-title={title}>
+  <p>{title}</p>
+  <a href={`https://www.youtube.com/watch?v=${youtubeId}`}>
+    Assistir no YouTube <Arrow direction="up-right" />
+  </a>
+  <button class="button" type="button" hidden>
+    Carregar vídeo externo
+  </button>
+</div>
+<script>
+  document.querySelectorAll<HTMLElement>('[data-video]').forEach((el) => {
+    const button = el.querySelector('button')!;
+    button.hidden = false;
+    button.addEventListener('click', () => {
+      const frame = document.createElement('iframe');
+      frame.src = `https://www.youtube-nocookie.com/embed/${el.dataset.video}`;
+      frame.title = el.dataset.title!;
+      frame.width = '720';
+      frame.height = '405';
+      frame.style.cssText = 'width:100%;height:auto;aspect-ratio:16/9';
+      frame.allowFullscreen = true;
+      frame.referrerPolicy = 'strict-origin-when-cross-origin';
+      el.replaceChildren(frame);
+    });
+  });
+</script>

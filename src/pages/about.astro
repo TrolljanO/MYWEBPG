@@ -1,0 +1,36 @@
+---
+import Arrow from '../components/ui/Arrow.astro';
+import Base from '../layouts/BaseLayout.astro';
+import { Content } from '../content/pages/about.md';
+import { site } from '../config/site';
+import { withBase } from '../lib/paths';
+---
+
+<Base
+  title="Sobre"
+  description="Apresentação, trajetória e contato de Guilherme Trajano."
+>
+  <div class="wrap section">
+    <article class="reading">
+      <h1>Sobre mim.</h1>
+      <div class="prose">
+        <Content />
+      </div>
+      <div class="actions">
+        <a class="button" href={withBase('resume/')}>
+          Currículo
+        </a>
+        {site.socials.map((s) => (
+          <a class="button" href={s.href}>
+            {s.label} <Arrow direction="up-right" />
+          </a>
+        ))}
+        {site.email && (
+          <a class="button" href={`mailto:${site.email}`}>
+            E-mail
+          </a>
+        )}
+      </div>
+    </article>
+  </div>
+</Base>

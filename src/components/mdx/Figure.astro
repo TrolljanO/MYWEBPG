@@ -1,0 +1,22 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  caption?: string;
+}
+const { src, alt, caption } = Astro.props;
+if (!alt?.trim()) throw new Error('Figure exige alt não vazio');
+---
+
+<figure>
+  <Image
+    src={src}
+    alt={alt}
+    widths={[400, 800, 1200]}
+    sizes="(max-width: 800px) 90vw, 72ch"
+    loading="lazy"
+  />
+  {caption && <figcaption class="meta">{caption}</figcaption>}
+</figure>

@@ -7,6 +7,7 @@
 **Brief:** conversa atual e materiais do pacote-codex.tar.gz; instruções do usuário prevalecem sobre propostas do pacote.
 
 ## Restrições
+
 - Branco/preto, traços finos, estética de gravura japonesa, papercut multicamadas.
 - Reutilizar o conceito de camadas dos exports AW, sem publicar seus arquivos, logotipo ou conteúdo no site.
 - Não inventar posts, resultados, métricas, biografia ou contatos.
@@ -14,6 +15,7 @@
 - Preview local. Domínio e publicação dependem da escolha ainda ausente.
 
 ## Tarefas
+
 - [x] Inventariar fontes; escrever direção e conteúdo.
 - [x] Implementar home, gravura em camadas, projetos, arquivo vazio, currículo e privacidade.
 - [x] Implementar tema persistente, controle de movimento e filtro de projetos.
@@ -21,6 +23,7 @@
 - [x] Revisão final e entrega do preview.
 
 ## Foco da revisão
+
 Sem JavaScript: conteúdo e links continuam disponíveis. localStorage bloqueado: botões funcionam. Movimento reduzido: sem paralaxe/entrada automática. Celular: sem overflow e alvos confortáveis. Conteúdo: nenhuma alegação de publicação ou integração social inexistente.
 
 ## Marco do protótipo — 2026-10-26

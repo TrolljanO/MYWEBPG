@@ -1,0 +1,28 @@
+---
+import Arrow from '../components/ui/Arrow.astro';
+import Base from '../layouts/BaseLayout.astro';
+import { withBase } from '../lib/paths';
+---
+
+<Base
+  title="Página não encontrada"
+  description="Este endereço não está no arquivo. Volte ao início para continuar."
+  noindex
+>
+  <div class="wrap section">
+    <h1>
+      Essa ideia ainda
+      <br />
+      não está aqui.
+    </h1>
+    <p class="lead">O endereço pode ter mudado ou a página não existe.</p>
+    <div class="actions">
+      <a class="button primary" href={withBase()}>
+        Voltar ao início <Arrow direction="up-right" />
+      </a>
+      <a class="button" href={withBase('blog/')}>
+        Explorar o blog
+      </a>
+    </div>
+  </div>
+</Base>
