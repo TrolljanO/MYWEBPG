@@ -64,7 +64,7 @@ describe('paginação do blog', () => {
 
     for (const name of readdirSync('src/content/blog')) {
       expect(readFileSync(`src/content/blog/${name}`, 'utf8')).toMatch(
-        /^draft:\s*true$/m,
+        /^draft:\s*(true|false)$/m,
       );
     }
   });

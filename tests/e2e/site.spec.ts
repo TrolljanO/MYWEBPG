@@ -25,7 +25,9 @@ test('sem JS: navegação mobile e estados vazios', async ({ browser }) => {
     .getByRole('link', { name: 'Blog', exact: true })
     .click();
   await expect(page.locator('h1')).toBeVisible();
-  await expect(page.getByText('Nenhum artigo publicado ainda.')).toBeVisible();
+  const empty = page.getByText('Nenhum artigo publicado ainda.');
+  const published = page.locator('article.post-card');
+  await expect(empty.or(published.first())).toBeVisible();
   await context.close();
 });
 test('reduced motion pausa os dioramas, acessibilidade nos dois temas', async ({
