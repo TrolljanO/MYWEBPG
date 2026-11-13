@@ -100,9 +100,17 @@ test('o acento de está não encosta no q a 200%', async ({ page }) => {
   expect(gap?.inkGap).toBeGreaterThan(0);
 });
 
-test('o arquivo vazio não repete o título', async ({ page }) => {
+test('o arquivo não repete o título', async ({ page }) => {
   await page.goto('./blog/');
-  await expect(page.getByRole('heading', { level: 2 })).toHaveCount(0);
+  const title = (
+    await page.getByRole('heading', { level: 1 }).innerText()
+  ).trim();
+  const subtitles = await page
+    .getByRole('heading', { level: 2 })
+    .allInnerTexts();
+  for (const subtitle of subtitles) {
+    expect(subtitle.trim()).not.toBe(title);
+  }
   await expect(page.getByText('O arquivo está pronto.')).toBeVisible();
 });
 
