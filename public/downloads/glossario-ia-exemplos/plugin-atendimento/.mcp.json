@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "agenda": {
+      "command": "npx",
+      "args": ["-y", "[PACOTE-DO-SERVIDOR-MCP-DA-SUA-AGENDA]"],
+      "env": {
+        "AGENDA_API_TOKEN": "${AGENDA_API_TOKEN}"
+      }
+    }
+  }
+}
