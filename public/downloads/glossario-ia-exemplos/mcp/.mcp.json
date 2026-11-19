@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "planilha-local": {
+      "command": "npx",
+      "args": ["-y", "[PACOTE-DO-SERVIDOR-MCP-LOCAL]", "${CLAUDE_PROJECT_DIR:-.}/dados"],
+      "env": {
+        "MODO_SOMENTE_LEITURA": "1"
+      }
+    },
+    "agenda-remota": {
+      "type": "http",
+      "url": "https://[ENDERECO-DO-SERVIDOR-MCP]/mcp",
+      "headers": {
+        "Authorization": "Bearer ${AGENDA_API_TOKEN}"
+      }
+    }
+  }
+}

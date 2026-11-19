@@ -1,0 +1,11 @@
+{
+  "name": "atendimento-pequeno-negocio",
+  "displayName": "Atendimento para pequeno negócio",
+  "version": "0.1.0",
+  "description": "Modelo de plugin com uma skill de confirmação de agendamento e um servidor MCP de agenda. Exemplo do post glossário.",
+  "author": {
+    "name": "[SEU NOME]"
+  },
+  "license": "CC0-1.0",
+  "keywords": ["atendimento", "agenda", "exemplo"]
+}
